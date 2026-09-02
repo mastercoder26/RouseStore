@@ -103,7 +103,7 @@ export const PRODUCTS: Product[] = [
     category: "Campus Fuel",
     price: 4.5,
     tag: "Morning Fuel",
-    description: "A smooth, chilled 12 oz cold brew. Find it at the Raider Station counter.",
+    description: "A smooth, chilled 12 oz cold brew for an early start.",
     image: "/images/raider_bottle.jpg",
   },
   {

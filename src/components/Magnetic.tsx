@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 interface MagneticProps {
   children: React.ReactElement;
@@ -14,37 +15,65 @@ export default function Magnetic({
   className = "",
 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isEnabled, setIsEnabled] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 320, damping: 28, mass: 0.55 });
+  const springY = useSpring(y, { stiffness: 320, damping: 28, mass: 0.55 });
+  const transform = useMotionTemplate`translate3d(${springX}px, ${springY}px, 0)`;
+
+  useEffect(() => {
+    const finePointer = window.matchMedia("(pointer: fine) and (hover: hover)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const updateEnabled = () => {
+      const enabled = finePointer.matches && !reducedMotion.matches;
+      setIsEnabled(enabled);
+      if (!enabled) {
+        x.set(0);
+        y.set(0);
+      }
+    };
+
+    updateEnabled();
+    finePointer.addEventListener("change", updateEnabled);
+    reducedMotion.addEventListener("change", updateEnabled);
+
+    return () => {
+      finePointer.removeEventListener("change", updateEnabled);
+      reducedMotion.removeEventListener("change", updateEnabled);
+    };
+  }, [x, y]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (!isEnabled || !ref.current) return;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     const centerX = left + width / 2;
     const centerY = top + height / 2;
     const deltaX = (e.clientX - centerX) * strength;
     const deltaY = (e.clientY - centerY) * strength;
-    setPosition({ x: deltaX, y: deltaY });
+    x.set(deltaX);
+    y.set(deltaY);
   };
 
   const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
+    if (!isEnabled) return;
+    x.set(0);
+    y.set(0);
   };
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={`inline-block ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        transition: position.x === 0 && position.y === 0
-          ? "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
-          : "transform 0.1s ease-out",
-        willChange: "transform",
+        transform,
+        willChange: isEnabled ? "transform" : undefined,
       }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
