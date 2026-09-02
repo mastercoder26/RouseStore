@@ -2,10 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
 import RoundedButton from "@/components/RoundedButton";
 import RaiderMarquee from "@/components/RaiderMarquee";
 import SlidingProducts from "@/components/SlidingProducts";
+import PreLoader from "@/components/animations/PreLoader";
+import TextSlideUp from "@/components/animations/TextSlideUp";
+import ContrastCursor from "@/components/animations/ContrastCursor";
 import {
   ShoppingBag,
   Search,
@@ -238,6 +242,12 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Portfolio Smooth PreLoader */}
+      <PreLoader />
+
+      {/* Portfolio Contrast Spring Cursor */}
+      <ContrastCursor />
+
       {/* Minimal Top Bar */}
       <div className="minimal-top-bar" id="top-bar">
         <div className="top-bar-inner">
@@ -276,7 +286,7 @@ export default function Home() {
           </div>
 
           <div className="minimal-nav-actions">
-            <Magnetic strength={0.2}>
+            <Magnetic strength={0.25}>
               <button
                 id="cart-trigger-btn"
                 className="minimal-bag-btn"
@@ -302,7 +312,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main style={{ flex: 1 }}>
-        {/* Dennis Snellenberg Editorial Hero Section */}
+        {/* Dennis Snellenberg Editorial Hero Section with Text Slide-Up */}
         <section className="editorial-hero-section" id="hero-section">
           <div className="hero-editorial-grid">
             <div>
@@ -310,9 +320,14 @@ export default function Home() {
                 <span className="kicker-dot" />
                 <span>Rouse High School • Leander, Texas</span>
               </div>
-              <h1 className="editorial-headline">
-                Creating traditions that others can live up to.
-              </h1>
+
+              {/* Text Slide-Up Animation from Portfolio */}
+              <TextSlideUp
+                text="Creating traditions that others can live up to."
+                className="editorial-headline"
+                element="h1"
+              />
+
               <p className="editorial-lead">
                 The official student-centered retail studio for Rouse High School. Minimalist varsity outerwear, essential classroom supplies, and gameday gear designed with understated maroon, gold, and black pride.
               </p>
@@ -355,7 +370,12 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="editorial-visual-box">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="editorial-visual-box"
+            >
               <Image
                 src="/images/raider_hero.jpg"
                 alt="Rouse High School Student Store"
@@ -368,7 +388,7 @@ export default function Home() {
                 <div className="caption-bold">The Raider Station Hub</div>
                 <div className="caption-sub">1222 Raider Way • Leander, TX</div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -415,11 +435,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Product Grid: Styled like ProjectCard.tsx in Portfolio */}
+          {/* Product Grid: Framer Motion Cards exactly like ProjectCard.tsx in Portfolio */}
           <div className="cards-grid-minimal" id="products-grid">
-            {filteredProducts.map((product) => (
-              <article
+            {filteredProducts.map((product, index) => (
+              <motion.article
                 key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{
+                  y: -5,
+                  transition: { type: "spring", stiffness: 350, damping: 25 },
+                }}
                 className="product-card-minimal"
                 id={`card-${product.id}`}
                 onClick={() => {
@@ -456,7 +483,7 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
 
