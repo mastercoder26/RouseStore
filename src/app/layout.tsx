@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
+import StoreProvider from "@/components/StoreProvider";
+import SiteShell from "@/components/SiteShell";
 import "./globals.css";
 
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
@@ -35,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${sans.variable} ${display.variable}`} data-scroll-behavior="smooth">
+      <body><StoreProvider><SiteShell>{children}</SiteShell></StoreProvider></body>
     </html>
   );
 }

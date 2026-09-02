@@ -1,0 +1,259 @@
+.page {
+  --school-paper: var(--paper, #f3f1ea);
+  --school-ink: var(--ink, #282520);
+  --school-maroon: var(--maroon, #591f2d);
+  --school-muted: var(--muted, #6e6961);
+  --school-line: var(--line, #d8d3ca);
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: clamp(2rem, 4.5vw, 5.5rem) clamp(1.25rem, 4vw, 4rem) 2rem;
+  color: var(--school-ink);
+}
+
+.topline,
+.school-kicker,
+.facts > div,
+.externalLinks a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.topline {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--school-line);
+}
+
+.eyebrow,
+.overline,
+.location,
+.markNote,
+.facts dt,
+.externalLinks a {
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.overline,
+.facts dt {
+  color: var(--school-maroon);
+  font-weight: 700;
+}
+
+.location,
+.markNote,
+.facts dt {
+  color: var(--school-muted);
+}
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(18rem, 0.72fr);
+  align-items: end;
+  gap: clamp(3rem, 11vw, 10rem);
+  padding: clamp(2.5rem, 4vw, 4rem) 0 0;
+}
+
+.headingColumn {
+  max-width: 47rem;
+}
+
+.overline {
+  margin-bottom: clamp(1.5rem, 3.5vw, 3rem);
+}
+
+.title {
+  max-width: 8ch;
+  margin: 0;
+  color: var(--school-maroon);
+  font-family: var(--font-heading, Georgia, serif);
+  font-size: clamp(4.4rem, 10vw, 10.5rem);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.87;
+}
+
+.lead {
+  max-width: 35rem;
+  margin: clamp(2.25rem, 5vw, 4.5rem) 0 0;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  line-height: 1.7;
+  letter-spacing: -0.015em;
+}
+
+.shopLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 2.75rem;
+  margin-top: 2.25rem;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.8rem;
+  transition: color 180ms ease, gap 220ms var(--ease-out, cubic-bezier(.23, 1, .32, 1));
+}
+
+.shopLink:hover,
+.shopLink:focus-visible {
+  color: var(--school-maroon);
+  gap: 1.9rem;
+}
+
+.detailsColumn {
+  max-width: 23rem;
+  padding-bottom: 0.15rem;
+}
+
+.markFrame {
+  position: relative;
+  width: min(100%, 14rem);
+  aspect-ratio: 1;
+  margin-bottom: 2.25rem;
+  background: #e5dfd2;
+  overflow: hidden;
+}
+
+.mark {
+  object-fit: cover;
+  mix-blend-mode: multiply;
+}
+
+.markNote {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.65rem;
+  padding: 0.25rem 0.35rem;
+  background: rgba(243, 241, 234, 0.8);
+  color: var(--school-maroon);
+  font-size: 0.58rem;
+}
+
+.supportingCopy {
+  max-width: 21rem;
+  margin: 0 0 2.5rem;
+  color: var(--school-muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.supportingCopy em {
+  color: var(--school-ink);
+  font-style: normal;
+}
+
+.facts {
+  margin: 0;
+  border-top: 1px solid var(--school-line);
+}
+
+.facts > div {
+  align-items: flex-start;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--school-line);
+}
+
+.facts dd {
+  max-width: 12rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: right;
+}
+
+.externalLinks {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 1.5rem;
+}
+
+.externalLinks a {
+  min-height: 2.75rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--school-line);
+  color: var(--school-ink);
+  font-size: 0.67rem;
+  transition: color 180ms ease, padding 220ms var(--ease-out, cubic-bezier(.23, 1, .32, 1));
+}
+
+.externalLinks a:hover,
+.externalLinks a:focus-visible {
+  padding-left: 0.4rem;
+  color: var(--school-maroon);
+}
+
+@media (max-width: 760px) {
+  .page {
+    min-height: 0;
+    padding: 1.4rem 5% 1.5rem;
+  }
+
+  .topline {
+    padding-bottom: 0.8rem;
+  }
+
+  .location {
+    font-size: 0.58rem;
+  }
+
+  .story {
+    display: block;
+    padding-top: 3.5rem;
+  }
+
+  .title {
+    max-width: 7ch;
+    font-size: clamp(4.3rem, 17vw, 7.1rem);
+  }
+
+  .lead {
+    max-width: 31rem;
+    margin-top: 2.25rem;
+    font-size: 1rem;
+  }
+
+  .detailsColumn {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 31rem;
+    margin-top: 2.5rem;
+  }
+
+  .markFrame {
+    width: 96px;
+    margin: 0;
+  }
+
+  .markNote { display: none; }
+  .supportingCopy { margin: 0; font-size: .8rem; }
+  .facts, .externalLinks { grid-column: 1 / -1; width: 100%; }
+  .externalLinks { margin-top: 0; }
+}
+
+@media (max-width: 400px) {
+  .topline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .story {
+    padding-top: 2.8rem;
+  }
+
+  .title {
+    font-size: 4.1rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shopLink,
+  .externalLinks a {
+    transition: none;
+  }
+}
