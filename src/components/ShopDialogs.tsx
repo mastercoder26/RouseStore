@@ -152,6 +152,9 @@ export function CartDrawer({
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "summary">("cart");
+  const [promoCode, setPromoCode] = useState("");
+  const [discountRate, setDiscountRate] = useState<number | null>(null);
+  const [promoError, setPromoError] = useState("");
   useDialogLifecycle(dialogRef);
 
   useEffect(() => {
@@ -168,9 +171,34 @@ export function CartDrawer({
     () => roundMoney(cart.reduce((total, item) => total + item.price * item.quantity, 0)),
     [cart],
   );
+
+  const discountAmount = useMemo(
+    () => (discountRate ? roundMoney(rawSubtotal * discountRate) : 0),
+    [rawSubtotal, discountRate],
+  );
+
+  const finalTotal = useMemo(() => roundMoney(Math.max(0, rawSubtotal - discountAmount)), [rawSubtotal, discountAmount]);
+
+  const handleApplyPromo = (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = promoCode.trim().toUpperCase();
+    if (clean === "RAIDERS") {
+      setDiscountRate(0.1);
+      setPromoError("");
+    } else if (clean === "ROUSE" || clean === "GOLD") {
+      setDiscountRate(0.15);
+      setPromoError("");
+    } else {
+      setPromoError("Invalid code. Try 'RAIDERS' for 10% off!");
+    }
+  };
+
   const handleBackdropClick = (event: React.MouseEvent<HTMLDialogElement>) => {
     if (event.target === event.currentTarget) close();
   };
+
+  const perkThreshold = 50;
+  const perkPercent = Math.min(100, Math.round((rawSubtotal / perkThreshold) * 100));
 
   return (
     <dialog
@@ -194,7 +222,7 @@ export function CartDrawer({
           <div className={styles.summaryIntro}>
             <h2 id="cart-dialog-title" className={styles.drawerTitle}>Bag summary</h2>
             <p className={styles.summaryNotice}>
-              Online checkout is not available yet. No order has been placed.
+              Online checkout demo. Your order is reserved for pickup at Room 1104 (Raider Station Kiosk) during morning & lunch hours.
             </p>
           </div>
           <div className={styles.summaryItems} role="list" aria-label="Bag summary">
@@ -206,7 +234,20 @@ export function CartDrawer({
             ))}
           </div>
           <div className={styles.totals}>
-            <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(rawSubtotal)}</strong></div>
+            <div className={styles.summaryItem}>
+              <span>Subtotal</span>
+              <span>{formatPrice(rawSubtotal)}</span>
+            </div>
+            {discountRate && (
+              <div className={styles.summaryItem} style={{ color: "var(--maroon)" }}>
+                <span>Promo Discount ({Math.round(discountRate * 100)}%)</span>
+                <span>-{formatPrice(discountAmount)}</span>
+              </div>
+            )}
+            <div className={styles.totalLine}>
+              <strong>Total Due at Counter</strong>
+              <strong>{formatPrice(finalTotal)}</strong>
+            </div>
           </div>
         </div>
       ) : (
@@ -227,6 +268,38 @@ export function CartDrawer({
             </div>
           ) : (
             <>
+              {/* Free Campus Sticker Pack / Delivery Progress Meter */}
+              <div
+                style={{
+                  padding: "12px 14px",
+                  background: "var(--bg-surface)",
+                  borderRadius: "var(--radius-sm)",
+                  border: "1px solid var(--line)",
+                  margin: "16px 0 12px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", fontWeight: 600, marginBottom: "6px" }}>
+                  <span>
+                    {rawSubtotal >= perkThreshold
+                      ? "✓ Qualified for Free Raider Sticker Pack!"
+                      : `Add ${formatPrice(perkThreshold - rawSubtotal)} for free sticker pack`}
+                  </span>
+                  <span style={{ color: "var(--maroon)", fontVariantNumeric: "tabular-nums" }}>
+                    {perkPercent}%
+                  </span>
+                </div>
+                <div style={{ height: "4px", background: "var(--line)", borderRadius: "2px", overflow: "hidden" }}>
+                  <div
+                    style={{
+                      width: `${perkPercent}%`,
+                      height: "100%",
+                      background: "var(--maroon)",
+                      transition: "width 300ms ease",
+                    }}
+                  />
+                </div>
+              </div>
+
               <div className={styles.cartItems} role="list" aria-label="Items in your bag">
                 {cart.map((item) => (
                   <div className={styles.cartItem} role="listitem" key={`${item.id}-${item.selectedSize ?? ""}`}>
@@ -257,8 +330,76 @@ export function CartDrawer({
                 ))}
               </div>
 
+              {/* Promo code input */}
+              <form
+                onSubmit={handleApplyPromo}
+                style={{
+                  display: "flex",
+                  gap: "6px",
+                  margin: "18px 0 10px",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Promo code (e.g. RAIDERS)"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  style={{
+                    flex: 1,
+                    height: "36px",
+                    padding: "0 10px",
+                    borderRadius: "var(--radius-pill)",
+                    border: "1px solid var(--line)",
+                    background: "var(--bg-surface)",
+                    color: "var(--ink)",
+                    fontSize: "11px",
+                    outline: "none",
+                  }}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    height: "36px",
+                    padding: "0 14px",
+                    borderRadius: "var(--radius-pill)",
+                    border: "1px solid var(--line)",
+                    background: "var(--bg-surface)",
+                    color: "var(--maroon)",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  Apply
+                </button>
+              </form>
+              {promoError && (
+                <p style={{ color: "#ef4444", fontSize: "10px", margin: "0 0 10px" }}>{promoError}</p>
+              )}
+              {discountRate && (
+                <p style={{ color: "var(--maroon)", fontSize: "11px", fontWeight: 600, margin: "0 0 10px" }}>
+                  ✓ {Math.round(discountRate * 100)}% discount applied!
+                </p>
+              )}
+
               <div className={styles.totals}>
-                <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(rawSubtotal)}</strong></div>
+                {discountRate && (
+                  <div className={styles.summaryItem}>
+                    <span>Subtotal</span>
+                    <span>{formatPrice(rawSubtotal)}</span>
+                  </div>
+                )}
+                {discountRate && (
+                  <div className={styles.summaryItem} style={{ color: "var(--maroon)" }}>
+                    <span>Discount</span>
+                    <span>-{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
+                <div className={styles.totalLine}>
+                  <strong>Total</strong>
+                  <strong>{formatPrice(finalTotal)}</strong>
+                </div>
               </div>
               <button type="button" className={styles.primaryButton} onClick={() => setCheckoutStep("summary")}>
                 Review bag <span aria-hidden="true">↗</span>

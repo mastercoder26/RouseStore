@@ -1,14 +1,11 @@
 .collection {
-  --paper: #f2f0e9;
-  --ink: #282520;
-  --maroon: #571e2a;
-  --muted-ink: #6e6961;
   position: relative;
-  min-height: 112vh;
+  min-height: 105vh;
   overflow: clip;
-  padding: clamp(3.5rem, 8vw, 8rem) 0 0;
-  background: var(--paper);
+  padding: clamp(3.5rem, 8vw, 7rem) 0 0;
+  background: var(--bg-surface);
   color: var(--ink);
+  border-top: 1px solid var(--line);
 }
 
 .heading {
