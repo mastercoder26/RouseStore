@@ -5,8 +5,8 @@
 .controls { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); margin-top: 2px; }
 .counter { font-size: 10px; font-variant-numeric: tabular-nums; letter-spacing: .06em; }
 .counter > span { color: var(--muted); margin-left: 6px; }
-.buttons { display: flex; }
-.buttons button { display: grid; place-items: center; min-width: 40px; min-height: 44px; color: var(--maroon); }
+.buttons { display: flex; gap: 2px; padding: 3px 0; }
+.buttons button { display: grid; place-items: center; min-width: 40px; min-height: 44px; border-radius: var(--radius-pill); color: var(--maroon); transition: background 180ms ease; }
 .accents { position: absolute; top: 49%; right: -105px; width: 95px; pointer-events: none; }
 .accent { width: 88px; height: 115px; opacity: .9; animation: drift 7s ease-in-out infinite alternate; }
 .secondAccent { width: 74px; height: 125px; margin: 52px 0 0 12px; animation-delay: -3.5s; }

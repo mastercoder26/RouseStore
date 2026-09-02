@@ -1,6 +1,6 @@
 .dialog {
   border: 1px solid #d5d1c8;
-  border-radius: 0;
+  border-radius: var(--radius-md, 20px);
   padding: 0;
   color: #282520;
   background: #f2f0e9;
@@ -115,7 +115,7 @@
   padding: 0;
   place-items: center;
   border: 1px solid #d5d1c8;
-  border-radius: 0;
+  border-radius: var(--radius-pill, 999px);
   color: #282520;
   background: transparent;
 }
@@ -201,6 +201,7 @@
   color: #625d56;
   font-size: 0.78rem;
   text-align: center;
+  border-radius: var(--radius-sm, 12px);
 }
 
 .sizeOption:hover span,
@@ -229,7 +230,7 @@
   margin-top: 28px;
   padding: 0 15px;
   border: 1px solid #571e2a;
-  border-radius: 0;
+  border-radius: var(--radius-pill, 999px);
   color: #f2f0e9;
   background: #571e2a;
   font-size: 0.78rem;
@@ -258,11 +259,12 @@
 }
 
 .cartDialog {
-  width: min(470px, 100vw);
+  width: min(470px, calc(100vw - 24px));
   max-width: 470px;
-  height: 100dvh;
-  max-height: none;
-  margin: 0 0 0 auto;
+  height: calc(100dvh - 24px);
+  max-height: calc(100dvh - 24px);
+  margin: 12px 12px 12px auto;
+  border-radius: var(--radius-lg, 32px);
   overflow: auto;
 }
 
@@ -291,16 +293,27 @@
   border-bottom: 1px solid #d5d1c8;
 }
 
+.cartItem:last-child {
+  border-bottom: 0;
+}
+
 .cartImageFrame {
   position: relative;
   flex: 0 0 86px;
   width: 86px;
   height: 104px;
   background: #e5e2da;
+  border-radius: var(--radius-sm, 12px);
+  overflow: hidden;
 }
 
 .cartVisual :global(.illustrated-object) {
   transform: scale(0.78);
+}
+
+.cartVisual :global(.illustration-school),
+.cartVisual :global(.illustration-caption) {
+  display: none;
 }
 
 .cartItemInfo {
@@ -341,6 +354,8 @@
   width: fit-content;
   align-items: center;
   border: 1px solid #d5d1c8;
+  border-radius: var(--radius-pill, 999px);
+  overflow: hidden;
 }
 
 .quantityControl button {
@@ -358,6 +373,11 @@
   background: #e9e5dc;
 }
 
+.quantityControl button:focus-visible {
+  outline-offset: -4px;
+  border-radius: var(--radius-pill);
+}
+
 .quantityControl span {
   min-width: 27px;
   color: #282520;
@@ -370,8 +390,8 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-  margin-top: 18px;
-  padding-top: 16px;
+  margin-top: auto;
+  padding-top: 20px;
   border-top: 1px solid #d5d1c8;
   color: #625d56;
   font-size: 0.8rem;
@@ -380,9 +400,8 @@
 
 .totals .totalLine {
   align-items: baseline;
-  margin-top: 5px;
-  padding-top: 13px;
-  border-top: 1px solid #d5d1c8;
+  margin-top: 0;
+  padding-top: 0;
   color: #282520;
   font-size: 1rem;
 }
@@ -508,6 +527,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .dialog::backdrop,
+  .productDialog[open],
+  .cartDialog[open] {
+    animation: none;
+  }
+
   .dialog button,
   .dialog input {
     transition: none;
