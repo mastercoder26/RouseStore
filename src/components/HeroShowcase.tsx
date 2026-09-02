@@ -7,6 +7,7 @@ import { motion, useMotionValue, useReducedMotion, useSpring, type MotionValue }
 import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
 import { formatPrice } from "@/lib/store";
 import { useStore } from "@/components/StoreProvider";
+import { ProductRatingBadge } from "@/components/reviews";
 import styles from "./HeroShowcase.module.css";
 
 export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number> }) {
@@ -113,8 +114,11 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
 
       <div className="hero-product-caption" aria-live={playing ? "off" : "polite"}>
         <div>
-          <strong>{product.name}</strong>
-          <span style={{ marginLeft: "12px", color: "var(--muted)", fontSize: "11px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <strong>{product.name}</strong>
+            <ProductRatingBadge productId={product.id} size="sm" linkToReviews />
+          </div>
+          <span style={{ color: "var(--muted)", fontSize: "11px", display: "block", marginTop: "2px" }}>
             {product.category}
           </span>
         </div>

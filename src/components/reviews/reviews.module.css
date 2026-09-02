@@ -1,0 +1,990 @@
+/**
+ * src/components/reviews/reviews.module.css
+ * Dedicated styling for StarRating, ProductRatingBadge, RatingBreakdownBars,
+ * ReviewCard, ReviewSubmissionModal, and ProductReviewsSection.
+ */
+
+/* ==========================================================================
+   1. Star Rating Component
+   ========================================================================== */
+.starRatingContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  vertical-align: middle;
+}
+
+.starGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.starButton {
+  display: inline-grid;
+  place-items: center;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--line);
+  transition: transform 180ms cubic-bezier(0.76, 0, 0.24, 1), color 140ms ease;
+  touch-action: manipulation;
+  border-radius: var(--radius-pill);
+}
+
+.starButton:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+.starButtonInteractive:hover {
+  transform: scale(1.22) rotate(4deg);
+}
+
+.starButtonInteractive:active {
+  transform: scale(0.88);
+}
+
+.starFilled {
+  color: var(--gold);
+}
+
+.starEmpty {
+  color: var(--line);
+}
+
+.starLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--maroon);
+  margin-left: 8px;
+  min-width: 90px;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   2. Compact Product Rating Badge (Zero CLS)
+   ========================================================================== */
+.ratingBadge {
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--ink);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.ratingBadgeClickable {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ratingBadgeClickable:hover {
+  color: var(--maroon);
+}
+
+.ratingBadgeClickable:hover .ratingBadgeStar {
+  transform: scale(1.15);
+}
+
+.ratingBadgeStar {
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.ratingBadgeScore {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.ratingBadgeCount {
+  color: var(--muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.ratingBadgeEmpty {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.ratingBadgeSm {
+  font-size: 10px;
+  min-height: 18px;
+}
+
+.ratingBadgeMd {
+  font-size: 12px;
+  min-height: 22px;
+}
+
+/* ==========================================================================
+   3. Product Reviews Master Section
+   ========================================================================== */
+.reviewsSection {
+  margin-top: 90px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 60px;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.reviewsEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  margin-bottom: 6px;
+}
+
+.reviewsTitle {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+
+.writeReviewButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  min-height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--maroon);
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms cubic-bezier(0.76, 0, 0.24, 1), box-shadow 180ms ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.writeReviewButton:hover {
+  background: var(--maroon-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.writeReviewButton:active {
+  transform: scale(0.98);
+}
+
+/* Grid layout for breakdown and review stream */
+.reviewsLayout {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   4. Rating Breakdown Bars
+   ========================================================================== */
+.breakdownCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  position: sticky;
+  top: 96px;
+}
+
+.summaryScoreBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.summaryBigScore {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.summaryScoreMax {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.summaryStarsRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.summaryReviewCount {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.recommendBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--maroon-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--maroon);
+  line-height: 1.4;
+}
+
+.recommendBanner svg {
+  flex-shrink: 0;
+  color: var(--maroon);
+}
+
+.barsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: 50px 1fr 64px;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  padding: 4px 6px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--muted);
+  transition: background 140ms ease, color 140ms ease;
+  width: 100%;
+  text-align: left;
+}
+
+.barRow:hover {
+  background: var(--bg-card);
+  color: var(--ink);
+}
+
+.barRowActive {
+  background: var(--maroon-subtle);
+  color: var(--maroon);
+  font-weight: 700;
+}
+
+.barRow:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+.barLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.barTrack {
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  position: relative;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: var(--radius-pill);
+  transition: width 400ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.barRowActive .barFill {
+  background: var(--maroon);
+}
+
+.barStats {
+  text-align: right;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.clearFilterButton {
+  margin-top: 16px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--maroon);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.clearFilterButton:hover {
+  background: var(--bg-card);
+}
+
+/* ==========================================================================
+   5. Filter & Sort Toolbar
+   ========================================================================== */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--muted);
+  width: min(260px, 100%);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 2px var(--maroon-subtle);
+  color: var(--maroon);
+}
+
+.searchBox input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: var(--ink);
+  width: 100%;
+}
+
+.searchBox input::placeholder {
+  color: var(--muted);
+}
+
+.sortGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sortSelect {
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 160ms ease;
+}
+
+.sortSelect:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   6. Review List & Individual Review Cards
+   ========================================================================== */
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reviewCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.reviewCard:hover {
+  border-color: var(--card-hover-border, var(--line));
+}
+
+.reviewCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reviewerMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.authorName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.verifiedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-bg);
+  color: var(--badge-text);
+}
+
+.gradePill {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+}
+
+.reviewDate {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.reviewRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.reviewTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.reviewComment {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin: 0 0 16px;
+  white-space: pre-line;
+}
+
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recommendTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--maroon);
+}
+
+.helpfulButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.helpfulButton:hover:not(:disabled) {
+  border-color: var(--maroon);
+  color: var(--maroon);
+  background: var(--bg-surface);
+  transform: translateY(-1px);
+}
+
+.helpfulButton:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.helpfulButtonVoted {
+  background: var(--maroon-subtle);
+  border-color: var(--maroon);
+  color: var(--maroon);
+  cursor: default;
+}
+
+/* Empty state for reviews */
+.emptyReviews {
+  background: var(--bg-surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.emptyReviewsTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.emptyReviewsText {
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+/* ==========================================================================
+   7. Review Submission Modal
+   ========================================================================== */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  animation: backdropFadeIn 220ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalDialog {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  width: min(600px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  padding: 32px;
+  position: relative;
+  animation: modalSlideUp 280ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modalEyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  margin-bottom: 4px;
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.modalCloseButton {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 160ms ease;
+  flex-shrink: 0;
+}
+
+.modalCloseButton:hover {
+  border-color: var(--maroon);
+  color: var(--maroon);
+}
+
+.modalCloseButton:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+.productMiniPreview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.productMiniImage {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #dcddd6;
+  flex-shrink: 0;
+}
+
+.productMiniInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.productMiniName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productMiniCategory {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formFieldLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fieldOptional {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: none;
+  font-weight: 400;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  color: var(--ink);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 2px var(--maroon-subtle);
+}
+
+.formInputError {
+  border-color: #ef4444 !important;
+}
+
+.formErrorMessage {
+  font-size: 11px;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.formTextarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.charCounter {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 2px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ink);
+  user-select: none;
+}
+
+.checkboxInput {
+  accent-color: var(--maroon);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.radioButtonLabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 140ms ease;
+}
+
+.radioButtonLabel:hover {
+  border-color: var(--maroon);
+  color: var(--ink);
+}
+
+.radioButtonSelected {
+  background: var(--maroon-subtle);
+  border-color: var(--maroon);
+  color: var(--maroon);
+}
+
+.radioButtonInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.submitButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: var(--radius-pill);
+  background: var(--maroon);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--maroon);
+  cursor: pointer;
+  transition: all 160ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--maroon-hover);
+  transform: translateY(-1px);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.cancelButton:hover {
+  background: var(--bg-surface);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   8. Responsive & Reduced Motion Rules
+   ========================================================================== */
+@media (max-width: 900px) {
+  .reviewsLayout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .breakdownCard {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .reviewsHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .writeReviewButton {
+    justify-content: center;
+  }
+  .modalDialog {
+    padding: 22px 18px;
+    border-radius: var(--radius-md);
+  }
+  .modalActions {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modalBackdrop,
+  .modalDialog,
+  .barFill,
+  .starButton,
+  .writeReviewButton,
+  .helpfulButton,
+  .submitButton {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

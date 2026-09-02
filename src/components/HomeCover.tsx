@@ -12,6 +12,7 @@ import ProductVisual from "@/components/ProductVisual";
 import CollectionMotion from "@/components/CollectionMotion";
 import { useStore } from "@/components/StoreProvider";
 import { formatPrice } from "@/lib/store";
+import { ProductRatingBadge } from "@/components/reviews";
 
 export default function HomeCover() {
   const hero = useRef<HTMLElement>(null);
@@ -135,6 +136,9 @@ export default function HomeCover() {
                   <Link className="product-name" href={`/shop/${product.id}`}>
                     {product.name}
                   </Link>
+                  <div style={{ marginTop: "4px" }}>
+                    <ProductRatingBadge productId={product.id} size="sm" linkToReviews />
+                  </div>
                 </div>
                 <div className="product-price-block">
                   <span className="product-price">{formatPrice(product.price)}</span>

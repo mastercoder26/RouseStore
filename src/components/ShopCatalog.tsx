@@ -8,6 +8,7 @@ import ProductVisual from "@/components/ProductVisual";
 import LetterReveal from "@/components/animations/LetterReveal";
 import { useStore } from "@/components/StoreProvider";
 import { formatPrice, type Product } from "@/lib/store";
+import { ProductRatingBadge } from "@/components/reviews";
 import styles from "./ShopCatalog.module.css";
 
 export default function ShopCatalog() {
@@ -132,6 +133,9 @@ export default function ShopCatalog() {
                     <Link className="product-name" href={`/shop/${product.id}`}>
                       {product.name}
                     </Link>
+                    <div style={{ marginTop: "4px" }}>
+                      <ProductRatingBadge productId={product.id} size="sm" linkToReviews />
+                    </div>
                   </div>
                   <div className="product-price-block">
                     <span className="product-price">{formatPrice(product.price)}</span>

@@ -1,0 +1,485 @@
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.actionHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tabTitle {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.tabSubtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.secondaryBtn:hover {
+  background: var(--bg-card);
+  border-color: var(--line-focus);
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.metricCard {
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metricLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.metricValue {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.starIcon {
+  color: var(--gold);
+}
+
+.metricHint {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Controls Bar */
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.statusPills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.statusPill {
+  padding: 7px 15px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 160ms ease;
+}
+
+.statusPill:hover {
+  color: var(--ink);
+  border-color: var(--line-focus);
+}
+
+.statusPillActive {
+  background: var(--maroon);
+  color: #ffffff;
+  border-color: var(--maroon);
+  font-weight: 600;
+}
+
+.filterControlsRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.selectDropdown {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 220px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  color: var(--muted);
+}
+
+.searchWrapper input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  outline: none;
+}
+
+/* Reviews List */
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reviewCard {
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.reviewCard:hover {
+  border-color: var(--line-focus);
+  box-shadow: var(--shadow-sm);
+}
+
+.reviewCardHidden {
+  opacity: 0.75;
+  background: var(--bg-card);
+  border-style: dashed;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.productInfoGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productLink {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 150ms ease;
+}
+
+.productLink:hover {
+  color: var(--maroon);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.verifiedBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(34, 197, 94, 0.15);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.gradeBadge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.statusBadgesGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusApprovedBadge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.statusHiddenBadge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(249, 115, 22, 0.14);
+  color: #c2410c;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.starsRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reviewStarFill {
+  color: var(--gold);
+}
+
+.reviewStarEmpty {
+  color: var(--line);
+}
+
+.ratingValueText {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-left: 4px;
+}
+
+.reviewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reviewTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.reviewComment {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.recommendTag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--maroon);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.authorText {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.helpfulBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.actionBtn:hover {
+  background: var(--bg-surface);
+  border-color: var(--line-focus);
+}
+
+.actionBtnHide:hover {
+  border-color: #f97316;
+  color: #c2410c;
+}
+
+.actionBtnApprove:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.actionBtnDelete:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyIcon {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0;
+}
+
+.emptyDesc {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 380px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .actionBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .controlsBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filterControlsRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .searchWrapper {
+    flex: 1;
+    width: auto;
+  }
+  .cardHeader,
+  .cardFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footerActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

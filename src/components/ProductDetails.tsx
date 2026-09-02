@@ -6,6 +6,7 @@ import { ArrowUpRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import ProductVisual from "@/components/ProductVisual";
 import { useStore } from "@/components/StoreProvider";
 import { formatPrice, type Product } from "@/lib/store";
+import { ProductRatingBadge, ProductReviewsSection } from "@/components/reviews";
 import styles from "./ProductDetails.module.css";
 
 type AccordionName = "description" | "pickup";
@@ -162,6 +163,9 @@ export default function ProductDetails({ product }: { product: Product }) {
                 {product.tag || product.category}
               </span>
               <h1 id="product-title">{product.name}</h1>
+              <div style={{ marginTop: "6px" }}>
+                <ProductRatingBadge productId={product.id} linkToReviews size="md" />
+              </div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
               <p className={styles.price}>{formatPrice(product.price)}</p>
@@ -244,6 +248,9 @@ export default function ProductDetails({ product }: { product: Product }) {
         </section>
       </div>
 
+      {/* 5-Star Product Reviews & Ratings Section */}
+      <ProductReviewsSection product={product} />
+
       {/* Complete the Look / Related Gear */}
       {fallbackRelated.length > 0 && (
         <section style={{ marginTop: "90px", borderTop: "1px solid var(--line)", paddingTop: "48px" }}>
@@ -300,6 +307,9 @@ export default function ProductDetails({ product }: { product: Product }) {
                     <Link className="product-name" href={`/shop/${item.id}`}>
                       {item.name}
                     </Link>
+                    <div style={{ marginTop: "4px" }}>
+                      <ProductRatingBadge productId={item.id} size="sm" linkToReviews />
+                    </div>
                   </div>
                   <span className="product-price">{formatPrice(item.price)}</span>
                 </div>
