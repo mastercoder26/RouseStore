@@ -18,14 +18,6 @@ export default function RoundedButton({
 }: RoundedButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  let bgClasses = "";
-  if (variant === "primary") {
-    bgClasses = "bg-gradient-to-r from-amber-500 to-amber-600 text-black";
-  } else if (variant === "maroon") {
-    bgClasses = "bg-[#6e1a27] text-white border border-[#f59e0b]/30";
-  } else if (variant === "outline") {
-    bgClasses = "bg-transparent text-white border border-white/20";
-  }
 
   return (
     <Magnetic strength={strength}>
