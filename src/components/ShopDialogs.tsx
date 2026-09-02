@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Minus, Plus, Tag, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, Minus, Plus, X } from "lucide-react";
 import type { CartItem, Product } from "@/lib/store";
 import { formatPrice } from "@/lib/store";
 import ProductVisual from "@/components/ProductVisual";
@@ -152,11 +152,11 @@ export function CartDrawer({
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "summary">("cart");
-  const [fulfillment, setFulfillment] = useState<"pickup" | "delivery">("pickup");
-  const [promoCode, setPromoCode] = useState("");
-  const [discountRate, setDiscountRate] = useState(0);
-  const [promoMessage, setPromoMessage] = useState("");
   useDialogLifecycle(dialogRef);
+
+  useEffect(() => {
+    dialogRef.current?.querySelector<HTMLElement>("[data-dialog-autofocus]")?.focus({ preventScroll: true });
+  }, [checkoutStep]);
 
   const close = useCallback(() => {
     if (dialogRef.current?.open) dialogRef.current.close();
@@ -168,24 +168,6 @@ export function CartDrawer({
     () => roundMoney(cart.reduce((total, item) => total + item.price * item.quantity, 0)),
     [cart],
   );
-  const discountAmount = roundMoney(rawSubtotal * discountRate);
-  const subtotal = roundMoney(Math.max(0, rawSubtotal - discountAmount));
-  const shipping = fulfillment === "pickup" ? 0 : subtotal >= 60 ? 0 : 6;
-  const total = roundMoney(subtotal + shipping);
-
-  const applyPromo = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const normalized = promoCode.trim().toUpperCase();
-    if (normalized === "RAIDERS26" || normalized === "ROUSE10") {
-      setDiscountRate(0.1);
-      setPromoCode(normalized);
-      setPromoMessage("10% discount applied.");
-      return;
-    }
-    setDiscountRate(0);
-    setPromoMessage("That code is not valid. Try RAIDERS26 or ROUSE10.");
-  };
-
   const handleBackdropClick = (event: React.MouseEvent<HTMLDialogElement>) => {
     if (event.target === event.currentTarget) close();
   };
@@ -210,8 +192,7 @@ export function CartDrawer({
             <DialogCloseButton onClose={close} label="Close bag" />
           </div>
           <div className={styles.summaryIntro}>
-            <p className={styles.eyebrow}>Review</p>
-            <h2 id="cart-dialog-title" className={styles.drawerTitle}>Your bag is ready</h2>
+            <h2 id="cart-dialog-title" className={styles.drawerTitle}>Bag summary</h2>
             <p className={styles.summaryNotice}>
               Online checkout is not available yet. No order has been placed.
             </p>
@@ -225,20 +206,13 @@ export function CartDrawer({
             ))}
           </div>
           <div className={styles.totals}>
-            <div><span>Subtotal</span><span>{formatPrice(rawSubtotal)}</span></div>
-            {discountAmount > 0 && <div><span>Discount</span><span>−{formatPrice(discountAmount)}</span></div>}
-            <div><span>{fulfillment === "pickup" ? "Pickup" : "Shipping"}</span><span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span></div>
-            <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(total)}</strong></div>
+            <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(rawSubtotal)}</strong></div>
           </div>
-          <button type="button" className={styles.secondaryButton} onClick={() => setCheckoutStep("cart")}>
-            Keep bag
-          </button>
         </div>
       ) : (
         <div className={styles.drawerContent}>
           <div className={styles.drawerHeader}>
             <div>
-              <p className={styles.eyebrow}>Raider Station</p>
               <h2 id="cart-dialog-title" className={styles.drawerTitle}>Your bag <span>({itemCount})</span></h2>
             </div>
             <DialogCloseButton onClose={close} label="Close bag" autoFocus />
@@ -246,9 +220,7 @@ export function CartDrawer({
 
           {cart.length === 0 ? (
             <div className={styles.emptyState}>
-              <p className={styles.emptyMark} aria-hidden="true">—</p>
               <h3>Your bag is empty</h3>
-              <p>Browse the essentials and add something made for Raider days.</p>
               <button type="button" className={styles.secondaryButton} onClick={close} data-dialog-autofocus>
                 Continue shopping
               </button>
@@ -285,32 +257,8 @@ export function CartDrawer({
                 ))}
               </div>
 
-              <div className={styles.optionsSection}>
-                <p className={styles.fieldLabel}>How would you like to receive it?</p>
-                <div className={styles.fulfillmentOptions} role="group" aria-label="Fulfillment method">
-                  <button type="button" className={fulfillment === "pickup" ? styles.fulfillmentSelected : ""} onClick={() => setFulfillment("pickup")} aria-pressed={fulfillment === "pickup"}>
-                    <span>Pickup</span><small>Free</small>
-                  </button>
-                  <button type="button" className={fulfillment === "delivery" ? styles.fulfillmentSelected : ""} onClick={() => setFulfillment("delivery")} aria-pressed={fulfillment === "delivery"}>
-                    <span>Shipping</span><small>{subtotal >= 60 ? "Free over $60" : "$6"}</small>
-                  </button>
-                </div>
-              </div>
-
-              <form className={styles.promoForm} onSubmit={applyPromo}>
-                <label htmlFor="promo-code"><Tag size={15} aria-hidden="true" /> Promo code</label>
-                <div className={styles.promoInputRow}>
-                  <input id="promo-code" value={promoCode} onChange={(event) => setPromoCode(event.target.value)} placeholder="Enter code" autoComplete="off" />
-                  <button type="submit">Apply</button>
-                </div>
-                <p className={styles.promoMessage} aria-live="polite">{promoMessage}</p>
-              </form>
-
               <div className={styles.totals}>
-                <div><span>Subtotal</span><span>{formatPrice(rawSubtotal)}</span></div>
-                {discountAmount > 0 && <div><span>10% discount</span><span>−{formatPrice(discountAmount)}</span></div>}
-                <div><span>{fulfillment === "pickup" ? "Pickup" : "Shipping"}</span><span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span></div>
-                <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(total)}</strong></div>
+                <div className={styles.totalLine}><strong>Total</strong><strong>{formatPrice(rawSubtotal)}</strong></div>
               </div>
               <button type="button" className={styles.primaryButton} onClick={() => setCheckoutStep("summary")}>
                 Review bag <span aria-hidden="true">↗</span>

@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import Magnetic from "@/components/Magnetic";
 import PreLoader from "@/components/animations/PreLoader";
 import { useStore } from "@/components/StoreProvider";
 import styles from "./SiteShell.module.css";
 
-const pages = [{ href: "/", label: "Home" }, { href: "/shop", label: "The shop" }, { href: "/school", label: "Our school" }];
+const pages = [{ href: "/", label: "Home" }, { href: "/shop", label: "Shop" }];
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -26,12 +26,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <span className="school-mark"><Image src="/images/rouse-school-mark.jpg" width={60} height={60} alt="" /></span>
           <span>RAIDER<br />STATION</span>
         </Link>
-        <div className="header-school">Rouse High School<br /><span>Leander, Texas</span></div>
         <nav aria-label="Main navigation">
           {pages.map(page => (
-            <Link key={page.href} href={page.href} aria-current={pathname === page.href ? "page" : undefined}>
+            <Link key={page.href} href={page.href} aria-current={pathname === page.href || (page.href === "/shop" && pathname.startsWith("/shop/")) ? "page" : undefined}>
               {page.label}
-              {pathname === page.href && <motion.span className={styles.activeLine} layoutId="active-navigation" transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 450, damping: 35 }} />}
+              {(pathname === page.href || (page.href === "/shop" && pathname.startsWith("/shop/"))) && <motion.span className={styles.activeLine} layoutId="active-navigation" transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 450, damping: 35 }} />}
             </Link>
           ))}
         </nav>
@@ -48,14 +47,10 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
 
       <footer className={styles.footer}>
         <div className={styles.footerMain}>
-          <Link href="/shop" className={styles.signature} aria-label="Shop Raider Station">GO RAIDERS<ArrowUpRight strokeWidth={1} aria-hidden="true" /></Link>
           <nav aria-label="Footer navigation">{pages.map(page => <Link key={page.href} href={page.href}>{page.label}</Link>)}</nav>
-        </div>
-        <div className={styles.footerDetails}>
           <span>© {new Date().getFullYear()} Raider Station</span>
-          <span>Rouse High School / Leander, TX</span>
-          <a href="https://www.leanderisd.org/" target="_blank" rel="noreferrer">Leander ISD <ArrowUpRight size={13} /></a>
         </div>
+        <Link href="/shop" className={styles.signature} aria-label="Go Raiders — shop Raider Station"><span>GO RAIDERS</span></Link>
       </footer>
     </div>
   );

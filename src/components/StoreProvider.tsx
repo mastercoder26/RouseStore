@@ -2,13 +2,12 @@
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { ShoppingBag, X } from "lucide-react";
-import { CartDrawer, ProductDialog } from "@/components/ShopDialogs";
-import { PRODUCTS, type CartItem, type Product } from "@/lib/store";
+import { CartDrawer } from "@/components/ShopDialogs";
+import { type CartItem, type Product } from "@/lib/store";
 
 type StoreContextValue = {
   totalItems: number;
   openBag: () => void;
-  openProduct: (id: string) => void;
   addToCart: (product: Product, size?: string) => void;
 };
 
@@ -20,11 +19,10 @@ export function useStore() {
   return store;
 }
 
-// The root layout keeps the bag and dialogs mounted between page visits.
+// The root layout preserves the bag between catalog and item pages.
 export default function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
-  const [product, setProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -49,15 +47,9 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
       .filter(item => item.quantity > 0));
   }
 
-  function openProduct(id: string) {
-    const selected = PRODUCTS.find(item => item.id === id);
-    if (selected) setProduct(selected);
-  }
-
   return (
-    <StoreContext.Provider value={{ totalItems: cart.reduce((total, item) => total + item.quantity, 0), openBag: () => setCartOpen(true), openProduct, addToCart }}>
+    <StoreContext.Provider value={{ totalItems: cart.reduce((total, item) => total + item.quantity, 0), openBag: () => setCartOpen(true), addToCart }}>
       {children}
-      {product && <ProductDialog product={product} onClose={() => setProduct(null)} onAdd={addToCart} />}
       {cartOpen && <CartDrawer cart={cart} onClose={() => setCartOpen(false)} onUpdateQuantity={updateQuantity} />}
       <div className={`toast ${message ? "toast-visible" : ""}`} role="status" aria-live="polite">
         <ShoppingBag size={18} />

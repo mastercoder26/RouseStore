@@ -9,22 +9,22 @@ const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: 
 
 export const metadata: Metadata = {
   icons: { icon: "/images/rouse-school-mark.jpg", apple: "/images/rouse-school-mark.jpg" },
-  title: "RAIDER STATION | Rouse High School Store — Leander, TX",
+  title: "Raider Station | Your Rouse Student Store",
   description:
-    "Raider Station, a store for the Rouse High School community in Leander, Texas. Explore maroon and gold spirit wear, school supplies, and everyday essentials.",
+    "Your school-day essentials, Rouse. Browse school supplies, snacks, and Raider gear at Raider Station, your student store.",
   keywords: [
     "Raider Station",
     "Rouse High School",
     "Rouse Raiders",
     "Leander ISD",
-    "Leander Texas",
+    "Rouse Student Store",
     "School Store",
     "Spirit Wear",
-    "Varsity Jacket",
+    "School Supplies",
   ],
   openGraph: {
-    title: "RAIDER STATION | Rouse High School Store",
-    description: "For the home crowd. Maroon and gold spirit wear and everyday goods for the Rouse High School community.",
+    title: "Raider Station | Your Rouse Student Store",
+    description: "For the school day. School supplies, snacks, and Raider gear for Rouse students.",
     url: "https://rouse-store-seven.vercel.app",
     siteName: "Raider Station",
     type: "website",

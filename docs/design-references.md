@@ -5,7 +5,15 @@ Research date: 2026-09-02
 ## Visual reference
 
 - [Superpower section on Mobbin](https://mobbin.com/sites/sections/57a1e1f4-c526-4fcf-be1d-6ec3bbec1753) — reference for a restrained editorial commerce layout: large type, generous paper-colored space, simple rules, and product imagery with clear utility.
-- The portfolio reference contributes selective motion ideas: clipped word reveals, a slow scroll-linked collection rail, and pointer effects that run only for fine pointers and respect reduced motion. Keep the store calm enough that these interactions support shopping.
+- The portfolio reference contributes selective motion ideas: clipped text reveals and pointer effects that run only for fine pointers and respect reduced motion. Keep the store calm enough that these interactions support shopping.
+- The user’s 8.5-second Superpower screen recording was inspected as 18 timestamped frames with the watch skill. Around 1s, 4s, and 6.5s the headline resolves from staggered individual letters; the central portrait changes while small product shapes float beside it. These inform the letter reveals, crossfading hero products, and floating accessory illustrations. Autoplay has pause and manual controls, stops during interaction, and is disabled with reduced motion.
+- The second, 6.1-second recording was inspected as 13 timestamped frames. Its large scrolling gallery, sticky purchase panel, compact size controls, full-width bag action, and ruled accordions inform the dedicated `/shop/[id]` pages. Mobile galleries use horizontal scroll snapping. Close-ups are labeled detail crops of the existing product photos; no extra product views or variants are invented.
+- The shared footer ends with oversized, slightly cropped “GO RAIDERS” lettering across the full width, as requested.
+- The final copy pass removes repeated student-store labels, supporting slogans, catalog category captions, duplicate item details, and extra bag instructions. Home keeps its headline and Shop action; item pages emphasize name, price, sizes, and the bag action.
+
+## Store audience and structure
+
+The user identifies this as an internal store for current Rouse students. Copy assumes students already know Rouse. Home and Shop focus on school supplies, snacks, and Raider gear; there is no school introduction or campus-resource hub. The old `/school` URL redirects to `/shop`. This audience direction does not add authentication or access restrictions.
 
 ## Verified Rouse High School facts
 
@@ -20,4 +28,4 @@ Research date: 2026-09-02
 
 The official Rouse and Leander ISD sources reviewed did not confirm a store named Raider Station, a Room 1104 location, store hours, home shipping, delivery fees, promo codes, or proceeds benefiting clubs or athletics. Keep those details out of factual copy until confirmed.
 
-The current product catalog and prices are demo content. The checkout flow is also a demo: it supports local bag state, size selection, promo-code presentation, and a review screen, but it does not place orders or process payment. The UI should continue to say “Online checkout is not available yet. No order has been placed.”
+The current product catalog and prices are demo content. The checkout flow is also a demo: it supports local bag state, size selection, quantities, and a review screen, but it does not place orders or process payment. Shipping, pickup promises, and demo discounts have been removed. The UI should continue to say “Online checkout is not available yet. No order has been placed.”

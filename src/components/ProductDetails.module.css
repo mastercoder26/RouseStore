@@ -1,0 +1,377 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.16fr) minmax(320px, 0.84fr);
+  gap: clamp(38px, 6vw, 100px);
+  width: min(1480px, 100%);
+  margin: 0 auto;
+  padding: 32px 4% 120px;
+}
+
+.gallery {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.galleryFrame {
+  position: relative;
+  aspect-ratio: 1 / 1.06;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e2e0d9;
+}
+
+.visual {
+  position: absolute;
+  inset: 0;
+}
+
+.visual :global(.product-photo),
+.visual :global(.product-illustration) {
+  width: 100%;
+  height: 100%;
+}
+
+.visual :global(.product-photo) {
+  object-fit: cover;
+}
+
+.detailFrame .visual {
+  transform: scale(1.55);
+  transform-origin: 50% 48%;
+}
+
+.imageLabel {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  max-width: calc(100% - 22px);
+  padding: 5px 7px;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 8px;
+  letter-spacing: .08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.purchasePanel {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  padding: 13px 0 0;
+}
+
+.productEyebrow,
+.titleRow,
+.accordionTrigger,
+.detailsList div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.productEyebrow {
+  color: var(--maroon);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.productEyebrow span:last-child {
+  color: var(--muted);
+  text-align: right;
+}
+
+.titleRow {
+  align-items: end;
+  margin-top: 14px;
+}
+
+.titleRow h1 {
+  max-width: 520px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(1.65rem, 2.5vw, 2.3rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: .98;
+}
+
+.price {
+  flex: 0 0 auto;
+  padding-bottom: 3px;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sizeFieldset {
+  margin: 33px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.sizeFieldset legend,
+.sectionLabel {
+  padding: 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sizeOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.sizeOption {
+  position: relative;
+  display: inline-flex;
+}
+
+.sizeOption input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.sizeOption span {
+  display: grid;
+  min-width: 45px;
+  min-height: 42px;
+  padding: 8px 10px;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.sizeOption:hover span,
+.sizeOptionSelected span {
+  border-color: var(--maroon);
+  color: var(--maroon);
+}
+
+.sizeOptionSelected span {
+  background: var(--maroon);
+  color: var(--paper);
+}
+
+.sizeOption input:focus-visible + span {
+  outline: 2px solid var(--maroon);
+  outline-offset: 3px;
+}
+
+.addButton {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 28px;
+  padding: 0 17px;
+  border: 1px solid var(--maroon);
+  color: var(--paper);
+  background: var(--maroon);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  transition: transform 160ms var(--ease-out), background 160ms ease, opacity 160ms ease;
+}
+
+.addButton:hover {
+  background: #71313e;
+}
+
+.addButton:active {
+  transform: scale(.985);
+}
+
+.addButton:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.addFeedback {
+  min-height: 18px;
+  margin-top: 8px;
+  color: var(--maroon);
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.addFeedbackVisible {
+  opacity: 1;
+}
+
+.highlights {
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.sectionLabel {
+  margin: 0 0 11px;
+}
+
+.highlightList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.highlightList span {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .03em;
+  line-height: 1.2;
+}
+
+.accordions {
+  margin-top: 29px;
+  border-top: 1px solid var(--ink);
+}
+
+.accordion {
+  border-bottom: 1px solid var(--ink);
+}
+
+.accordionTrigger {
+  width: 100%;
+  min-height: 54px;
+  align-items: center;
+  color: var(--ink);
+  background: transparent;
+  font-size: 12px;
+  text-align: left;
+}
+
+.accordionTrigger svg {
+  transition: transform 180ms var(--ease-out);
+}
+
+.accordionTrigger[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.accordionPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 240ms var(--ease-out);
+}
+
+.accordionPanelOpen {
+  grid-template-rows: 1fr;
+}
+
+.accordionInner {
+  min-height: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.accordionPanelOpen .accordionInner {
+  padding: 0 0 19px;
+}
+
+.detailsList {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.detailsList div {
+  gap: 15px;
+}
+
+.detailsList dt {
+  color: var(--muted);
+}
+
+.detailsList dd {
+  margin: 0;
+  color: var(--ink);
+  text-align: right;
+}
+
+.checkoutNote {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .9fr);
+    gap: 34px;
+  }
+
+  .titleRow {
+    display: block;
+  }
+
+  .price {
+    margin-top: 12px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .page {
+    display: block;
+    width: 100%;
+    padding: 24px 0 78px;
+  }
+
+  .gallery {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 0 3%;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .galleryFrame {
+    flex: 0 0 94vw;
+    scroll-snap-align: start;
+  }
+
+  .purchasePanel {
+    position: static;
+    padding: 42px 5% 0;
+  }
+
+  .titleRow h1 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .addButton,
+  .addFeedback,
+  .accordionPanel,
+  .accordionTrigger svg {
+    transition: none;
+  }
+}
