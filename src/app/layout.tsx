@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import StoreProvider from "@/components/StoreProvider";
 import SiteShell from "@/components/SiteShell";
+import SmoothScroll from "@/components/SmoothScroll";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
@@ -37,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -45,7 +47,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body><StoreProvider><SiteShell>{children}</SiteShell></StoreProvider></body>
+      <body>
+        <StoreProvider>
+          <SmoothScroll>
+            <SiteShell>{children}</SiteShell>
+          </SmoothScroll>
+        </StoreProvider>
+      </body>
     </html>
   );
 }
