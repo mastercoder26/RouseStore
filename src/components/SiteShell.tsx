@@ -42,13 +42,13 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           href="/"
           aria-label="Rouse Station home"
         >
-          <Magnetic strength={0.25}>
+          <Magnetic strength={0.25} className={styles.wordmarkLogoMagnetic}>
             <span className="school-mark">
               <Image
-                src="/images/rouse-school-mark.jpg"
-                width={60}
-                height={60}
-                alt=""
+                src="/images/rouse-school-mark.png"
+                width={44}
+                height={44}
+                alt="Rouse High School emblem"
                 priority
               />
             </span>
@@ -132,15 +132,14 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             >
               Rouse High School
             </Link>
-            <button
-              type="button"
+            <Link
+              href="/feedback"
               className={styles.footerFeedbackBtn}
-              onClick={openFeedbackDrawer}
-              aria-label="Open student feedback and grievance drawer"
+              aria-label="Student feedback and grievance page"
             >
               <MessageSquareHeart size={14} className={styles.feedbackIcon} />
               <span>Feedback & Grievances</span>
-            </button>
+            </Link>
             <Link href="/admin" className={styles.adminFooterLink}>
               Staff Admin
             </Link>

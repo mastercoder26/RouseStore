@@ -31,21 +31,52 @@ export default function HomeCover() {
       <section className="hero" ref={hero} aria-labelledby="hero-heading">
         <div className="hero-grid">
           <div className="hero-copy">
+            <div className="hero-pill-badge">
+              <Sparkles size={13} />
+              <span>Rouse High School · Campus Essentials</span>
+            </div>
+
             <div className="hero-title" id="hero-heading">
               <h1 className="hero-full-heading">
-                <LetterReveal text="FOR THE" element="span" delay={200} />
-                <LetterReveal text="SCHOOL DAY." element="span" delay={280} />
+                <LetterReveal text="FOR THE" element="span" delay={180} />
+                <LetterReveal text="SCHOOL DAY." element="span" delay={260} />
               </h1>
             </div>
-            <div className="hero-bottom">
+
+            <p className="hero-subtitle">
+              Official spirit wear, classroom supplies, and snacks built for Rouse students. Designed for comfort, school pride, and everyday campus life.
+            </p>
+
+            <div className="hero-actions">
               <Magnetic strength={0.2}>
-                <Link className="round-link" href="/shop" aria-label="Explore the shop collection">
-                  <span>Shop</span>
-                  <ArrowUpRight size={28} strokeWidth={1.4} />
+                <Link className="hero-primary-btn" href="/shop" aria-label="Explore the shop collection">
+                  <span>Explore Raider Shop</span>
+                  <ArrowRight size={18} strokeWidth={2} />
                 </Link>
               </Magnetic>
+
+              <Link className="hero-secondary-btn" href="/feedback" aria-label="Submit student feedback or grievances">
+                <span>Student Feedback</span>
+                <ArrowUpRight size={15} />
+              </Link>
+            </div>
+
+            <div className="hero-highlights">
+              <span className="hero-highlight-item">
+                <MapPin size={14} style={{ color: "var(--maroon)" }} />
+                <span>Room 1104 Pickup</span>
+              </span>
+              <span className="hero-highlight-item">
+                <ShieldCheck size={14} style={{ color: "var(--gold)" }} />
+                <span>Verified Student Reviews</span>
+              </span>
+              <span className="hero-highlight-item">
+                <Clock size={14} style={{ color: "var(--muted)" }} />
+                <span>Quick Raider Bag</span>
+              </span>
             </div>
           </div>
+
           <HeroShowcase scrollY={heroY} />
         </div>
       </section>

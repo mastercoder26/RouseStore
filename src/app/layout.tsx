@@ -10,7 +10,7 @@ const sans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "sw
 const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-heading", display: "swap" });
 
 export const metadata: Metadata = {
-  icons: { icon: "/images/rouse-school-mark.jpg", apple: "/images/rouse-school-mark.jpg" },
+  icons: { icon: "/images/rouse-school-mark.png", apple: "/images/rouse-school-mark.png" },
   title: "Raider Station | Your Rouse Student Store",
   description:
     "Your school-day essentials, Rouse. Browse school supplies, snacks, and Raider gear at Raider Station, your student store.",
@@ -47,7 +47,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <StoreProvider>
           <SmoothScroll>
             <SiteShell>{children}</SiteShell>
