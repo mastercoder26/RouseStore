@@ -2,12 +2,24 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ROUSE STORE | Engineered Modern Apparel & Essentials",
-  description: "Discover technical garments, heavyweight hoodies, tactical outerwear, and contemporary footwear crafted with precision architecture.",
-  keywords: ["Rouse Store", "streetwear", "technical outerwear", "hoodies", "luxury apparel", "modern fashion"],
+  title: "RAIDER STATION | Rouse High School Store — Leander, TX",
+  description:
+    "Official student-centered store for Rouse High School. Spirit wear, heavyweight sideline hoodies, letterman jackets, school supplies, and campus essentials. Made by Raiders, for Raiders.",
+  keywords: [
+    "Raider Station",
+    "Rouse High School",
+    "Rouse Raiders",
+    "Leander ISD",
+    "Leander Texas",
+    "School Store",
+    "Spirit Wear",
+    "Varsity Jacket",
+  ],
   openGraph: {
-    title: "ROUSE STORE | Engineered Modern Apparel",
-    description: "Autumn/Winter 2026 Collection Drop - Premium streetwear and architectural silhouettes.",
+    title: "RAIDER STATION | Rouse High School Store",
+    description: "Made by Raiders, for Raiders — Creating traditions that others can live up to.",
+    url: "https://rouse-store-seven.vercel.app",
+    siteName: "Raider Station",
     type: "website",
   },
 };
