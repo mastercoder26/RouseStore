@@ -24,6 +24,17 @@ try {
     for (const [name, route] of [["home", "/"], ["shop", "/shop"], ["product", "/shop/rs-hoodie-01"], ["feedback", "/feedback"], ["admin", "/admin"]]) {
       await page.goto(base + route, { waitUntil: "networkidle" });
       if (name !== "admin") await page.locator("main h1").waitFor();
+      if (name === "home") {
+        const signature = page.locator("footer > div:last-child");
+        assert.equal(await signature.innerText(), "RAIDERS");
+        assert.equal(await signature.locator("a, button").count(), 0, "Footer wordmark is decorative, not another CTA");
+        assert(await signature.evaluate(element => {
+          const lettering = element.querySelector("p");
+          return lettering.scrollWidth <= element.clientWidth + 1
+            && lettering.getBoundingClientRect().bottom > element.getBoundingClientRect().bottom
+            && getComputedStyle(element).overflow === "hidden";
+        }), "Footer must fit every letter horizontally and crop only at the bottom");
+      }
       await page.evaluate(async () => {
         document.querySelectorAll('img[loading="lazy"]').forEach(image => { image.loading = "eager"; });
         await Promise.all([...document.images].map(image => image.decode().catch(() => {})));
@@ -109,10 +120,22 @@ try {
   report.interactions.push("Product size selection, adding a separate size and detail accordions");
 
   await page.goto(base + "/", { waitUntil: "networkidle" });
-  await page.getByRole("link", { name: /Class acts/ }).click();
-  await page.waitForFunction(() => document.querySelectorAll("#products-grid .product-card").length === 2);
-  assert.match(page.url(), /School/);
-  report.interactions.push("Homepage collection cards land on the matching catalog filter");
+  const navigation = page.getByRole("navigation", { name: "Main customer navigation" });
+  assert.equal(await navigation.locator('a[href^="/shop"]').count(), 1, "Header repeats shop navigation");
+  assert.equal(await navigation.getByRole("link", { name: "Shop", exact: true }).count(), 1);
+  assert.equal(await page.locator('main a[href="/shop"]').count(), 1, "Homepage needs one main collection action");
+  assert.equal(await page.locator('footer a[href="/shop"]').count(), 1, "Footer branding must not duplicate the shop link");
+  await page.getByRole("link", { name: "Browse the collection", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await page.waitForURL(base + "/shop");
+  assert.equal(await cards.count(), 11);
+  for (const [category, count] of [["Spirit Wear", 5], ["School Supplies", 2], ["Accessories", 2], ["Snacks & Drinks", 2]]) {
+    await page.goto(base + "/", { waitUntil: "networkidle" });
+    await page.locator(`main a[href="/shop?category=${encodeURIComponent(category)}"]`).click();
+    await page.waitForURL(url => url.searchParams.get("category") === category);
+    await page.waitForFunction(expected => document.querySelectorAll("#products-grid .product-card").length === expected, count);
+  }
+  report.interactions.push("Consolidated header/footer shopping links, keyboard collection CTA, and all four category destinations");
 
   await page.goto(base + "/feedback", { waitUntil: "networkidle" });
   await page.getByLabel("Full Name", { exact: false }).fill("Demo QA Student");
@@ -147,6 +170,30 @@ try {
   await introPage.goto(base, { waitUntil: "domcontentloaded" });
   assert.equal(await introPage.locator('#rouse-intro img[src*="/images/intro/"]').count(), 5);
   await introPage.waitForFunction(() => !document.documentElement.hasAttribute("data-rouse-intro"), null, { timeout: 12000 });
+  const logo = introPage.getByRole("link", { name: "Rouse Station home", exact: true });
+  const station = logo.locator("span span");
+  const beforeReveal = await station.evaluate(element => ({ opacity: getComputedStyle(element).opacity, x: new DOMMatrix(getComputedStyle(element).transform).m41 }));
+  assert.equal(beforeReveal.opacity, "0");
+  assert(beforeReveal.x < 0, "STATION should enter from the left");
+  const navigationBefore = await introPage.locator("header nav").boundingBox();
+  await logo.hover();
+  await introPage.waitForFunction(() => getComputedStyle(document.querySelector("header a span span")).opacity === "1");
+  await station.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished)); });
+  assert.equal(await station.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m41), 0);
+  assert.equal(await station.evaluate(element => getComputedStyle(element).fontFamily), await logo.evaluate(element => getComputedStyle(element).fontFamily));
+  assert.deepEqual(await introPage.locator("header nav").boundingBox(), navigationBefore, "Logo reveal must not shift navigation");
+  await introPage.screenshot({ path: path.join(output, "header-station-reveal.png") });
+  await introPage.mouse.move(980, 400);
+  await logo.focus();
+  await introPage.keyboard.press("Shift+Tab");
+  await introPage.keyboard.press("Tab");
+  assert(await logo.evaluate(element => element.matches(":focus-visible")));
+  assert.equal(await station.evaluate(element => getComputedStyle(element).opacity), "1");
+  assert.equal(await station.evaluate(element => getComputedStyle(element).transitionDuration), "0s");
+  await introPage.emulateMedia({ reducedMotion: "reduce" });
+  assert.equal(await station.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m41), 0);
+  await introPage.emulateMedia({ reducedMotion: "no-preference" });
+  report.interactions.push("Matching-font STATION enters from the left, does not shift navigation, and reveals instantly on keyboard focus/reduced motion");
   await introPage.getByRole("link", { name: "Rouse Station home", exact: true }).click();
   await introPage.waitForFunction(() => document.documentElement.hasAttribute("data-rouse-intro"));
   report.interactions.push("Original five-logo intro completes and replays from the wordmark");

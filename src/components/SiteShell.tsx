@@ -29,10 +29,12 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <div className={styles.announcement} role="region" aria-label="Store announcement" data-intro-content><span>For the school day. And everything after.</span><span aria-hidden="true">Go Raiders ✳</span></div>
       <header className={styles.header} data-intro-content>
-        <Link className={styles.wordmark} href="/" onClick={replayHomeIntro} aria-label="Rouse Station home">ROUSE<span>STATION</span></Link>
+        <Link className={styles.wordmark} href="/" onClick={replayHomeIntro} aria-label="Rouse Station home">
+          <span className={styles.wordmarkName}>ROUSE</span>
+          <span className={styles.wordmarkReveal} aria-hidden="true"><span className={styles.wordmarkStation}>STATION</span></span>
+        </Link>
         <nav className={styles.navigation} aria-label="Main customer navigation">
-          <Link href="/shop" aria-current={pathname.startsWith("/shop") ? "page" : undefined}>Shop all</Link>
-          <Link className={styles.gearLink} href="/shop?category=Spirit%20Wear">The gear</Link>
+          <Link href="/shop" aria-current={pathname.startsWith("/shop") ? "page" : undefined}>Shop</Link>
           <Link href="/feedback" aria-current={pathname === "/feedback" ? "page" : undefined}>Your say</Link>
         </nav>
         <button type="button" className={styles.bagButton} onClick={openBag} aria-label={`Open shopping bag, ${displayedItems} ${displayedItems === 1 ? "item" : "items"}`}><ShoppingBag size={17} strokeWidth={1.5} /><span>Bag</span><span className={styles.bagCount}>{displayedItems}</span></button>
@@ -44,8 +46,8 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <div className={styles.footerLinks}><span>Take a look</span><Link href="/shop">Shop everything <ArrowUpRight size={15} /></Link><Link href="/feedback">Feedback & grievances <ArrowUpRight size={15} /></Link><a href="https://rhs.leanderisd.org/" target="_blank" rel="noopener noreferrer">Rouse High School <ArrowUpRight size={15} /></a></div>
           <div className={styles.footerAside}><span>Make yourself at home.</span><ThemeSelector /><Link href="/admin">Staff admin <ArrowUpRight size={13} /></Link></div>
         </div>
-        <Link href="/shop" className={styles.signature} aria-label="Go Raiders — shop Raider Station">GO RAIDERS<span aria-hidden="true">✳</span></Link>
         <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Rouse Station</span><span>Maroon & gold, through and through.</span><span>Demo store · No online checkout</span></div>
+        <div className={styles.signature}><p>RAIDERS</p></div>
       </footer>
     </div>
   );

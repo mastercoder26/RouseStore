@@ -29,6 +29,8 @@ The frontend-design skill guided the cohesive visual system. The browser-qa skil
 - Added linked category filters and price/name sorting; preserved local catalog, cart, size, review and feedback behavior.
 - The original five-logo intro, its assets, timing, bootstrap and replay logic are preserved. The original body and display fonts used by the intro are unchanged; Fraunces is an additional brand font.
 - Theme preferences remain available in the footer.
+- Homepage refinement: one Shop header link, one primary Browse the collection action, quieter Spirit Wear link and explicit category labels. Footer branding is now an oversized, non-interactive RAIDERS wordmark cropped along its bottom edge; utility details sit above it.
+- Header ROUSE/STATION uses matching display typography, with a 280ms left-to-right STATION hover reveal in reserved space. Keyboard focus reveals it immediately; reduced motion removes movement; touch layouts show it without requiring hover.
 - Store remains a local demo. Unverified pickup locations/hours, free-gift promotions and demo coupon suggestions were removed from the redesigned shopping flow. Nothing is ordered, reserved or charged.
 - Existing prices and specifications remain demo data. Four mismatched placeholder images (blanket, pens, cold brew, chocolate bar) were replaced with generated product mockups; remaining product photographs are unchanged. Known old image paths in saved bags/catalogs resolve to the new mockups without rewriting storage or replacing custom uploads. No generated asset claims to depict a real campus or verified stock.
 
@@ -80,7 +82,7 @@ Use case: product-mockup. Asset type: square demo student-store product photogra
 - Existing domain/contract test suite: 94/94 pass.
 - Image-resolution tests: 5/5 pass, including legacy saved catalogs and preserving custom uploads. Run with `node --experimental-strip-types --test tests/product-image.test.mjs`.
 - Production storefront checks: 18 viewport/page/theme combinations, no horizontal overflow, failed images, runtime errors, or automated WCAG A/AA findings. Three additional mobile staff-tab checks pass after fixing wrapping and badge contrast.
-- Seven interaction suites passed: catalog search/filter/sort; quick-add and persisted bag; product sizes and accordions; homepage collection links; local feedback submission; staff sign-in/tab navigation; original five-logo intro and replay.
+- Eight interaction suites passed: catalog search/filter/sort; quick-add and persisted bag; product sizes and accordions; consolidated homepage links and all category destinations; local feedback submission; staff sign-in/tab navigation; matching-font header hover/focus/reduced-motion behavior; original five-logo intro and replay. Footer clipping checks preserve all seven letters horizontally at 375, 768 and 1440 pixels.
 - No previous visual baseline was available; these checks validate the new layouts directly.
 
 Run the existing suite with `npm test`, lint with `npm run lint`, and production compilation/typecheck with `npm run build`.
