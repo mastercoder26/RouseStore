@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
+import { INTRO_REVEAL_EVENT } from "@/lib/intro";
 
 const visuallyHidden: CSSProperties = {
   position: "absolute",
@@ -72,6 +73,17 @@ export default function LetterReveal({
 
   useEffect(() => {
     if (!inView || reducedMotion) return;
+    if (document.documentElement.hasAttribute("data-rouse-intro")) {
+      const revealAfterIntro = (event: Event) => {
+        if ((event as CustomEvent<{ animate: boolean }>).detail.animate) playReveal();
+        else cancelReveal();
+      };
+      window.addEventListener(INTRO_REVEAL_EVENT, revealAfterIntro, { once: true });
+      return () => {
+        window.removeEventListener(INTRO_REVEAL_EVENT, revealAfterIntro);
+        cancelReveal();
+      };
+    }
     playReveal();
     return cancelReveal;
   }, [cancelReveal, inView, playReveal, reducedMotion]);

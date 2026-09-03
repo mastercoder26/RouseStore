@@ -3,6 +3,7 @@ import { DM_Sans, Instrument_Serif } from "next/font/google";
 import StoreProvider from "@/components/StoreProvider";
 import SiteShell from "@/components/SiteShell";
 import SmoothScroll from "@/components/SmoothScroll";
+import { INTRO_BOOTSTRAP } from "@/lib/intro";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_BOOTSTRAP }} />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('raider_theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,

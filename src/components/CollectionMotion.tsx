@@ -23,7 +23,7 @@ export default function CollectionMotion({ onSelect, className = "" }: Collectio
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
   const horizontalShift = useTransform(scrollYProgress, [0, 1], ["0px", `-${travel}px`]);
@@ -60,17 +60,17 @@ export default function CollectionMotion({ onSelect, className = "" }: Collectio
       className={`${styles.collection} ${className}`.trim()}
       aria-labelledby="collection-motion-title"
     >
-      <div className={styles.heading}>
-        <div>
-          <p className={styles.kicker}>ROUSE / AFTER THE BELL</p>
-          <h2 id="collection-motion-title">See you in the stands.</h2>
-        </div>
-        <p className={styles.instruction}>
-          <span aria-hidden="true">↔</span> Scroll to explore
-        </p>
-      </div>
-
       <div className={styles.stickyFrame}>
+        <div className={styles.heading}>
+          <div>
+            <p className={styles.kicker}>ROUSE / AFTER THE BELL</p>
+            <h2 id="collection-motion-title">See you in the stands.</h2>
+          </div>
+          <p className={styles.instruction}>
+            <span aria-hidden="true">↔</span> Scroll to explore
+          </p>
+        </div>
+
         <div ref={viewportRef} className={styles.viewport}>
           <motion.div
             ref={trackRef}

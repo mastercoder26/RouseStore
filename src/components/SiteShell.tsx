@@ -36,7 +36,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       </a>
 
       {/* Primary Header Navigation */}
-      <header className={`site-header ${styles.header}`}>
+      <header className={`site-header ${styles.header}`} data-intro-content>
         <Link
           className={`wordmark ${styles.wordmarkLink}`}
           href="/"
@@ -111,7 +111,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Page Content */}
-      <main id="main-content" className={styles.main} tabIndex={-1}>
+      <main id="main-content" className={styles.main} tabIndex={-1} data-intro-content>
         {children}
       </main>
 
