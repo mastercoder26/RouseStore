@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   Package,
@@ -10,7 +10,12 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useStore } from "@/components/StoreProvider";
+import {
+  useStore,
+  subscribeToAdminSession,
+  checkAdminSession,
+  serverAdminAuth,
+} from "@/components/StoreProvider";
 import {
   AdminPinModal,
   AdminCatalogTab,
@@ -34,19 +39,10 @@ export default function AdminPage() {
 
   const prefersReducedMotion = useReducedMotion();
   const [activeTab, setActiveTab] = useState<AdminTab>("catalog");
-  const [isSessionUnlocked, setIsSessionUnlocked] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const sessionAuth = sessionStorage.getItem(STORAGE_KEYS.ADMIN_SESSION);
-        if (sessionAuth === "authenticated") return true;
-      } catch {
-        // Storage unavailable
-      }
-    }
-    return false;
-  });
+  const isStoredAdmin = useSyncExternalStore(subscribeToAdminSession, checkAdminSession, serverAdminAuth);
+  const [isSessionUnlocked, setIsSessionUnlocked] = useState(false);
 
-  const isUnlocked = isSessionUnlocked || isAdminAuthenticated;
+  const isUnlocked = isSessionUnlocked || isStoredAdmin || isAdminAuthenticated;
 
   const tabs = useMemo(
     () => [

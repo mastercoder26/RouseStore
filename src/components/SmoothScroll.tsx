@@ -35,6 +35,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
       infinite: false,
+      anchors: true,
     });
 
     lenisRef.current = lenis;
@@ -52,20 +53,27 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     rafId = requestAnimationFrame(raf);
 
-    // Watch for open dialogs to prevent background scrolling
-    const observer = new MutationObserver(() => {
-      const hasOpenDialog = Boolean(document.querySelector("dialog[open]"));
-      if (hasOpenDialog) {
+    // Watch for open dialogs or custom modals to prevent background scrolling
+    const checkModalState = () => {
+      const hasModal = Boolean(
+        document.querySelector("dialog[open]") ||
+        document.querySelector("[role='dialog']:not([aria-hidden='true'])") ||
+        document.body.style.overflow === "hidden"
+      );
+      if (hasModal) {
         lenis.stop();
       } else {
         lenis.start();
       }
-    });
+    };
+
+    const observer = new MutationObserver(checkModalState);
 
     observer.observe(document.body, {
       attributes: true,
+      childList: true,
       subtree: true,
-      attributeFilter: ["open"],
+      attributeFilter: ["open", "style", "aria-hidden"],
     });
 
     return () => {

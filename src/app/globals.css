@@ -122,13 +122,38 @@ html[data-theme="gold"] {
 html[data-theme="obsidian"] { --photo-surface: #d4cfc5; --maroon: #d08097; --maroon-hover: #e492aa; --line-focus: #d08097; --maroon-fill: #842a43; --maroon-fill-hover: #a33754; }
 html[data-theme="gold"] { --badge-text: #704d10; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 110px; background: var(--paper); }
+html { scroll-behavior: smooth; scroll-padding-top: 110px; background: var(--paper); scrollbar-gutter: stable; }
 html.lenis, html.lenis body { scroll-behavior: auto !important; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-.page-enter { animation: page-enter 280ms ease-out; }
+.page-enter { animation: page-enter 240ms ease-out; }
 html[data-rouse-intro] { overflow: hidden; }
 html[data-rouse-intro] .page-enter { animation: none; }
-@keyframes page-enter { from { transform: translateY(6px); } to { transform: translateY(0); } }
+@keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
+
+html[data-rouse-intro="pending"],
+html[data-rouse-intro="loading"],
+html[data-rouse-intro="playing"] {
+  background: #000;
+  overflow: hidden;
+}
+html[data-rouse-intro="pending"] body,
+html[data-rouse-intro="loading"] body,
+html[data-rouse-intro="playing"] body {
+  background: #000;
+}
+html[data-rouse-intro="pending"] [data-intro-content],
+html[data-rouse-intro="loading"] [data-intro-content],
+html[data-rouse-intro="playing"] [data-intro-content],
+html[data-rouse-intro="pending"] footer,
+html[data-rouse-intro="loading"] footer,
+html[data-rouse-intro="playing"] footer,
+html[data-rouse-intro="pending"] .skip-link,
+html[data-rouse-intro="loading"] .skip-link,
+html[data-rouse-intro="playing"] .skip-link {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
 body, button, input { font-size: 14px; }
 button, input, select, textarea { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
@@ -202,7 +227,15 @@ img { max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  html[data-rouse-intro] { overflow: visible; }
+  html[data-rouse-intro] { overflow: visible; background: var(--paper); }
+  html[data-rouse-intro] body { background: var(--paper); }
+  html[data-rouse-intro] [data-intro-content],
+  html[data-rouse-intro] footer,
+  html[data-rouse-intro] .skip-link {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 @media (prefers-contrast: more) { :root { --muted: #514037; --line: #897064; } }

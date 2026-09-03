@@ -124,7 +124,7 @@ export default function ProductDetails({ product }: { product: Product }) {
       </nav>
 
       <div className={styles.page}>
-        <div className={styles.gallery} role="region" tabIndex={0} aria-label={`${product.name} product images`}>
+        <div className={styles.gallery} role="region" aria-label={`${product.name} product images`}>
           <div className={styles.galleryFrame}>
             <div className={styles.visual}>
               <ProductVisual product={product} sizes="(max-width: 760px) 94vw, 58vw" priority />

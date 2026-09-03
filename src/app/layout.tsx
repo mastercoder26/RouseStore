@@ -3,7 +3,7 @@ import { DM_Sans, Fraunces, Instrument_Serif } from "next/font/google";
 import StoreProvider from "@/components/StoreProvider";
 import SiteShell from "@/components/SiteShell";
 import SmoothScroll from "@/components/SmoothScroll";
-import { INTRO_BOOTSTRAP } from "@/lib/intro";
+import { INTRO_BOOTSTRAP, INTRO_STYLE } from "@/lib/intro";
 import { THEME_BOOTSTRAP } from "@/lib/theme-bootstrap";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -45,6 +45,7 @@ export default function RootLayout({
     <html lang="en" className={`${sans.variable} ${display.variable} ${brand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: INTRO_BOOTSTRAP }} />
+        <style dangerouslySetInnerHTML={{ __html: INTRO_STYLE }} />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>
       <body suppressHydrationWarning>

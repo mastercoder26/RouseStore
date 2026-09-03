@@ -8,6 +8,7 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  useSyncExternalStore,
 } from "react";
 
 import { CartDrawer } from "@/components/ShopDialogs";
@@ -158,6 +159,33 @@ const productRepo = new ProductRepository(storageDriver, SEED_PRODUCTS);
 const reviewRepo = new ReviewRepository(storageDriver, SEED_REVIEWS);
 const complaintRepo = new ComplaintRepository(storageDriver, SEED_COMPLAINTS);
 
+const adminSessionListeners = new Set<() => void>();
+export const notifyAdminSessionChange = () => adminSessionListeners.forEach((l) => l());
+
+export function checkAdminSession(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const session = sessionStorage.getItem(STORAGE_KEYS.ADMIN_SESSION);
+    if (session === "authenticated") return true;
+    const stored = storageDriver.getItem<string>(STORAGE_KEYS.ADMIN_SESSION);
+    if (stored === "authenticated") return true;
+  } catch {
+    // Storage unavailable
+  }
+  return false;
+}
+
+export const subscribeToAdminSession = (callback: () => void) => {
+  adminSessionListeners.add(callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    adminSessionListeners.delete(callback);
+    window.removeEventListener("storage", callback);
+  };
+};
+
+export const serverAdminAuth = () => false;
+
 export default function StoreProvider({ children }: { children: React.ReactNode }) {
   // Cart state
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -212,19 +240,9 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   });
 
   // Admin Auth state
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const session = sessionStorage.getItem(STORAGE_KEYS.ADMIN_SESSION);
-        if (session === "authenticated") return true;
-        const stored = storageDriver.getItem<string>(STORAGE_KEYS.ADMIN_SESSION);
-        if (stored === "authenticated") return true;
-      } catch {
-        // Storage unavailable
-      }
-    }
-    return false;
-  });
+  const isStoredAdmin = useSyncExternalStore(subscribeToAdminSession, checkAdminSession, serverAdminAuth);
+  const [adminAuthOverride, setAdminAuthOverride] = useState<boolean | null>(null);
+  const isAdminAuthenticated = adminAuthOverride !== null ? adminAuthOverride : isStoredAdmin;
 
   // Sync theme attribute to <html> element
   useEffect(() => {
@@ -520,13 +538,14 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   const loginAdmin = useCallback(
     (pin: string): boolean => {
       if (pin.trim() === "raider2026") {
-        setIsAdminAuthenticated(true);
+        setAdminAuthOverride(true);
         try {
           sessionStorage.setItem(STORAGE_KEYS.ADMIN_SESSION, "authenticated");
           storageDriver.setItem(STORAGE_KEYS.ADMIN_SESSION, "authenticated");
         } catch {
           // Storage unavailable
         }
+        notifyAdminSessionChange();
         notify("Admin console unlocked.", "success");
         return true;
       }
@@ -537,13 +556,14 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   );
 
   const logoutAdmin = useCallback(() => {
-    setIsAdminAuthenticated(false);
+    setAdminAuthOverride(false);
     try {
       sessionStorage.removeItem(STORAGE_KEYS.ADMIN_SESSION);
       storageDriver.removeItem(STORAGE_KEYS.ADMIN_SESSION);
     } catch {
       // Storage unavailable
     }
+    notifyAdminSessionChange();
     notify("Admin session ended.", "info");
   }, [notify]);
 

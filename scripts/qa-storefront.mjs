@@ -169,7 +169,7 @@ try {
   const introContext = await browser.newContext({ viewport: { width: 1000, height: 800 }, reducedMotion: "no-preference" });
   const introPage = await introContext.newPage();
   await introPage.goto(base, { waitUntil: "domcontentloaded" });
-  assert.equal(await introPage.locator('#rouse-intro img[src*="/images/intro/"]').count(), 5);
+  assert.equal(await introPage.locator('#rouse-intro img[src*="/images/intro/"]').count(), 10);
   await introPage.waitForFunction(() => !document.documentElement.hasAttribute("data-rouse-intro"), null, { timeout: 12000 });
   const logo = introPage.getByRole("link", { name: "Rouse Station home", exact: true });
   const station = logo.locator("span span");

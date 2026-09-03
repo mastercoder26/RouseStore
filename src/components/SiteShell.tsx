@@ -26,7 +26,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.shell}>
       <PreLoader />
-      <a className="skip-link" href="#main-content">Skip to content</a>
+      <a className="skip-link" href="#main-content" data-intro-content>Skip to content</a>
       <div className={styles.announcement} role="region" aria-label="Store announcement" data-intro-content><span>For the school day. And everything after.</span><span aria-hidden="true">Go Raiders ✳</span></div>
       <header className={styles.header} data-intro-content>
         <Link className={styles.wordmark} href="/" onClick={replayHomeIntro} aria-label="Rouse Station home">
@@ -40,7 +40,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <button type="button" className={styles.bagButton} onClick={openBag} aria-label={`Open shopping bag, ${displayedItems} ${displayedItems === 1 ? "item" : "items"}`}><ShoppingBag size={17} strokeWidth={1.5} /><span>Bag</span><span className={styles.bagCount}>{displayedItems}</span></button>
       </header>
       <main id="main-content" className={styles.main} tabIndex={-1} data-intro-content>{children}</main>
-      <footer className={styles.footer}>
+      <footer className={styles.footer} data-intro-content>
         <div className={styles.footerTop}>
           <div><span className={styles.footerEyebrow}>Your Rouse. Your station.</span><p>See you around,<br /><em>Raider.</em></p></div>
           <div className={styles.footerLinks}><span>Take a look</span><Link href="/shop">Shop everything <ArrowUpRight size={15} /></Link><Link href="/feedback">Feedback & grievances <ArrowUpRight size={15} /></Link><a href="https://rhs.leanderisd.org/" target="_blank" rel="noopener noreferrer">Rouse High School <ArrowUpRight size={15} /></a></div>

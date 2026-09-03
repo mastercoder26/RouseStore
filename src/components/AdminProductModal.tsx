@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { X, Check, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -24,10 +24,62 @@ interface ModalProps {
 }
 
 export default function AdminProductModal({ product, isOpen, onClose, onSave }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const timer = setTimeout(() => {
+      modalRef.current?.querySelector<HTMLElement>("input, button")?.focus();
+    }, 50);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      clearTimeout(timer);
+    };
+  }, [isOpen]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+        return;
+      }
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    },
+    [onClose]
+  );
+
   if (!isOpen) return null;
 
   return (
     <div
+      ref={modalRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="admin-product-modal-title"
+      data-lenis-prevent
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
       style={{
         position: "fixed",
         inset: 0,
@@ -179,6 +231,7 @@ function AdminProductForm({
             Raider Station Catalog Admin
           </span>
           <h2
+            id="admin-product-modal-title"
             style={{
               fontSize: "22px",
               fontFamily: "var(--font-display)",

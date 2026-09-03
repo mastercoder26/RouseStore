@@ -63,7 +63,6 @@
   .explore { width: 44px; height: 44px; }
   .sectionTop h2, .sectionTop > span { font-size: 9px; }
   .featured { padding-bottom: 48px; }
-  .featured :global(.product-grid) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .shopAll { min-height: 54px; font-size: 25px; margin-top: 23px; }
   .campaign { grid-template-columns: 1fr; border-radius: 22px; }
   .campaignPhoto { min-height: 0; aspect-ratio: 1.4; }

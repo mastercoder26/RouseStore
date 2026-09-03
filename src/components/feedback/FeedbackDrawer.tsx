@@ -398,6 +398,7 @@ export function FeedbackDrawer({
           <motion.div
             ref={drawerRef}
             className={styles.drawer}
+            data-lenis-prevent
             role="dialog"
             aria-modal="true"
             aria-labelledby={headingId}
@@ -477,7 +478,7 @@ export function FeedbackDrawer({
                   role="radiogroup"
                   aria-labelledby="feedback-topic-label"
                 >
-                  {FEEDBACK_CATEGORIES.map((cat) => {
+                  {FEEDBACK_CATEGORIES.map((cat, index) => {
                     const isSelected = form.category === cat.id;
                     const Icon = cat.icon;
                     return (
@@ -486,6 +487,7 @@ export function FeedbackDrawer({
                         type="button"
                         role="radio"
                         aria-checked={isSelected}
+                        tabIndex={isSelected || (!form.category && index === 0) ? 0 : -1}
                         className={`${styles.topicPill} ${
                           isSelected ? styles.topicPillActive : ""
                         }`}
@@ -494,6 +496,18 @@ export function FeedbackDrawer({
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             updateField("category", cat.id);
+                          } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                            const nextIndex = (index + 1) % FEEDBACK_CATEGORIES.length;
+                            updateField("category", FEEDBACK_CATEGORIES[nextIndex].id);
+                            const pills = e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button");
+                            pills?.[nextIndex]?.focus();
+                          } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                            e.preventDefault();
+                            const prevIndex = (index - 1 + FEEDBACK_CATEGORIES.length) % FEEDBACK_CATEGORIES.length;
+                            updateField("category", FEEDBACK_CATEGORIES[prevIndex].id);
+                            const pills = e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button");
+                            pills?.[prevIndex]?.focus();
                           }
                         }}
                       >

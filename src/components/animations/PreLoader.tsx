@@ -94,7 +94,12 @@ export default function PreLoader() {
         visibleFrame = index;
       }
       animations.forEach(animation => { animation.currentTime = elapsed; });
-      if (elapsed >= REVEAL_AT) reveal(true);
+      if (elapsed >= REVEAL_AT) {
+        if (root.getAttribute("data-rouse-intro") === "playing") {
+          root.setAttribute("data-rouse-intro", "revealing");
+        }
+        reveal(true);
+      }
       if (elapsed >= DURATION) finish();
       else frameRequest = window.requestAnimationFrame(tick);
     };
@@ -133,7 +138,7 @@ export default function PreLoader() {
         // Failed assets or an interrupted animation must never hold the store closed.
         resume();
         const images = Array.from(dialog.querySelectorAll("img"));
-        await Promise.all(images.map(image => image.decode()));
+        await Promise.all(images.map(image => image.decode().catch(() => {})));
         if (!active || run !== generation) return;
         root.setAttribute("data-rouse-intro", "playing");
 

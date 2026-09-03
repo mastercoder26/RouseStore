@@ -74,7 +74,7 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
                 alt={item.name}
                 fill
                 sizes="(max-width: 760px) 65vw, 40vw"
-                preload={i === 0}
+                priority={i === 0}
                 loading={i === 0 ? undefined : "eager"}
                 onLoad={() => setLoadedSlides(current => current.includes(i) ? current : [...current, i])}
               />

@@ -22,8 +22,7 @@
 .navigation a:hover, .navigation a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
 .bagButton { display: flex; align-items: center; justify-self: end; gap: 11px; padding: 6px 9px 6px 16px; min-height: 43px; border: 1px solid var(--ink); border-radius: 999px; font-size: 12px; transition: background 180ms; }
 .bagButton:hover { background: var(--accent); color: var(--accent-ink); }
-.bagCount { display: grid; place-items: center; min-width: 27px; height: 27px; padding: 0 6px; border-radius: 50%; background: var(--maroon-fill); color: #fff5e6; font: 11px var(--font-mono); }
-.footer { margin: 0 14px 14px; background: var(--footer-bg); color: var(--footer-text); border-radius: 28px; padding: 50px calc(var(--gutter) - 14px) 0; overflow: clip; }
+.footer { position: relative; margin: 0 14px 14px; background: var(--footer-bg); color: var(--footer-text); border-radius: 28px; padding: 50px calc(var(--gutter) - 14px) 0; overflow: visible; }
 .footerTop { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 35px; }
 .footerEyebrow, .footerLinks > span, .footerAside > span { font: 10px var(--font-mono); color: var(--footer-muted); }
 .footerTop p { font: clamp(35px, 4.5vw, 65px)/1.03 var(--font-display); margin-top: 18px; }
