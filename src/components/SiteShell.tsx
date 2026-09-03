@@ -19,7 +19,7 @@ const customerPages = [
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { totalItems, openBag, openFeedbackDrawer } = useStore();
+  const { totalItems, openBag } = useStore();
   const reducedMotion = useReducedMotion();
 
   const isCurrent = (href: string) => {
