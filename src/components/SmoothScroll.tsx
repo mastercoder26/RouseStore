@@ -56,6 +56,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     // Watch for open dialogs or custom modals to prevent background scrolling
     const checkModalState = () => {
       const hasModal = Boolean(
+        document.documentElement.hasAttribute("data-rouse-intro") ||
         document.querySelector("dialog[open]") ||
         document.querySelector("[role='dialog']:not([aria-hidden='true'])") ||
         document.body.style.overflow === "hidden"
@@ -67,6 +68,8 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       }
     };
 
+    checkModalState();
+
     const observer = new MutationObserver(checkModalState);
 
     observer.observe(document.body, {
@@ -76,9 +79,17 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       attributeFilter: ["open", "style", "aria-hidden"],
     });
 
+    const rootObserver = new MutationObserver(checkModalState);
+
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-rouse-intro"],
+    });
+
     return () => {
       cancelAnimationFrame(rafId);
       observer.disconnect();
+      rootObserver.disconnect();
       lenis.destroy();
       lenisRef.current = null;
     };

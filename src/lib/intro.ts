@@ -5,31 +5,42 @@ export const INTRO_REQUEST_EVENT = "rouse:intro-request";
 // opening. Without JS the dialog stays hidden and the store remains available.
 // A failed/slow hydration must also release the page without React's help.
 export const INTRO_BOOTSTRAP = `(function(){
-  if(location.pathname !== '/' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var root = document.documentElement;
-  root.setAttribute('data-rouse-intro', 'pending');
-  function release(){
-    document.removeEventListener('visibilitychange', arm);
-    if(root.getAttribute('data-rouse-intro') !== 'pending') return;
-    root.removeAttribute('data-rouse-intro');
-    var intro = document.getElementById('rouse-intro');
-    if(intro && intro.open) intro.close();
+  try {
+    if(location.pathname !== '/' || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var root = document.documentElement;
+    root.setAttribute('data-rouse-intro', 'pending');
+    function release(){
+      try {
+        document.removeEventListener('visibilitychange', arm);
+        window.removeEventListener('error', release);
+        root.removeAttribute('data-rouse-intro');
+        var intro = document.getElementById('rouse-intro');
+        if(intro && intro.open) intro.close();
+      } catch(e) {}
+    }
+    var timer;
+    function arm(){
+      clearTimeout(timer);
+      if(!document.hidden) timer = setTimeout(release, 6000);
+    }
+    document.addEventListener('visibilitychange', arm);
+    window.addEventListener('error', release);
+    arm();
+  } catch(e) {
+    try {
+      document.documentElement.removeAttribute('data-rouse-intro');
+    } catch(_) {}
   }
-  var timer;
-  function arm(){
-    clearTimeout(timer);
-    if(!document.hidden) timer = setTimeout(release, 6000);
-  }
-  document.addEventListener('visibilitychange', arm);
-  arm();
 })();`;
 
 export const INTRO_STYLE = `
+html[data-rouse-intro] {
+  overflow: hidden !important;
+}
 html[data-rouse-intro="pending"],
 html[data-rouse-intro="loading"],
 html[data-rouse-intro="playing"] {
   background: #000 !important;
-  overflow: hidden !important;
 }
 html[data-rouse-intro="pending"] body,
 html[data-rouse-intro="loading"] body,
@@ -49,9 +60,7 @@ html[data-rouse-intro="playing"] .skip-link {
   opacity: 0 !important;
   pointer-events: none !important;
 }
-html[data-rouse-intro="pending"] #rouse-intro,
-html[data-rouse-intro="loading"] #rouse-intro,
-html[data-rouse-intro="playing"] #rouse-intro {
+html[data-rouse-intro] #rouse-intro {
   display: block !important;
   position: fixed !important;
   inset: 0 !important;
@@ -66,12 +75,15 @@ html[data-rouse-intro="playing"] #rouse-intro {
   background: transparent !important;
   z-index: 1000 !important;
 }
-html[data-rouse-intro="pending"] #rouse-intro [data-intro-stage],
-html[data-rouse-intro="loading"] #rouse-intro [data-intro-stage],
-html[data-rouse-intro="playing"] #rouse-intro [data-intro-stage] {
+html[data-rouse-intro="revealing"] #rouse-intro {
+  pointer-events: none !important;
+}
+html[data-rouse-intro] #rouse-intro [data-intro-stage] {
   position: absolute !important;
   inset: 0 !important;
   background: #000 !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
 }
 @media (prefers-reduced-motion: reduce) {
   html[data-rouse-intro] {

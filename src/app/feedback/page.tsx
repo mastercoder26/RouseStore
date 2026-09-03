@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   MessageSquareHeart,
   Package,
@@ -53,6 +53,7 @@ const URGENCIES: { id: ComplaintUrgency; label: string; badge: string }[] = [
 
 export default function FeedbackPage() {
   const { addComplaint, showToast } = useStore();
+  const prefersReducedMotion = useReducedMotion();
 
   const [category, setCategory] = useState<ComplaintCategory>("Order Issue");
   const [urgency, setUrgency] = useState<ComplaintUrgency>("medium");
@@ -138,9 +139,10 @@ export default function FeedbackPage() {
           {submittedId ? (
             <motion.div
               key="success"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.25 }}
               className={styles.successCard}
             >
               <div className={styles.successIconWrap}>
@@ -165,9 +167,10 @@ export default function FeedbackPage() {
           ) : (
             <motion.form
               key="form"
-              initial={{ opacity: 0, y: 12 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.25 }}
               onSubmit={handleSubmit}
               className={styles.formCard}
             >

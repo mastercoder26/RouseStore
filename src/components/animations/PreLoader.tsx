@@ -134,11 +134,21 @@ export default function PreLoader() {
       root.setAttribute("data-rouse-intro", "loading");
 
       try {
-        dialog.showModal();
+        if (!dialog.open) dialog.showModal();
         // Failed assets or an interrupted animation must never hold the store closed.
         resume();
         const images = Array.from(dialog.querySelectorAll("img"));
-        await Promise.all(images.map(image => image.decode().catch(() => {})));
+        const imageDecodes = images.map(image => image.decode().catch(() => {}));
+        const fontReady = typeof document !== "undefined" && document.fonts
+          ? document.fonts.ready.catch(() => {})
+          : Promise.resolve();
+
+        // Concurrently decode images and await web font readiness, but cap wait time
+        // at 1800ms so slow 3G network conditions never leave the user hanging.
+        await Promise.race([
+          Promise.all([...imageDecodes, fontReady]),
+          new Promise(resolve => setTimeout(resolve, 1800)),
+        ]);
         if (!active || run !== generation) return;
         root.setAttribute("data-rouse-intro", "playing");
 

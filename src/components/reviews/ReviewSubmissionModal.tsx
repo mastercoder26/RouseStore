@@ -190,6 +190,7 @@ export default function ReviewSubmissionModal({
   return (
     <div
       className={styles.modalBackdrop}
+      data-lenis-prevent
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -200,6 +201,7 @@ export default function ReviewSubmissionModal({
       <div
         ref={dialogRef}
         className={styles.modalDialog}
+        data-lenis-prevent
         role="dialog"
         aria-modal="true"
         aria-labelledby="review-modal-title"

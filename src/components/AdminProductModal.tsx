@@ -25,9 +25,12 @@ interface ModalProps {
 
 export default function AdminProductModal({ product, isOpen, onClose, onSave }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const timer = setTimeout(() => {
@@ -36,6 +39,9 @@ export default function AdminProductModal({ product, isOpen, onClose, onSave }: 
     return () => {
       document.body.style.overflow = originalOverflow;
       clearTimeout(timer);
+      if (previousFocusRef.current && document.contains(previousFocusRef.current)) {
+        previousFocusRef.current.focus({ preventScroll: true });
+      }
     };
   }, [isOpen]);
 
