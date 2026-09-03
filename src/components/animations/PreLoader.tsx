@@ -143,9 +143,14 @@ export default function PreLoader() {
     motionPreference.addEventListener("change", preferenceChanged);
     document.addEventListener("visibilitychange", visibilityChanged);
 
-    if (root.hasAttribute("data-rouse-intro")) void start();
+    // Keep Strict Mode's setup/cleanup probe from consuming the first visit.
+    // The head bootstrap already paints the opening frame while this waits.
+    const startFrame = window.requestAnimationFrame(() => {
+      if (root.hasAttribute("data-rouse-intro")) void start();
+    });
 
     return () => {
+      window.cancelAnimationFrame(startFrame);
       dialog.removeEventListener("cancel", cancel);
       dialog.removeEventListener("close", finish);
       motionPreference.removeEventListener("change", preferenceChanged);
