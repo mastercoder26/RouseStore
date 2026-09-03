@@ -10,13 +10,19 @@ import styles from "./PreLoader.module.css";
 // a longer hold before the curtain reveal, on a steady black background.
 const FRAMES = [
   { file: "01-chalk-outline", at: 0, scale: 1 },
-  { file: "05-bubble-doodle", at: 360, scale: 0.84 },
-  { file: "02-pencil-scribble", at: 650, scale: 0.96 },
-  { file: "04-halftone-print", at: 940, scale: 0.99 },
-  { file: "03-torn-paper", at: 1230, scale: 1 },
+  { file: "06-stitched-thread", at: 300, scale: 1 },
+  { file: "05-bubble-doodle", at: 550, scale: 0.84 },
+  { file: "09-crumpled-foil", at: 800, scale: 0.99 },
+  { file: "02-pencil-scribble", at: 1050, scale: 0.96 },
+  { file: "08-folded-ribbon", at: 1300, scale: 1 },
+  { file: "04-halftone-print", at: 1550, scale: 0.99 },
+  { file: "07-dry-brush-paint", at: 1800, scale: 0.99 },
+  { file: "10-ceramic-mosaic", at: 2050, scale: 1 },
+  { file: "03-torn-paper", at: 2300, scale: 1 },
 ] as const;
-const REVEAL_AT = 2160;
-const DURATION = 2920;
+const FINAL_FRAME_AT = FRAMES[FRAMES.length - 1].at;
+const REVEAL_AT = FINAL_FRAME_AT + 700;
+const DURATION = REVEAL_AT + 760;
 const EASE = "cubic-bezier(.76, 0, .24, 1)";
 
 export default function PreLoader() {
@@ -133,12 +139,12 @@ export default function PreLoader() {
 
         animate(dialog.querySelector("[data-intro-mark]"), [
           { transform: "scale(.96)" }, { transform: "scale(1)" },
-        ], { duration: 1400, easing: "cubic-bezier(.22, 1, .36, 1)" });
+        ], { duration: FINAL_FRAME_AT, easing: "cubic-bezier(.22, 1, .36, 1)" });
 
         animate(dialog.querySelector("[data-intro-wordmark]"), [
           { opacity: 0, transform: "translateY(10px)" },
           { opacity: 1, transform: "translateY(0)" },
-        ], { duration: 500, delay: 1170, easing: "cubic-bezier(.22, 1, .36, 1)" });
+        ], { duration: 500, delay: FINAL_FRAME_AT, easing: "cubic-bezier(.22, 1, .36, 1)" });
 
         animate(dialog.querySelector("[data-intro-progress]"), [
           { transform: "scaleX(0)" }, { transform: "scaleX(1)" },
