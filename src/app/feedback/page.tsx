@@ -94,7 +94,7 @@ export default function FeedbackPage() {
       });
 
       setSubmittedId(created.id);
-      showToast("Your feedback has been submitted to the Raider Station staff.", "success");
+      showToast("Your demo feedback has been saved on this device.", "success");
     } catch (err) {
       console.error(err);
       setErrorMessage("Something went wrong while submitting. Please try again.");
@@ -126,11 +126,11 @@ export default function FeedbackPage() {
       <div className={styles.contentWrap}>
         <header className={styles.pageHeader}>
           <div className={styles.headerPill}>
-            <MessageSquareHeart size={14} /> Student Care & Support
+            <MessageSquareHeart size={14} /> Your say
           </div>
-          <h1 className={styles.heading}>Feedback & Grievances</h1>
+          <h1 className={styles.heading}>What’s on<br />your mind?</h1>
           <p className={styles.subheading}>
-            Raider Station is run for Rouse students. Let us know about an order issue, request a size restock, or share feedback to help us improve the store.
+            A size you’re missing? An idea for the store? We’re all ears. Share feedback or a grievance below.
           </p>
         </header>
 
@@ -151,8 +151,7 @@ export default function FeedbackPage() {
                 Reference ticket: <strong>#{submittedId}</strong>
               </p>
               <p className={styles.successNotice}>
-                Our student store staff and campus advisers have received your submission. We review tickets regularly and will follow up with you at{" "}
-                <strong>{studentEmail}</strong> if action is needed.
+                Your feedback is saved on this device for this demo. It has not been sent to school staff.
               </p>
               <div className={styles.successActions}>
                 <button type="button" onClick={handleReset} className={styles.submitAnotherBtn}>
@@ -185,6 +184,7 @@ export default function FeedbackPage() {
                       <button
                         key={cat.id}
                         type="button"
+                        aria-pressed={isSelected}
                         onClick={() => setCategory(cat.id)}
                         className={`${styles.categoryCard} ${isSelected ? styles.categoryCardActive : ""}`}
                       >
@@ -253,6 +253,7 @@ export default function FeedbackPage() {
                       <button
                         key={u.id}
                         type="button"
+                        aria-pressed={urgency === u.id}
                         onClick={() => setUrgency(u.id)}
                         className={`${styles.urgencyPill} ${urgency === u.id ? styles.urgencyPillActive : ""}`}
                       >
@@ -292,10 +293,10 @@ export default function FeedbackPage() {
                   disabled={isSubmitting}
                   className={styles.submitBtn}
                 >
-                  {isSubmitting ? "Submitting..." : "Send Feedback to Store Staff"}
+                  {isSubmitting ? "Saving…" : "Save feedback"}
                 </button>
                 <p className={styles.privacyNote}>
-                  Submissions are reviewed by authorized Raider Station staff and campus sponsors.
+                  Demo only. Saved on this device, not sent to school staff. Don’t include sensitive information.
                 </p>
               </div>
             </motion.form>

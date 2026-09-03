@@ -47,7 +47,7 @@
   padding: 0 18px;
   height: 42px;
   border-radius: var(--radius-pill);
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   border: 1px solid var(--maroon);
   font-size: 12px;
@@ -58,7 +58,7 @@
 }
 
 .primaryBtn:hover {
-  background: var(--maroon-hover);
+  background: var(--maroon-fill-hover);
   border-color: var(--maroon-hover);
   transform: translateY(-1px);
 }
@@ -137,9 +137,9 @@
 .categoryPills {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  max-width: 100%;
 }
 
 .categoryPill {
@@ -161,7 +161,7 @@
 }
 
 .categoryPillActive {
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   border-color: var(--maroon);
   font-weight: 600;

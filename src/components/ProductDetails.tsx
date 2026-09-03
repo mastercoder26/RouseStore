@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import ProductVisual from "@/components/ProductVisual";
+import ProductCard from "@/components/ProductCard";
 import { useStore } from "@/components/StoreProvider";
 import { formatPrice, type Product } from "@/lib/store";
 import { ProductRatingBadge, ProductReviewsSection } from "@/components/reviews";
@@ -30,7 +31,7 @@ function getHighlights(product: Product) {
     case "rs-sneaker-11":
       return ["Varsity low-top", "Cushioned insole", "Gold accents"];
     default:
-      return product.tag ? [product.tag, "Rouse High School Official"] : ["Campus Essential"];
+      return product.tag ? [product.tag] : ["Campus essential"];
   }
 }
 
@@ -97,18 +98,11 @@ export default function ProductDetails({ product }: { product: Product }) {
   const fallbackRelated = related.length >= 3 ? related : products.filter((p) => p.id !== product.id).slice(0, 4);
 
   return (
-    <div style={{ maxWidth: "1480px", margin: "0 auto", padding: "16px 4% 100px" }}>
+    <div className={styles.container}>
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          fontSize: "11px",
-          color: "var(--muted)",
-          marginBottom: "24px",
-        }}
+        className={styles.breadcrumb}
       >
         <Link
           href="/shop"
@@ -167,7 +161,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                 <ProductRatingBadge productId={product.id} linkToReviews size="md" />
               </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+            <div className={styles.priceRow}>
               <p className={styles.price}>{formatPrice(product.price)}</p>
               {product.originalPrice && (
                 <span
@@ -226,7 +220,7 @@ export default function ProductDetails({ product }: { product: Product }) {
           <div className={styles.accordions}>
             <Accordion
               name="description"
-              title="Overview & Specifications"
+              title="The details"
               open={openAccordion === "description"}
               onToggle={() => setOpenAccordion(openAccordion === "description" ? null : "description")}
             >
@@ -235,13 +229,13 @@ export default function ProductDetails({ product }: { product: Product }) {
 
             <Accordion
               name="pickup"
-              title="Campus Pickup & Hours"
+              title="Shopping with Rouse"
               open={openAccordion === "pickup"}
               onToggle={() => setOpenAccordion(openAccordion === "pickup" ? null : "pickup")}
             >
               <p>
-                Orders can be picked up at the Raider Station kiosk in the Main Cafeteria Foyer (Room 1104)
-                during morning hours (8:00 AM – 8:40 AM) or any lunch period.
+                Explore the demo collection and build your bag. Online checkout is not available yet.
+                No order has been placed.
               </p>
             </Accordion>
           </div>
@@ -251,75 +245,13 @@ export default function ProductDetails({ product }: { product: Product }) {
       {/* 5-Star Product Reviews & Ratings Section */}
       <ProductReviewsSection product={product} />
 
-      {/* Complete the Look / Related Gear */}
       {fallbackRelated.length > 0 && (
-        <section style={{ marginTop: "90px", borderTop: "1px solid var(--line)", paddingTop: "48px" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              marginBottom: "28px",
-            }}
-          >
-            <div>
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "var(--maroon)",
-                }}
-              >
-                Complete the Look
-              </span>
-              <h2
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "28px",
-                  fontWeight: 400,
-                  margin: "4px 0 0",
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                Recommended Campus Gear
-              </h2>
-            </div>
-            <Link href="/shop" className="text-link" style={{ fontSize: "12px" }}>
-              Explore All <ArrowUpRight size={14} />
-            </Link>
+        <section className={styles.related} aria-labelledby="related-heading">
+          <div className={styles.relatedHeading}>
+            <div><span className="eyebrow">Good together</span><h2 id="related-heading">A little more for your rotation.</h2></div>
+            <Link href="/shop" className="text-link">Shop all <ArrowUpRight size={17} /></Link>
           </div>
-
-          <div className="product-grid">
-            {fallbackRelated.map((item) => (
-              <article className="product-card" key={item.id}>
-                <Link className="product-image-button" href={`/shop/${item.id}`} aria-label={`View ${item.name}`}>
-                  {item.tag && <span className="product-badge">{item.tag}</span>}
-                  <ProductVisual product={item} />
-                  <span className="product-view" aria-hidden="true">
-                    <ArrowUpRight size={17} />
-                  </span>
-                </Link>
-                <div className="product-details">
-                  <div>
-                    <span className="product-category">{item.category}</span>
-                    <Link className="product-name" href={`/shop/${item.id}`}>
-                      {item.name}
-                    </Link>
-                    <div style={{ marginTop: "4px" }}>
-                      <ProductRatingBadge productId={item.id} size="sm" linkToReviews />
-                    </div>
-                  </div>
-                  <span className="product-price">{formatPrice(item.price)}</span>
-                </div>
-                <Link className="quick-add" href={`/shop/${item.id}`}>
-                  <span>View item</span>
-                  <ArrowUpRight size={15} />
-                </Link>
-              </article>
-            ))}
-          </div>
+          <div className="product-grid">{fallbackRelated.slice(0, 3).map(item => <ProductCard key={item.id} product={item} />)}</div>
         </section>
       )}
     </div>

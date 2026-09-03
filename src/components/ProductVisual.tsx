@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { Product } from "@/lib/store";
+import { getProductImage } from "@/lib/product-image";
 
 export default function ProductVisual({
   product,
@@ -15,14 +16,15 @@ export default function ProductVisual({
 }) {
   const [imgError, setImgError] = useState(false);
 
-  const hasImage = Boolean(product.image && !imgError);
-  const isExternal = product.image?.startsWith("http") || product.image?.startsWith("data:");
+  const productImage = getProductImage(product);
+  const hasImage = Boolean(productImage && !imgError);
+  const isExternal = productImage?.startsWith("http") || productImage?.startsWith("data:");
 
   if (hasImage) {
     return (
       <div className="product-visual-wrap" style={{ position: "relative", width: "100%", height: "100%", background: "var(--photo-surface)", overflow: "hidden" }}>
         <Image
-          src={product.image}
+          src={productImage}
           alt={product.name}
           fill
           sizes={sizes}

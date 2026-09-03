@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/output/storefront-qa/
+/output/redesign-home-*.png
 
 # next.js
 /.next/

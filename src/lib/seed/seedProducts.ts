@@ -1,6 +1,6 @@
 /**
  * src/lib/seed/seedProducts.ts
- * Curated catalog of 11 authentic Rouse High School products across 4 categories.
+ * Illustrative demo catalog of 11 Rouse-themed products across 4 categories.
  */
 
 import type { Product, PresetImage } from "@/types/product";
@@ -14,7 +14,10 @@ export const PRESET_IMAGES: PresetImage[] = [
   { label: "Raider Court Sneaker", src: "/images/sneaker.jpg" },
   { label: "Insulated Water Bottle", src: "/images/raider_bottle.jpg" },
   { label: "Everyday Hardcover Notebook", src: "/images/raider_notebook.jpg" },
-  { label: "Friday Night Stadium Blanket", src: "/images/hero.jpg" },
+  { label: "Friday Night Stadium Blanket (mockup)", src: "/images/campaign/rouse-blanket.webp" },
+  { label: "Precision Gel Pens (mockup)", src: "/images/campaign/rouse-pens.webp" },
+  { label: "Nitro Cold Brew (mockup)", src: "/images/campaign/rouse-coldbrew.webp" },
+  { label: "Chocolate Almond Bar (mockup)", src: "/images/campaign/rouse-chocolate.webp" },
   { label: "Raider Spirit Banner", src: "/images/raider_hero.jpg" },
 ];
 
@@ -115,7 +118,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 48,
     tag: "Game Day",
     description: "Plush 50x60 inch maroon sherpa fleece blanket with gold braided edge trim. Perfect for bleacher nights.",
-    image: "/images/hero.jpg",
+    image: "/images/campaign/rouse-blanket.webp",
     inStock: true,
   },
   {
@@ -125,7 +128,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 9,
     tag: "Black ink",
     description: "Triple pack of 0.5mm smooth-glide archival black gel pens with matte comfort grip barrels.",
-    image: "/images/raider_notebook.jpg",
+    image: "/images/campaign/rouse-pens.webp",
     inStock: true,
   },
   {
@@ -135,7 +138,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 4.5,
     tag: "12 oz Chilled",
     description: "Locally roasted 12 oz canned nitro cold brew coffee with notes of dark chocolate and caramel.",
-    image: "/images/raider_bottle.jpg",
+    image: "/images/campaign/rouse-coldbrew.webp",
     inStock: true,
   },
   {
@@ -145,7 +148,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 3.5,
     tag: "All-natural",
     description: "Handcrafted dark chocolate bar packed with whole roasted almonds and 12g wholesome protein.",
-    image: "/images/raider_bottle.jpg",
+    image: "/images/campaign/rouse-chocolate.webp",
     inStock: true,
   },
 ];

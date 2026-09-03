@@ -79,11 +79,7 @@ export function AdminPinModal({ onSuccess }: AdminPinModalProps) {
     >
       <motion.div
         className={styles.modal}
-        initial={
-          prefersReducedMotion
-            ? { opacity: 1, scale: 1 }
-            : { opacity: 0, scale: 0.94, y: 16 }
-        }
+        initial={false}
         animate={
           isShaking && !prefersReducedMotion
             ? { x: [-8, 8, -6, 6, -3, 3, 0], opacity: 1, scale: 1, y: 0 }

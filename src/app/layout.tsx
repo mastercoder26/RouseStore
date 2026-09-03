@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Instrument_Serif } from "next/font/google";
+import { DM_Sans, Fraunces, Instrument_Serif } from "next/font/google";
 import StoreProvider from "@/components/StoreProvider";
 import SiteShell from "@/components/SiteShell";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -10,6 +10,7 @@ import "./globals.css";
 
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-heading", display: "swap" });
+const brand = Fraunces({ subsets: ["latin"], variable: "--font-brand", display: "swap" });
 
 export const metadata: Metadata = {
   icons: { icon: "/images/rouse-school-mark.png", apple: "/images/rouse-school-mark.png" },
@@ -41,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${brand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: INTRO_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />

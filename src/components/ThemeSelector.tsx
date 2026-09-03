@@ -126,6 +126,8 @@ export default function ThemeSelector() {
                 <button
                   key={opt.id}
                   type="button"
+                  role="menuitemradio"
+                  aria-checked={isSelected}
                   onClick={() => {
                     setTheme(opt.id);
                     setOpen(false);

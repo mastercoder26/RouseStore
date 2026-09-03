@@ -605,7 +605,7 @@ function AdminProductForm({
                 height: "44px",
                 borderRadius: "var(--radius-pill)",
                 border: "none",
-                background: "var(--maroon)",
+                background: "var(--maroon-fill)",
                 color: "#fff",
                 fontSize: "12px",
                 fontWeight: 600,

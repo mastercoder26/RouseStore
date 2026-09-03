@@ -9,8 +9,8 @@
 }
 
 .dialog::backdrop {
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
+  background: rgba(45, 24, 28, 0.35);
+  backdrop-filter: blur(5px);
   animation: backdrop-in 240ms ease-out;
 }
 
@@ -106,8 +106,8 @@
 .closeButton {
   display: inline-grid;
   flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   place-items: center;
   border: 1px solid var(--line);
@@ -125,7 +125,8 @@
 .drawerTitle {
   margin: 20px 0 0;
   font-size: clamp(1.65rem, 3vw, 2.25rem);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.98;
   color: var(--ink);
@@ -133,7 +134,7 @@
 
 .drawerTitle {
   margin-top: 7px;
-  font-size: 1.8rem;
+  font-size: 3.3rem;
 }
 
 .drawerTitle span {
@@ -210,7 +211,7 @@
 }
 
 .sizeOptionSelected span {
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #fff;
 }
 
@@ -225,8 +226,8 @@
   padding: 0 16px;
   border: 1px solid var(--maroon);
   border-radius: var(--radius-pill);
-  color: #fff;
-  background: var(--maroon);
+  color: var(--accent-ink);
+  background: var(--accent);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -234,8 +235,7 @@
 }
 
 .primaryButton:hover {
-  background: var(--maroon-hover);
-  border-color: var(--maroon-hover);
+  background: #f6e6a8;
 }
 
 .primaryButton:disabled {
@@ -256,8 +256,8 @@
 }
 
 .cartDialog {
-  width: min(470px, calc(100vw - 24px));
-  max-width: 470px;
+  width: min(510px, calc(100vw - 24px));
+  max-width: 510px;
   height: calc(100dvh - 24px);
   max-height: calc(100dvh - 24px);
   margin: 12px 12px 12px auto;
@@ -296,9 +296,9 @@
 
 .cartImageFrame {
   position: relative;
-  flex: 0 0 86px;
-  width: 86px;
-  height: 104px;
+  flex: 0 0 100px;
+  width: 100px;
+  height: 116px;
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -352,8 +352,8 @@
 
 .quantityControl button {
   display: grid;
-  width: 38px;
-  min-height: 38px;
+  width: 44px;
+  min-height: 44px;
   padding: 0;
   place-items: center;
   border: 0;
@@ -414,8 +414,7 @@
 
 .emptyState h3 {
   margin: 15px 0 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font: 2.3rem/1.1 var(--font-display);
   letter-spacing: -0.03em;
   color: var(--ink);
 }
@@ -425,11 +424,18 @@
   margin-top: 24px;
 }
 
+.emptyMark { font-size: 76px; color: var(--maroon); }
+.emptyState p { margin-top: 15px; color: var(--muted); font-size: 13px; }
+.cartNote { font-size: 11px; line-height: 1.6; color: var(--muted); margin-top: 13px; text-align: center; }
+.cartDialog .primaryButton { min-height: 56px; box-shadow: 2px 3px 0 var(--ink); text-transform: none; font-weight: 500; letter-spacing: 0; font-size: 14px; }
+.cartItem h3 { font: 24px/1.1 var(--font-display); }
+.cartDialog .totals { margin-top: auto; }
+
 .backButton {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  min-height: 36px;
+  min-height: 48px;
   padding: 0;
   border: 0;
   color: var(--maroon);

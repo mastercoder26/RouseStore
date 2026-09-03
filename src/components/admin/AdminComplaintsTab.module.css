@@ -129,7 +129,7 @@
 }
 
 .statusPillActive {
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   border-color: var(--maroon);
   font-weight: 600;
@@ -232,8 +232,8 @@
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: var(--radius-pill);
-  background: rgba(107, 114, 128, 0.12);
-  color: #4b5563;
+  background: #e6e6e0;
+  color: #454d4c;
   border: 1px solid rgba(107, 114, 128, 0.25);
 }
 
@@ -243,8 +243,8 @@
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: var(--radius-pill);
-  background: var(--gold-subtle);
-  color: var(--gold);
+  background: #f1d97e;
+  color: #704d10;
   border: 1px solid rgba(207, 155, 68, 0.35);
 }
 
@@ -254,8 +254,8 @@
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: var(--radius-pill);
-  background: rgba(239, 68, 68, 0.14);
-  color: #dc2626;
+  background: #f3d5cf;
+  color: #8a2626;
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
@@ -363,19 +363,19 @@
 }
 
 .statusSegmentBtnActiveNew {
-  background: #3b82f6;
+  background: #1d4ed8;
   color: #ffffff;
   font-weight: 600;
 }
 
 .statusSegmentBtnActiveInProgress {
-  background: #f59e0b;
+  background: #945600;
   color: #ffffff;
   font-weight: 600;
 }
 
 .statusSegmentBtnActiveResolved {
-  background: #10b981;
+  background: #166534;
   color: #ffffff;
   font-weight: 600;
 }
@@ -439,7 +439,7 @@
   padding: 4px 10px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--maroon);
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
@@ -448,7 +448,7 @@
 }
 
 .saveNotesBtn:hover {
-  background: var(--maroon-hover);
+  background: var(--maroon-fill-hover);
 }
 
 .savedConfirmHint {

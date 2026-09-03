@@ -1,7 +1,7 @@
 .adminPage {
   width: min(1480px, 100%);
   margin: 0 auto;
-  padding: 36px 4% 120px;
+  padding: 48px var(--gutter) 80px;
 }
 
 .adminHeader {
@@ -10,6 +10,8 @@
   align-items: flex-end;
   gap: 24px;
   margin-bottom: 32px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
 }
 
@@ -23,7 +25,7 @@
 
 .adminTitle {
   font-family: var(--font-display);
-  font-size: clamp(34px, 4vw, 56px);
+  font-size: clamp(42px, 5vw, 68px);
   letter-spacing: -0.04em;
   line-height: 1.05;
   font-weight: 400;
@@ -55,7 +57,7 @@
   padding: 0 16px;
   height: 42px;
   border-radius: var(--radius-pill);
-  background: var(--bg-surface);
+  background: var(--bg-card);
   color: var(--ink);
   border: 1px solid var(--line);
   font-size: 12px;
@@ -176,13 +178,13 @@
 }
 
 .tabCountBadgeActive {
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
 }
 
 .tabCountBadgeAlert {
   background: rgba(239, 68, 68, 0.15);
-  color: #dc2626;
+  color: var(--maroon);
 }
 
 .tabPanel {

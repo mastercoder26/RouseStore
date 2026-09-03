@@ -157,7 +157,7 @@
 }
 
 .categoryPillActive {
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   border-color: var(--maroon);
   font-weight: 600;
@@ -285,7 +285,7 @@
   height: 42px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--maroon);
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #ffffff;
   font-size: 13px;
   font-weight: 600;
@@ -295,7 +295,7 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background: var(--maroon-hover);
+  background: var(--maroon-fill-hover);
   border-color: var(--maroon-hover);
   transform: translateY(-1px);
 }

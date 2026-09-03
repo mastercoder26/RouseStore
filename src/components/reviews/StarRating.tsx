@@ -124,9 +124,8 @@ export default function StarRating({
               style={{
                 display: "block",
                 overflow: "visible",
-                transition: reducedMotion
-                  ? "none"
-                  : "transform 180ms cubic-bezier(0.76, 0, 0.24, 1)",
+                // Keep SSR markup stable; the CSS media query disables motion.
+                transition: "transform 180ms cubic-bezier(0.76, 0, 0.24, 1)",
                 transform:
                   isInteractive && isHovered && !reducedMotion
                     ? "scale(1.22) rotate(4deg)"

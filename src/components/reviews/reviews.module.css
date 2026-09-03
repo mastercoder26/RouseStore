@@ -132,10 +132,13 @@
    3. Product Reviews Master Section
    ========================================================================== */
 .reviewsSection {
-  margin-top: 90px;
-  padding-top: 48px;
+  margin-top: 65px;
+  padding: 40px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 26px;
   border-top: 1px solid var(--line);
-  scroll-margin-top: 60px;
+  scroll-margin-top: 115px;
 }
 
 .reviewsHeader {
@@ -161,7 +164,7 @@
 
 .reviewsTitle {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 42px);
+  font-size: clamp(34px, 4vw, 52px);
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -176,7 +179,7 @@
   padding: 12px 24px;
   min-height: 46px;
   border-radius: var(--radius-pill);
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
@@ -189,7 +192,7 @@
 }
 
 .writeReviewButton:hover {
-  background: var(--maroon-hover);
+  background: var(--maroon-fill-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -899,7 +902,7 @@
   gap: 8px;
   min-height: 48px;
   border-radius: var(--radius-pill);
-  background: var(--maroon);
+  background: var(--maroon-fill);
   color: #fff;
   font-size: 12px;
   font-weight: 700;
@@ -911,7 +914,7 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background: var(--maroon-hover);
+  background: var(--maroon-fill-hover);
   transform: translateY(-1px);
 }
 
@@ -959,6 +962,7 @@
 }
 
 @media (max-width: 640px) {
+  .reviewsSection { padding: 28px 18px; border-radius: 22px; }
   .reviewsHeader {
     flex-direction: column;
     align-items: stretch;

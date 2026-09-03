@@ -59,7 +59,7 @@ export const THEMES: ThemeOption[] = [
     id: "heritage",
     name: "Heritage Parchment",
     description: "Classic Rouse collegiate aesthetic on warm tactile parchment",
-    colors: { bg: "#f4f1ea", surface: "#eae5da", accent: "#581825", gold: "#cf9b44" },
+    colors: { bg: "#f8ecdf", surface: "#efe0ce", accent: "#621f30", gold: "#f1d97e" },
   },
   {
     id: "obsidian",

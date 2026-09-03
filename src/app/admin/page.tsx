@@ -123,8 +123,8 @@ export default function AdminPage() {
       {/* Admin Header */}
       <div className={styles.adminHeader}>
         <div>
-          <span className={styles.kicker}>Station Operations & Moderation</span>
-          <h1 className={styles.adminTitle}>Staff Management Console</h1>
+          <span className={styles.kicker}>Behind the counter</span>
+          <h1 className={styles.adminTitle}>The staff room.</h1>
           <p className={styles.adminSubtitle}>
             Administrative portal for Rouse High School student store. Manage merchandise inventory, moderate student reviews, and triage incoming grievances.
           </p>
