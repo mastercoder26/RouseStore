@@ -128,6 +128,7 @@ try {
   await page.getByRole("link", { name: "Browse the collection", exact: true }).focus();
   await page.keyboard.press("Enter");
   await page.waitForURL(base + "/shop");
+  await page.waitForFunction(() => document.querySelectorAll("#products-grid .product-card").length === 11);
   assert.equal(await cards.count(), 11);
   for (const [category, count] of [["Spirit Wear", 5], ["School Supplies", 2], ["Accessories", 2], ["Snacks & Drinks", 2]]) {
     await page.goto(base + "/", { waitUntil: "networkidle" });
@@ -174,15 +175,35 @@ try {
   const station = logo.locator("span span");
   const beforeReveal = await station.evaluate(element => ({ opacity: getComputedStyle(element).opacity, x: new DOMMatrix(getComputedStyle(element).transform).m41 }));
   assert.equal(beforeReveal.opacity, "0");
-  assert(beforeReveal.x < 0, "STATION should enter from the left");
+  assert(beforeReveal.x > 0, "STATION should enter from the right and move left");
   const navigationBefore = await introPage.locator("header nav").boundingBox();
   await logo.hover();
+  const slideFrames = await station.evaluate(element => {
+    const slide = element.getAnimations().find(animation => animation.transitionProperty === "transform");
+    if (!slide) return null;
+    slide.pause();
+    const duration = Number(slide.effect.getTiming().duration);
+    const positions = [0, .2, .4, .6, .8, 1].map(progress => {
+      slide.currentTime = progress * duration;
+      return new DOMMatrix(getComputedStyle(element).transform).m41;
+    });
+    slide.finish();
+    return { duration, positions };
+  });
+  assert(slideFrames, "Logo hover should animate its position");
+  assert.equal(slideFrames.duration, 500, "Match the portfolio's slide duration");
+  assert(slideFrames.positions[0] > 0 && slideFrames.positions.some(x => x < -1), "Slide must come from the right, overshoot left and settle");
+  console.log("Header slide frames:", slideFrames);
   await introPage.waitForFunction(() => getComputedStyle(document.querySelector("header a span span")).opacity === "1");
   await station.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished)); });
   assert.equal(await station.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m41), 0);
   assert.equal(await station.evaluate(element => getComputedStyle(element).fontFamily), await logo.evaluate(element => getComputedStyle(element).fontFamily));
   assert.deepEqual(await introPage.locator("header nav").boundingBox(), navigationBefore, "Logo reveal must not shift navigation");
   await introPage.screenshot({ path: path.join(output, "header-station-reveal.png") });
+  await introPage.mouse.move(980, 400);
+  await logo.hover();
+  await station.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished)); });
+  assert.equal(await station.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m41), 0, "Rapid hover reversal should settle without a jump");
   await introPage.mouse.move(980, 400);
   await logo.focus();
   await introPage.keyboard.press("Shift+Tab");
@@ -193,7 +214,7 @@ try {
   await introPage.emulateMedia({ reducedMotion: "reduce" });
   assert.equal(await station.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m41), 0);
   await introPage.emulateMedia({ reducedMotion: "no-preference" });
-  report.interactions.push("Matching-font STATION enters from the left, does not shift navigation, and reveals instantly on keyboard focus/reduced motion");
+  report.interactions.push("Matching-font STATION slides right-to-left with a 500ms overshoot, keeps navigation fixed, and reveals instantly on keyboard focus/reduced motion");
   await introPage.getByRole("link", { name: "Rouse Station home", exact: true }).click();
   await introPage.waitForFunction(() => document.documentElement.hasAttribute("data-rouse-intro"));
   report.interactions.push("Original five-logo intro completes and replays from the wordmark");
