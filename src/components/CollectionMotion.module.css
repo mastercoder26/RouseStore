@@ -1,7 +1,6 @@
 .collection {
   position: relative;
-  min-height: 220vh;
-  overflow: clip;
+  min-height: 150vh;
   background: var(--bg-surface);
   color: var(--ink);
   border-top: 1px solid var(--line);

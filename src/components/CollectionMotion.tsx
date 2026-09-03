@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState, type FocusEvent } from "react";
 import { useStore } from "@/components/StoreProvider";
 import { formatPrice } from "@/lib/store";
@@ -23,31 +23,52 @@ export default function CollectionMotion({ onSelect, className = "" }: Collectio
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
 
-  const horizontalShift = useTransform(scrollYProgress, [0, 1], ["0px", `-${travel}px`]);
-
-  // Curate top showcase items
-  const featuredIds = ["rs-hoodie-01", "rs-jacket-02", "rs-cap-03", "rs-sneaker-11", "rs-bomber-06"];
+  // Curate all top showcase items across spirit wear, outerwear, footwear, accessories, and supplies
+  const featuredIds = [
+    "rs-hoodie-01",
+    "rs-jacket-02",
+    "rs-sneaker-11",
+    "rs-bomber-06",
+    "rs-cap-03",
+    "rs-notebook-04",
+    "rs-bottle-05",
+  ];
   const items = featuredIds
     .map((id) => products.find((p) => p.id === id))
     .filter(Boolean) as typeof products;
 
+  const rawShift = useTransform(scrollYProgress, (progress) => -progress * travel);
+  const horizontalShift = useSpring(rawShift, {
+    stiffness: 140,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
   useEffect(() => {
     const viewport = viewportRef.current;
     const track = trackRef.current;
-    if (!viewport || !track || typeof ResizeObserver === "undefined") return;
+    if (!viewport || !track) return;
 
     const measureTravel = () => {
-      setTravel(Math.max(0, track.scrollWidth - viewport.clientWidth));
+      setTravel(Math.max(0, track.scrollWidth - viewport.clientWidth + 48));
     };
 
     measureTravel();
-    const observer = new ResizeObserver(measureTravel);
-    observer.observe(viewport);
-    observer.observe(track);
-    return () => observer.disconnect();
+    window.addEventListener("resize", measureTravel);
+
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measureTravel) : null;
+    if (observer) {
+      observer.observe(viewport);
+      observer.observe(track);
+    }
+
+    return () => {
+      window.removeEventListener("resize", measureTravel);
+      if (observer) observer.disconnect();
+    };
   }, [items.length]);
 
   const focusCard = (event: FocusEvent<HTMLAnchorElement>) => {
