@@ -151,8 +151,14 @@ export default function PreLoader() {
         ], { duration: REVEAL_AT, easing: "linear" });
 
         animate(dialog.querySelector("[data-intro-stage]"), [
-          { transform: "translateY(0)" }, { transform: "translateY(-100%)" },
+          { transform: "translateY(0)" }, { transform: "translateY(calc(-100% - 300px))" },
         ], { duration: DURATION - REVEAL_AT, delay: REVEAL_AT, easing: EASE });
+
+        // Match the portfolio's 300px quadratic curve and delayed flattening,
+        // with both effects accelerated together for this shorter intro.
+        animate(dialog.querySelector("[data-intro-curve]"), [
+          { transform: "scaleY(1)" }, { transform: "scaleY(0)" },
+        ], { duration: 420, delay: REVEAL_AT + 60, easing: EASE });
 
         document.querySelectorAll("[data-intro-content]").forEach(element => {
           animate(element, [
@@ -237,6 +243,9 @@ export default function PreLoader() {
         <div className={styles.bottomline}>
           <div className={styles.progress} aria-hidden="true"><span data-intro-progress /></div>
         </div>
+        <svg className={styles.curve} data-intro-curve viewBox="0 0 100 300" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 0 Q50 300 100 0 Z" />
+        </svg>
       </div>
     </dialog>
   );
