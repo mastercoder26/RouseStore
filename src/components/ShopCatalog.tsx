@@ -104,7 +104,7 @@ export default function ShopCatalog() {
       </p>
 
       <div className="product-grid" id="products-grid">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {filteredProducts.map((product) => {
             const isSoldOut = product.inStock === false;
             const isJustAdded = recentlyAddedId === product.id;

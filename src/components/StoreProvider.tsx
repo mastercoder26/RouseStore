@@ -180,6 +180,10 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
 
   // Theme state
   const [theme, setThemeState] = useState<Theme>(() => {
+    const paintedTheme = typeof document !== "undefined"
+      ? document.documentElement.getAttribute("data-theme")
+      : null;
+    if (paintedTheme && THEMES.some((t) => t.id === paintedTheme)) return paintedTheme as Theme;
     try {
       const stored = storageDriver.getItem<Theme>(STORAGE_KEYS.THEME);
       if (stored && THEMES.some((t) => t.id === stored)) {

@@ -88,12 +88,6 @@ export default function LetterReveal({
     return cancelReveal;
   }, [cancelReveal, inView, playReveal, reducedMotion]);
 
-  const handlePointerEnter = () => {
-    if (!inView || reducedMotion) return;
-    if (!window.matchMedia("(pointer: fine) and (hover: hover)").matches) return;
-    playReveal();
-  };
-
   // Keep the callback ref compatible with each permitted semantic Tag while
   // observing one stable HTMLElement reference for the in-view hook.
   const setContainer = (node: HTMLElement | null) => {
@@ -107,7 +101,6 @@ export default function LetterReveal({
       ref={setContainer}
       className={className}
       id={id}
-      onPointerEnter={handlePointerEnter}
     >
       <span style={visuallyHidden}>{text}</span>
       <span aria-hidden="true">

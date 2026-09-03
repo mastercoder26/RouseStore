@@ -17,6 +17,7 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
   const [paused, setPaused] = useState(false);
   const [engaged, setEngaged] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [loadedSlides, setLoadedSlides] = useState<number[]>([]);
   const reducedMotion = useReducedMotion();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
@@ -26,12 +27,12 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
   const playing = !paused && !reducedMotion;
 
   useEffect(() => {
-    if (!playing || engaged || focused) return;
+    if (!playing || engaged || focused || !loadedSlides.includes((index + 1) % slides.length)) return;
     const timer = setInterval(() => {
       if (!document.hidden && !document.querySelector("dialog[open]")) setIndex(current => (current + 1) % slides.length);
     }, 6500);
     return () => clearInterval(timer);
-  }, [playing, engaged, focused, index]);
+  }, [playing, engaged, focused, index, loadedSlides]);
 
   function movePointer(event: PointerEvent<HTMLDivElement>) {
     if (!playing || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -47,7 +48,9 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
   }
 
   function selectSlide(next: number) {
-    setIndex((next + slides.length) % slides.length);
+    const nextIndex = (next + slides.length) % slides.length;
+    if (!loadedSlides.includes(nextIndex)) return;
+    setIndex(nextIndex);
     setPaused(true);
   }
 
@@ -55,9 +58,28 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
     <div className={`hero-product ${styles.showcase}`} onPointerMove={movePointer} onPointerEnter={() => setEngaged(true)} onPointerLeave={leavePointer} onFocus={() => setFocused(true)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}>
       <Link className={`hero-image-button ${styles.imageButton}`} href={`/shop/${product.id}`} aria-label={`View ${product.name}`}>
         <motion.div className="hero-photo" style={{ y: reducedMotion ? 0 : scrollY }}>
-          {slides.map((item, i) => <motion.div className={styles.portrait} key={item.id} aria-hidden={index !== i} initial={false} animate={{ opacity: index === i ? 1 : 0, scale: index === i || reducedMotion ? 1 : 1.035 }} transition={{ duration: reducedMotion ? 0 : .7, ease: [.22, 1, .36, 1] }}>
-            <Image src={item.image} alt={item.name} fill sizes="(max-width: 760px) 65vw, 40vw" preload={i === 0} loading={i === 0 ? undefined : "eager"} />
-          </motion.div>)}
+          {slides.map((item, i) => (
+            <motion.div
+              className={styles.portrait}
+              key={item.id}
+              aria-hidden={index !== i}
+              initial={false}
+              // The bottom photograph remains opaque while the top one fades.
+              // Fading both exposes the backdrop and causes a pale color pulse.
+              animate={{ opacity: i === 0 || index === i ? 1 : 0 }}
+              transition={{ duration: reducedMotion ? 0 : .7, ease: [.22, 1, .36, 1] }}
+            >
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                sizes="(max-width: 760px) 65vw, 40vw"
+                preload={i === 0}
+                loading={i === 0 ? undefined : "eager"}
+                onLoad={() => setLoadedSlides(current => current.includes(i) ? current : [...current, i])}
+              />
+            </motion.div>
+          ))}
         </motion.div>
         <span className="image-view"><ArrowUpRight size={25} strokeWidth={1.2} /></span>
       </Link>
@@ -67,8 +89,8 @@ export default function HeroShowcase({ scrollY }: { scrollY: MotionValue<number>
       <div className={styles.controls} role="group" aria-label="Featured products">
         <span className={styles.counter}>0{index + 1} <span>/ 0{slides.length}</span></span>
         <div className={styles.buttons}>
-          <button onClick={() => selectSlide(index - 1)} aria-label="Previous featured product"><ArrowLeft size={16} strokeWidth={1.4} /></button>
-          <button onClick={() => selectSlide(index + 1)} aria-label="Next featured product"><ArrowRight size={16} strokeWidth={1.4} /></button>
+          <button disabled={!loadedSlides.includes((index + 1) % slides.length)} onClick={() => selectSlide(index - 1)} aria-label="Previous featured product"><ArrowLeft size={16} strokeWidth={1.4} /></button>
+          <button disabled={!loadedSlides.includes((index + 1) % slides.length)} onClick={() => selectSlide(index + 1)} aria-label="Next featured product"><ArrowRight size={16} strokeWidth={1.4} /></button>
           <button className={styles.playback} onClick={() => setPaused(!paused)} aria-label={paused ? "Play product animation" : "Pause product animation"}>{paused ? <Play size={13} /> : <Pause size={13} />}</button>
         </div>
       </div>

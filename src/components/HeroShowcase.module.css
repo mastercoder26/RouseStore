@@ -1,5 +1,5 @@
 .showcase { position: relative; }
-.imageButton { isolation: isolate; }
+.imageButton { isolation: isolate; background: var(--photo-surface); }
 .portrait { position: absolute; inset: 0; }
 .portrait img { transition: transform 700ms cubic-bezier(.22, 1, .36, 1); }
 .controls { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); margin-top: 2px; }
@@ -8,7 +8,7 @@
 .buttons { display: flex; gap: 2px; padding: 3px 0; }
 .buttons button { display: grid; place-items: center; min-width: 40px; min-height: 44px; border-radius: var(--radius-pill); color: var(--maroon); transition: background 180ms ease; }
 .accents { position: absolute; top: 49%; right: -105px; width: 95px; pointer-events: none; }
-.accent { width: 88px; height: 115px; opacity: .9; animation: drift 7s ease-in-out infinite alternate; }
+.accent { width: 88px; height: 115px; overflow: hidden; border-radius: var(--radius-sm); background: var(--photo-surface); border: 1px solid var(--line); animation: drift 7s ease-in-out infinite alternate; }
 .secondAccent { width: 74px; height: 125px; margin: 52px 0 0 12px; animation-delay: -3.5s; }
 .accent :global(.product-illustration) { background: transparent; overflow: visible; }
 .accent :global(.illustration-note), .accent :global(.illustration-school), .accent :global(.illustration-caption) { display: none; }
@@ -17,7 +17,7 @@
 @keyframes drift { from { transform: translateY(-7px) rotate(-8deg); } to { transform: translateY(9px) rotate(7deg); } }
 @media (hover: hover) and (pointer: fine) {
   .imageButton:hover .portrait img { transform: scale(1.035); }
-  .buttons button:hover { background: #e9e5dc; }
+  .buttons button:hover { background: var(--bg-surface); }
 }
 @media (max-width: 1199px) { .accents { display: none; } }
 @media (max-width: 760px) {

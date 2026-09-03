@@ -1,16 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import { Palette, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore, THEMES } from "@/components/StoreProvider";
+
+const subscribeToHydration = () => () => {};
+const serverTheme = () => THEMES[0].id;
 
 export default function ThemeSelector() {
   const { theme, setTheme } = useStore();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const activeTheme = THEMES.find((t) => t.id === theme) || THEMES[0];
+  // Keep the server markup stable while the head script applies the saved
+  // palette. Once hydrated, the control reflects the provider's actual theme.
+  const displayTheme = useSyncExternalStore(subscribeToHydration, () => theme, serverTheme);
+  const activeTheme = THEMES.find((t) => t.id === displayTheme) || THEMES[0];
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

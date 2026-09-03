@@ -98,17 +98,6 @@
 .progress { width: 88px; height: 1px; overflow: hidden; background: #303030; }
 .progress span { display: block; height: 100%; background: #fff; transform: scaleX(0); transform-origin: left; }
 
-.inversion {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: #fff;
-  mix-blend-mode: difference;
-  transform: translateY(-101%);
-  pointer-events: none;
-  will-change: transform;
-}
-
 @media (max-width: 600px) {
   .topline { top: max(24px, env(safe-area-inset-top)); font-size: 8px; letter-spacing: .1em; }
   .bottomline { bottom: max(20px, env(safe-area-inset-bottom)); }

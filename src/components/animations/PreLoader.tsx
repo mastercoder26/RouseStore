@@ -7,7 +7,7 @@ import { INTRO_REQUEST_EVENT, INTRO_REVEAL_EVENT } from "@/lib/intro";
 import styles from "./PreLoader.module.css";
 
 // Hard cuts keep the handmade character of the reference. The paper mark gets
-// a longer hold before the single inversion and curtain reveal.
+// a longer hold before the curtain reveal, on a steady black background.
 const FRAMES = [
   { file: "01-chalk-outline", at: 0, scale: 1 },
   { file: "05-bubble-doodle", at: 360, scale: 0.84 },
@@ -144,10 +144,6 @@ export default function PreLoader() {
           { transform: "scaleX(0)" }, { transform: "scaleX(1)" },
         ], { duration: REVEAL_AT, easing: "linear" });
 
-        animate(dialog.querySelector("[data-intro-inversion]"), [
-          { transform: "translateY(-101%)" }, { transform: "translateY(0)" },
-        ], { duration: 580, delay: 1510, easing: EASE });
-
         animate(dialog.querySelector("[data-intro-stage]"), [
           { transform: "translateY(0)" }, { transform: "translateY(-100%)" },
         ], { duration: DURATION - REVEAL_AT, delay: REVEAL_AT, easing: EASE });
@@ -235,7 +231,6 @@ export default function PreLoader() {
         <div className={styles.bottomline}>
           <div className={styles.progress} aria-hidden="true"><span data-intro-progress /></div>
         </div>
-        <div className={styles.inversion} data-intro-inversion aria-hidden="true" />
       </div>
     </dialog>
   );

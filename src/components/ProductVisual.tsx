@@ -20,7 +20,7 @@ export default function ProductVisual({
 
   if (hasImage) {
     return (
-      <div className="product-visual-wrap" style={{ position: "relative", width: "100%", height: "100%" }}>
+      <div className="product-visual-wrap" style={{ position: "relative", width: "100%", height: "100%", background: "var(--photo-surface)", overflow: "hidden" }}>
         <Image
           src={product.image}
           alt={product.name}

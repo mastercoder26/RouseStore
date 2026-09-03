@@ -41,7 +41,7 @@
   gap: 0.5rem;
   flex: 0 0 auto;
   margin: 0 0 0.3rem;
-  color: var(--muted-ink);
+  color: var(--muted);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -119,7 +119,7 @@
   display: block;
   aspect-ratio: 1.15 / 1;
   overflow: hidden;
-  background: #e0ddd4;
+  background: var(--photo-surface);
   border-radius: var(--radius-md, 16px);
   border: 1px solid var(--line);
 }
@@ -174,7 +174,7 @@
 
 .cardMeta small {
   margin-top: 0.25rem;
-  color: var(--muted-ink);
+  color: var(--muted);
   font-size: 0.75rem;
 }
 

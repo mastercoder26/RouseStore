@@ -19,7 +19,7 @@
   min-width: 0;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: #e2e0d9;
+  background: var(--photo-surface);
 }
 
 .visual {
