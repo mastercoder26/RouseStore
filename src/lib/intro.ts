@@ -13,9 +13,11 @@ export const INTRO_BOOTSTRAP = `(function(){
       try {
         document.removeEventListener('visibilitychange', arm);
         window.removeEventListener('error', release);
-        root.removeAttribute('data-rouse-intro');
-        var intro = document.getElementById('rouse-intro');
-        if(intro && intro.open) intro.close();
+        if (root.getAttribute('data-rouse-intro') === 'pending') {
+          root.removeAttribute('data-rouse-intro');
+          var intro = document.getElementById('rouse-intro');
+          if(intro && intro.open) intro.close();
+        }
       } catch(e) {}
     }
     var timer;

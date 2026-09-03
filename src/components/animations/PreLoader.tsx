@@ -38,9 +38,8 @@ export default function PreLoader() {
     let animations: Animation[] = [];
     let active = false;
     let ready = false;
-    let requested = pathname === "/" && Boolean(root.getAttribute("data-rouse-intro"));
+    let requested = pathname === "/";
     let revealed = false;
-    let generation = 0;
     let frameRequest = 0;
     let watchdog = 0;
     let elapsed = 0;
@@ -58,7 +57,6 @@ export default function PreLoader() {
       if (!active) return;
       active = false;
       ready = false;
-      generation += 1;
       window.cancelAnimationFrame(frameRequest);
       window.clearTimeout(watchdog);
       root.removeAttribute("data-rouse-intro");
@@ -115,9 +113,12 @@ export default function PreLoader() {
       }
     };
 
-    const start = async () => {
-      if (active || pathname !== "/" || motionPreference.matches) {
-        if (!active) root.removeAttribute("data-rouse-intro");
+    const start = () => {
+      if (active || pathname !== "/") {
+        return;
+      }
+      if (motionPreference.matches) {
+        root.removeAttribute("data-rouse-intro");
         return;
       }
       // A background tab must wait until its first visible visit to play.
@@ -130,27 +131,15 @@ export default function PreLoader() {
       previousTime = null;
       visibleFrame = 0;
       frames.forEach((frame, index) => { frame.hidden = index !== 0; });
-      const run = ++generation;
-      root.setAttribute("data-rouse-intro", "loading");
+      root.setAttribute("data-rouse-intro", "playing");
 
       try {
-        if (!dialog.open) dialog.showModal();
-        // Failed assets or an interrupted animation must never hold the store closed.
+        try {
+          if (!dialog.open) dialog.showModal();
+        } catch {
+          // Dialog modal fallback: INTRO_STYLE already enforces fullscreen display
+        }
         resume();
-        const images = Array.from(dialog.querySelectorAll("img"));
-        const imageDecodes = images.map(image => image.decode().catch(() => {}));
-        const fontReady = typeof document !== "undefined" && document.fonts
-          ? document.fonts.ready.catch(() => {})
-          : Promise.resolve();
-
-        // Concurrently decode images and await web font readiness, but cap wait time
-        // at 1800ms so slow 3G network conditions never leave the user hanging.
-        await Promise.race([
-          Promise.all([...imageDecodes, fontReady]),
-          new Promise(resolve => setTimeout(resolve, 1800)),
-        ]);
-        if (!active || run !== generation) return;
-        root.setAttribute("data-rouse-intro", "playing");
 
         animate(dialog.querySelector("[data-intro-mark]"), [
           { transform: "scale(.96)" }, { transform: "scale(1)" },
@@ -194,8 +183,11 @@ export default function PreLoader() {
         window.cancelAnimationFrame(frameRequest);
         window.clearTimeout(watchdog);
         previousTime = null;
-      } else if (active) resume();
-      else if (requested) void start();
+      } else if (active) {
+        resume();
+      } else if (pathname === "/") {
+        void start();
+      }
     };
     const request = () => {
       if (pathname !== "/" || active) return;
@@ -209,7 +201,7 @@ export default function PreLoader() {
       }
     };
     const cancel = (event: Event) => { event.preventDefault(); finish(); };
-    const closed = () => { if (!dialog.open) finish(); };
+    const closed = () => { if (!dialog.open && active) finish(); };
     dialog.addEventListener("cancel", cancel);
     dialog.addEventListener("close", closed);
     motionPreference.addEventListener("change", preferenceChanged);
@@ -217,10 +209,11 @@ export default function PreLoader() {
     window.addEventListener(INTRO_REQUEST_EVENT, request);
     window.addEventListener("pageshow", pageShown);
 
-    // Keep Strict Mode's setup/cleanup probe from consuming the first visit.
-    // The head bootstrap already paints the opening frame while this waits.
+    if (requested) {
+      void start();
+    }
     const startFrame = window.requestAnimationFrame(() => {
-      if (requested) void start();
+      if (requested || (pathname === "/" && !active)) void start();
     });
 
     return () => {
@@ -231,7 +224,9 @@ export default function PreLoader() {
       document.removeEventListener("visibilitychange", visibilityChanged);
       window.removeEventListener(INTRO_REQUEST_EVENT, request);
       window.removeEventListener("pageshow", pageShown);
-      finish();
+      if (pathname !== "/") {
+        finish();
+      }
     };
   }, [pathname]);
 
