@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ShoppingBag, MessageSquareHeart } from "lucide-react";
 import Magnetic from "@/components/Magnetic";
 import PreLoader from "@/components/animations/PreLoader";
+import { INTRO_REQUEST_EVENT } from "@/lib/intro";
 import ThemeSelector from "@/components/ThemeSelector";
 import { useStore } from "@/components/StoreProvider";
 import { FeedbackDrawer, ToastNotification } from "@/components/feedback";
@@ -21,6 +22,12 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { totalItems, openBag } = useStore();
   const reducedMotion = useReducedMotion();
+
+  const replayHomeIntro = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== "/" || event.currentTarget.pathname !== "/") return;
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    window.dispatchEvent(new Event(INTRO_REQUEST_EVENT));
+  };
 
   const isCurrent = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -40,6 +47,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <Link
           className={`wordmark ${styles.wordmarkLink}`}
           href="/"
+          onClick={replayHomeIntro}
           aria-label="Rouse Station home"
         >
           <Magnetic strength={0.25} className={styles.wordmarkLogoMagnetic}>
@@ -71,6 +79,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
               <Link
                 key={page.href}
                 href={page.href}
+                onClick={replayHomeIntro}
                 aria-current={active ? "page" : undefined}
               >
                 {page.label}
@@ -120,7 +129,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <div className={styles.footerMain}>
           <nav aria-label="Footer navigation">
             {customerPages.map((page) => (
-              <Link key={page.href} href={page.href}>
+              <Link key={page.href} href={page.href} onClick={replayHomeIntro}>
                 {page.label}
               </Link>
             ))}

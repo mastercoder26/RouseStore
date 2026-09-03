@@ -1,4 +1,5 @@
 export const INTRO_REVEAL_EVENT = "rouse:intro-reveal";
+export const INTRO_REQUEST_EVENT = "rouse:intro-request";
 
 // Opt in before the first paint so the storefront never flashes behind the
 // opening. Without JS the dialog stays hidden and the store remains available.

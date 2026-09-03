@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { INTRO_REVEAL_EVENT } from "@/lib/intro";
+import { INTRO_REQUEST_EVENT, INTRO_REVEAL_EVENT } from "@/lib/intro";
 import styles from "./PreLoader.module.css";
 
 // Hard cuts keep the handmade character of the reference. The paper mark gets
@@ -30,11 +30,17 @@ export default function PreLoader() {
     const root = document.documentElement;
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let animations: Animation[] = [];
-    let timers: number[] = [];
     let active = false;
+    let ready = false;
+    let requested = pathname === "/";
     let revealed = false;
     let generation = 0;
     let frameRequest = 0;
+    let watchdog = 0;
+    let elapsed = 0;
+    let previousTime: number | null = null;
+    let visibleFrame = -1;
+    const frames = Array.from(dialog.querySelectorAll<HTMLElement>("[data-intro-frame]"));
 
     const reveal = (animate: boolean) => {
       if (revealed) return;
@@ -45,10 +51,10 @@ export default function PreLoader() {
     const finish = () => {
       if (!active) return;
       active = false;
+      ready = false;
       generation += 1;
       window.cancelAnimationFrame(frameRequest);
-      timers.forEach(window.clearTimeout);
-      timers = [];
+      window.clearTimeout(watchdog);
       root.removeAttribute("data-rouse-intro");
       // Native dialog releases focus and background interaction on close.
       if (dialog.open) dialog.close();
@@ -61,8 +67,41 @@ export default function PreLoader() {
     const animate = (element: Element | null, frames: Keyframe[], options: KeyframeAnimationOptions) => {
       if (!element) return;
       const animation = element.animate(frames, { fill: "both", ...options });
+      // One visible-time clock drives every effect, including the curtain.
+      animation.pause();
+      animation.currentTime = 0;
       animations.push(animation);
       return animation;
+    };
+
+    const tick = (now: number) => {
+      if (!active || !ready || document.hidden) return;
+      // Do not skip logos after a dropped frame or a busy browser main thread.
+      if (previousTime !== null) elapsed += Math.min(now - previousTime, 80);
+      previousTime = now;
+      let index = 0;
+      FRAMES.forEach((frame, candidate) => {
+        if (elapsed >= frame.at) index = candidate;
+      });
+      if (index !== visibleFrame) {
+        frames.forEach((frame, candidate) => { frame.hidden = candidate !== index; });
+        visibleFrame = index;
+      }
+      animations.forEach(animation => { animation.currentTime = elapsed; });
+      if (elapsed >= REVEAL_AT) reveal(true);
+      if (elapsed >= DURATION) finish();
+      else frameRequest = window.requestAnimationFrame(tick);
+    };
+
+    const resume = () => {
+      if (!active || document.hidden) return;
+      previousTime = null;
+      window.clearTimeout(watchdog);
+      watchdog = window.setTimeout(finish, 10000);
+      if (ready) {
+        window.cancelAnimationFrame(frameRequest);
+        frameRequest = window.requestAnimationFrame(tick);
+      }
     };
 
     const start = async () => {
@@ -72,39 +111,25 @@ export default function PreLoader() {
       }
       // A background tab must wait until its first visible visit to play.
       if (document.hidden) return;
+      requested = false;
       active = true;
+      ready = false;
       revealed = false;
+      elapsed = 0;
+      previousTime = null;
+      visibleFrame = 0;
+      frames.forEach((frame, index) => { frame.hidden = index !== 0; });
       const run = ++generation;
-      root.setAttribute("data-rouse-intro", "pending");
+      root.setAttribute("data-rouse-intro", "loading");
 
       try {
         dialog.showModal();
         // Failed assets or an interrupted animation must never hold the store closed.
-        timers.push(window.setTimeout(finish, 4500));
+        resume();
         const images = Array.from(dialog.querySelectorAll("img"));
         await Promise.all(images.map(image => image.decode()));
         if (!active || run !== generation) return;
         root.setAttribute("data-rouse-intro", "playing");
-
-        const frames = Array.from(dialog.querySelectorAll<HTMLElement>("[data-intro-frame]"));
-        const startedAt = performance.now();
-        let visibleFrame = -1;
-        const flipFrame = (now: number) => {
-          if (!active || run !== generation) return;
-          const elapsed = now - startedAt;
-          let index = 0;
-          FRAMES.forEach((frame, candidate) => {
-            if (elapsed >= frame.at) index = candidate;
-          });
-          // Keep exactly one decoded logo visible, without overlapping opacity
-          // animations or a blank frame between the handmade styles.
-          if (index !== visibleFrame) {
-            frames.forEach((frame, candidate) => { frame.hidden = candidate !== index; });
-            visibleFrame = index;
-          }
-          if (index < FRAMES.length - 1) frameRequest = window.requestAnimationFrame(flipFrame);
-        };
-        flipFrame(startedAt);
 
         animate(dialog.querySelector("[data-intro-mark]"), [
           { transform: "scale(.96)" }, { transform: "scale(1)" },
@@ -123,7 +148,7 @@ export default function PreLoader() {
           { transform: "translateY(-101%)" }, { transform: "translateY(0)" },
         ], { duration: 580, delay: 1510, easing: EASE });
 
-        const curtain = animate(dialog.querySelector("[data-intro-stage]"), [
+        animate(dialog.querySelector("[data-intro-stage]"), [
           { transform: "translateY(0)" }, { transform: "translateY(-100%)" },
         ], { duration: DURATION - REVEAL_AT, delay: REVEAL_AT, easing: EASE });
 
@@ -133,8 +158,8 @@ export default function PreLoader() {
           ], { duration: DURATION - REVEAL_AT, delay: REVEAL_AT, easing: EASE });
         });
 
-        timers.push(window.setTimeout(() => reveal(true), REVEAL_AT));
-        if (curtain) curtain.onfinish = finish;
+        ready = true;
+        resume();
       } catch {
         finish();
       }
@@ -142,27 +167,47 @@ export default function PreLoader() {
 
     const preferenceChanged = () => { if (motionPreference.matches) finish(); };
     const visibilityChanged = () => {
-      if (document.hidden) finish();
-      else if (root.hasAttribute("data-rouse-intro")) void start();
+      if (document.hidden) {
+        window.cancelAnimationFrame(frameRequest);
+        window.clearTimeout(watchdog);
+        previousTime = null;
+      } else if (active) resume();
+      else if (requested) void start();
+    };
+    const request = () => {
+      if (pathname !== "/" || active) return;
+      requested = true;
+      void start();
+    };
+    const pageShown = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        finish();
+        request();
+      }
     };
     const cancel = (event: Event) => { event.preventDefault(); finish(); };
+    const closed = () => { if (!dialog.open) finish(); };
     dialog.addEventListener("cancel", cancel);
-    dialog.addEventListener("close", finish);
+    dialog.addEventListener("close", closed);
     motionPreference.addEventListener("change", preferenceChanged);
     document.addEventListener("visibilitychange", visibilityChanged);
+    window.addEventListener(INTRO_REQUEST_EVENT, request);
+    window.addEventListener("pageshow", pageShown);
 
     // Keep Strict Mode's setup/cleanup probe from consuming the first visit.
     // The head bootstrap already paints the opening frame while this waits.
     const startFrame = window.requestAnimationFrame(() => {
-      if (root.hasAttribute("data-rouse-intro")) void start();
+      if (requested) void start();
     });
 
     return () => {
       window.cancelAnimationFrame(startFrame);
       dialog.removeEventListener("cancel", cancel);
-      dialog.removeEventListener("close", finish);
+      dialog.removeEventListener("close", closed);
       motionPreference.removeEventListener("change", preferenceChanged);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      window.removeEventListener(INTRO_REQUEST_EVENT, request);
+      window.removeEventListener("pageshow", pageShown);
       finish();
     };
   }, [pathname]);
