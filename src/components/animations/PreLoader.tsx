@@ -98,7 +98,9 @@ export default function PreLoader() {
             { opacity: 1, offset: endOffset },
             { opacity: index === FRAMES.length - 1 ? 1 : 0, offset: endOffset },
             { opacity: index === FRAMES.length - 1 ? 1 : 0, offset: 1 },
-          ], { duration: DURATION, easing: "steps(1, end)" });
+          // Repeated offsets make discrete cuts. A global steps easing would
+          // freeze the entire timeline on its first frame until the end.
+          ], { duration: DURATION, easing: "linear" });
         });
 
         animate(dialog.querySelector("[data-intro-mark]"), [
