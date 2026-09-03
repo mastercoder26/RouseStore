@@ -12,6 +12,7 @@
 .drawer {
   position: relative;
   width: min(480px, calc(100vw - 24px));
+  height: calc(100vh - 24px);
   height: calc(100dvh - 24px);
   margin: 12px 12px 12px auto;
   border-radius: var(--radius-lg);
@@ -308,6 +309,7 @@
 @media (max-width: 600px) {
   .drawer {
     width: 100vw;
+    height: 100vh;
     height: 100dvh;
     margin: 0;
     border-radius: 0;

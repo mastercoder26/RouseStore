@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { X, Check, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { PRESET_IMAGES, formatPrice, type Product } from "@/lib/store";
 import ProductVisual from "@/components/ProductVisual";
 
@@ -37,10 +37,20 @@ export default function AdminProductModal({ product, isOpen, onClose, onSave }: 
       modalRef.current?.querySelector<HTMLElement>("input, button")?.focus();
     }, 50);
     return () => {
-      document.body.style.overflow = originalOverflow;
+      const hasOtherModal = Boolean(
+        document.querySelector("dialog[open]:not(#rouse-intro)") ||
+        document.querySelector("[role='dialog']:not([aria-hidden='true'])")
+      );
+      if (!hasOtherModal) {
+        document.body.style.overflow = "";
+      } else if (originalOverflow && originalOverflow !== "hidden") {
+        document.body.style.overflow = originalOverflow;
+      }
       clearTimeout(timer);
       if (previousFocusRef.current && document.contains(previousFocusRef.current)) {
         previousFocusRef.current.focus({ preventScroll: true });
+      } else {
+        document.getElementById("main-content")?.focus({ preventScroll: true });
       }
     };
   }, [isOpen]);
@@ -122,6 +132,7 @@ function AdminProductForm({
   onSave: (productData: Omit<Product, "id"> & { id?: string }) => void;
 }) {
   const isEditing = Boolean(product);
+  const prefersReducedMotion = useReducedMotion();
 
   const [name, setName] = useState(product?.name ?? "");
   const [category, setCategory] = useState(() => {
@@ -196,10 +207,10 @@ function AdminProductForm({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.96, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
+      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       style={{
         width: "100%",
         maxWidth: "960px",

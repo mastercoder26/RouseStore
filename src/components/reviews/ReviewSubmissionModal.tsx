@@ -65,9 +65,19 @@ export default function ReviewSubmissionModal({
       }, 50);
 
       return () => {
-        document.body.style.overflow = prevOverflow;
-        if (previousFocusRef.current && typeof previousFocusRef.current.focus === "function") {
-          previousFocusRef.current.focus();
+        const hasOtherModal = Boolean(
+          document.querySelector("dialog[open]:not(#rouse-intro)") ||
+          document.querySelector("[role='dialog']:not([aria-hidden='true'])")
+        );
+        if (!hasOtherModal) {
+          document.body.style.overflow = "";
+        } else if (prevOverflow && prevOverflow !== "hidden") {
+          document.body.style.overflow = prevOverflow;
+        }
+        if (previousFocusRef.current && document.contains(previousFocusRef.current) && typeof previousFocusRef.current.focus === "function") {
+          previousFocusRef.current.focus({ preventScroll: true });
+        } else {
+          document.getElementById("main-content")?.focus({ preventScroll: true });
         }
       };
     }

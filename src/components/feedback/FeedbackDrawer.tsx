@@ -210,10 +210,20 @@ export function FeedbackDrawer({
     }, 50);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      const hasOtherModal = Boolean(
+        document.querySelector("dialog[open]:not(#rouse-intro)") ||
+        document.querySelector("[role='dialog']:not([aria-hidden='true'])")
+      );
+      if (!hasOtherModal) {
+        document.body.style.overflow = "";
+      } else if (originalOverflow && originalOverflow !== "hidden") {
+        document.body.style.overflow = originalOverflow;
+      }
       clearTimeout(timer);
       if (previousFocusRef.current && document.contains(previousFocusRef.current)) {
         previousFocusRef.current.focus({ preventScroll: true });
+      } else {
+        document.getElementById("main-content")?.focus({ preventScroll: true });
       }
     };
   }, [isDrawerOpen]);

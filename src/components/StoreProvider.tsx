@@ -11,6 +11,7 @@ import React, {
   useSyncExternalStore,
 } from "react";
 
+import { usePathname } from "next/navigation";
 import { CartDrawer } from "@/components/ShopDialogs";
 import { FeedbackDrawer, ToastNotification } from "@/components/feedback";
 import type {
@@ -201,6 +202,17 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
 
   // Feedback Drawer state
   const [feedbackDrawerOpen, setFeedbackDrawerOpen] = useState(false);
+
+  // Automatically dismiss open drawers upon route transitions
+  const pathname = usePathname();
+  const previousPathnameRef = useRef(pathname);
+  useEffect(() => {
+    if (previousPathnameRef.current !== pathname) {
+      previousPathnameRef.current = pathname;
+      setCartOpen(false);
+      setFeedbackDrawerOpen(false);
+    }
+  }, [pathname]);
 
   // Enhanced Toast / Notification state
   const [toast, setToast] = useState<ToastMessage | null>(null);

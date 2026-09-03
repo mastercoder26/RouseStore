@@ -23,13 +23,29 @@ export function AdminPinModal({ onSuccess }: AdminPinModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     inputRef.current?.focus();
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = originalOverflow;
+      const hasOtherModal = Boolean(
+        document.querySelector("dialog[open]:not(#rouse-intro)") ||
+        document.querySelector("[role='dialog']:not([aria-hidden='true'])")
+      );
+      if (!hasOtherModal) {
+        document.body.style.overflow = "";
+      } else if (originalOverflow && originalOverflow !== "hidden") {
+        document.body.style.overflow = originalOverflow;
+      }
+      if (previousFocusRef.current && document.contains(previousFocusRef.current)) {
+        previousFocusRef.current.focus({ preventScroll: true });
+      } else {
+        document.getElementById("main-content")?.focus({ preventScroll: true });
+      }
     };
   }, []);
 

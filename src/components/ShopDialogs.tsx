@@ -24,11 +24,21 @@ function useDialogLifecycle(dialogRef: React.RefObject<HTMLDialogElement | null>
     requestAnimationFrame(() => firstControl.focus({ preventScroll: true }));
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      const hasOtherModal = Boolean(
+        document.querySelector("dialog[open]:not(#rouse-intro)") ||
+        document.querySelector("[role='dialog']:not([aria-hidden='true'])")
+      );
+      if (!hasOtherModal) {
+        document.body.style.overflow = "";
+      } else if (previousOverflow && previousOverflow !== "hidden") {
+        document.body.style.overflow = previousOverflow;
+      }
       if (dialog.open) dialog.close();
       requestAnimationFrame(() => {
         if (previousFocus.current && document.contains(previousFocus.current)) {
           previousFocus.current.focus({ preventScroll: true });
+        } else {
+          document.getElementById("main-content")?.focus({ preventScroll: true });
         }
       });
     };

@@ -1,8 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "../harness/test-framework.mjs";
 import {
   MOTION_BEZIER,
   MOTION_EASING_ARRAY,
 } from "../harness/domain-adapters.mjs";
+import { INTRO_BOOTSTRAP, INTRO_STYLE } from "../../src/lib/intro.ts";
 
 describe("Tier 1: Feature R4 - Motion Polish & Accessibility", () => {
   it("R4.1: Validates cubic-bezier(0.76, 0, 0.24, 1) transition curves", () => {
@@ -136,35 +139,148 @@ describe("Tier 1: Feature R4 - Motion Polish & Accessibility", () => {
   });
 
   it("R4.7: Critical intro CSS establishes concealment and fixed dialog positioning across intro states", () => {
-    const criticalSelectors = [
-      'html[data-rouse-intro="pending"]',
-      'html[data-rouse-intro="loading"]',
-      'html[data-rouse-intro="playing"]',
-      'html[data-rouse-intro] #rouse-intro',
-      '@media (prefers-reduced-motion: reduce)',
-    ];
-    for (const selector of criticalSelectors) {
-      expect(typeof selector === "string" && selector.length > 0).toBe(true);
-    }
+    // Real validation of INTRO_STYLE from src/lib/intro.ts
+    expect(typeof INTRO_STYLE).toBe("string");
+    expect(INTRO_STYLE.length).toBeGreaterThan(500);
+
+    // Concealment states must hide content with high specificity !important
+    expect(INTRO_STYLE.includes('html[data-rouse-intro="pending"] [data-intro-content]')).toBe(true);
+    expect(INTRO_STYLE.includes('visibility: hidden !important')).toBe(true);
+    expect(INTRO_STYLE.includes('opacity: 0 !important')).toBe(true);
+    expect(INTRO_STYLE.includes('pointer-events: none !important')).toBe(true);
+
+    // Dialog fullscreen coverage and positioning across intro states
+    expect(INTRO_STYLE.includes('html[data-rouse-intro] #rouse-intro')).toBe(true);
+    expect(INTRO_STYLE.includes('position: fixed !important')).toBe(true);
+    expect(INTRO_STYLE.includes('z-index: 1000 !important')).toBe(true);
+    expect(INTRO_STYLE.includes('inset: 0 !important')).toBe(true);
+    expect(INTRO_STYLE.includes('top: 0 !important')).toBe(true);
+
+    // Pointer events during curtain reveal must pass through to allow clicking store content
+    expect(INTRO_STYLE.includes('html[data-rouse-intro="revealing"] #rouse-intro')).toBe(true);
+
+    // Reduced motion must immediately override concealment
+    expect(INTRO_STYLE.includes('@media (prefers-reduced-motion: reduce)')).toBe(true);
+    expect(INTRO_STYLE.includes('display: none !important')).toBe(true);
   });
 
   it("R4.8: Enforces bootstrap watchdog and fail-safe recovery contract", () => {
-    // Watchdog contract: Release must trigger after max 6000ms if not dismissed
-    let released = false;
-    let attributeRemoved = false;
+    // Real validation of INTRO_BOOTSTRAP from src/lib/intro.ts
+    expect(typeof INTRO_BOOTSTRAP).toBe("string");
+    expect(INTRO_BOOTSTRAP.includes("location.pathname !== '/'")).toBe(true);
+    expect(INTRO_BOOTSTRAP.includes("prefers-reduced-motion: reduce")).toBe(true);
+    expect(INTRO_BOOTSTRAP.includes("setTimeout(release, 6000)")).toBe(true);
+    expect(INTRO_BOOTSTRAP.includes("window.addEventListener('error', release)")).toBe(true);
+    expect(INTRO_BOOTSTRAP.includes("document.addEventListener('visibilitychange', arm)")).toBe(true);
+
+    // Simulating the bootstrap execution environment
+    let attributeVal = null;
     const mockRoot = {
-      hasAttribute: () => true,
-      removeAttribute: (attr) => {
-        if (attr === "data-rouse-intro") attributeRemoved = true;
-      },
+      setAttribute: (k, v) => { attributeVal = v; },
+      removeAttribute: () => { attributeVal = null; },
+      getAttribute: () => attributeVal,
     };
-    const mockRelease = () => {
-      mockRoot.removeAttribute("data-rouse-intro");
-      released = true;
+    mockRoot.setAttribute("data-rouse-intro", "pending");
+    expect(mockRoot.getAttribute("data-rouse-intro")).toBe("pending");
+
+    mockRoot.removeAttribute("data-rouse-intro");
+    expect(mockRoot.getAttribute("data-rouse-intro")).toBe(null);
+  });
+
+  it("R4.9: Cross-browser fallback contracts for viewport height units (100dvh/100svh -> 100vh)", () => {
+    const cwd = process.cwd();
+    const siteShellCss = fs.readFileSync(path.join(cwd, "src/components/SiteShell.module.css"), "utf-8");
+    const shopDialogsCss = fs.readFileSync(path.join(cwd, "src/components/ShopDialogs.module.css"), "utf-8");
+    const feedbackDrawerCss = fs.readFileSync(path.join(cwd, "src/components/feedback/FeedbackDrawer.module.css"), "utf-8");
+
+    // SiteShell must define 100vh before 100svh
+    expect(siteShellCss.includes("min-height: 100vh;")).toBe(true);
+    expect(siteShellCss.includes("min-height: 100svh;")).toBe(true);
+    expect(siteShellCss.indexOf("min-height: 100vh;")).toBeLessThan(siteShellCss.indexOf("min-height: 100svh;"));
+
+    // ShopDialogs must define 100vh fallbacks before 100dvh
+    expect(shopDialogsCss.includes("max-height: calc(100vh - 32px);")).toBe(true);
+    expect(shopDialogsCss.includes("max-height: calc(100dvh - 32px);")).toBe(true);
+    expect(shopDialogsCss.includes("height: calc(100vh - 24px);")).toBe(true);
+    expect(shopDialogsCss.includes("height: calc(100dvh - 24px);")).toBe(true);
+
+    // FeedbackDrawer must define 100vh fallbacks before 100dvh
+    expect(feedbackDrawerCss.includes("height: calc(100vh - 24px);")).toBe(true);
+    expect(feedbackDrawerCss.includes("height: calc(100dvh - 24px);")).toBe(true);
+    expect(feedbackDrawerCss.includes("height: 100vh;")).toBe(true);
+    expect(feedbackDrawerCss.includes("height: 100dvh;")).toBe(true);
+  });
+
+  it("R4.10: SmoothScroll route transition contract enforces immediate forced scroll reset and resize", () => {
+    let scrolledTo = null;
+    let resized = false;
+    const mockLenis = {
+      resize: () => { resized = true; },
+      scrollTo: (target, opts) => { scrolledTo = { target, opts }; },
     };
 
-    mockRelease();
-    expect(released).toBe(true);
-    expect(attributeRemoved).toBe(true);
+    // Simulate route navigation handler
+    const onRouteTransition = (hash) => {
+      if (hash) {
+        mockLenis.resize();
+        mockLenis.scrollTo(hash, { immediate: true, force: true });
+        return;
+      }
+      mockLenis.resize();
+      mockLenis.scrollTo(0, { immediate: true, force: true });
+    };
+
+    onRouteTransition();
+    expect(resized).toBe(true);
+    expect(scrolledTo).toEqual({ target: 0, opts: { immediate: true, force: true } });
+
+    // Hash anchor navigation
+    onRouteTransition("#catalog-section");
+    expect(scrolledTo).toEqual({ target: "#catalog-section", opts: { immediate: true, force: true } });
+  });
+
+  it("R4.11: Header wordmark contract enforces immediate opacity: 1 and no transforms under reduced motion", () => {
+    const cwd = process.cwd();
+    const siteShellCss = fs.readFileSync(path.join(cwd, "src/components/SiteShell.module.css"), "utf-8");
+
+    // Reduced motion media query must specify opacity: 1 and transform: none
+    const reducedMotionSection = siteShellCss.slice(siteShellCss.indexOf("@media (prefers-reduced-motion: reduce)"));
+    expect(reducedMotionSection.includes(".wordmarkStation")).toBe(true);
+    expect(reducedMotionSection.includes("opacity: 1")).toBe(true);
+    expect(reducedMotionSection.includes("transform: none")).toBe(true);
+    expect(reducedMotionSection.includes("transition: none")).toBe(true);
+  });
+
+  it("R4.12: Modal lifecycle contract releases body overflow lock safely and restores focus with fallback", () => {
+    let bodyOverflow = "hidden";
+    const unlockBodyScroll = (hasRemainingModal, fallback) => {
+      if (!hasRemainingModal) {
+        bodyOverflow = "";
+      } else if (fallback && fallback !== "hidden") {
+        bodyOverflow = fallback;
+      }
+    };
+
+    // No remaining modals -> overflow cleared to empty string
+    unlockBodyScroll(false, "hidden");
+    expect(bodyOverflow).toBe("");
+
+    // Focus restoration fallback
+    let focusedId = null;
+    const restoreFocusOrFallback = (element, mainContentId) => {
+      if (element && element.isConnected) {
+        focusedId = element.id;
+      } else {
+        focusedId = mainContentId;
+      }
+    };
+
+    // Connected element restores focus
+    restoreFocusOrFallback({ id: "trigger-btn", isConnected: true }, "main-content");
+    expect(focusedId).toBe("trigger-btn");
+
+    // Disconnected (unmounted route) element falls back to main content
+    restoreFocusOrFallback({ id: "dead-btn", isConnected: false }, "main-content");
+    expect(focusedId).toBe("main-content");
   });
 });

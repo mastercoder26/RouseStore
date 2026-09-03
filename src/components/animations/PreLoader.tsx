@@ -38,7 +38,7 @@ export default function PreLoader() {
     let animations: Animation[] = [];
     let active = false;
     let ready = false;
-    let requested = pathname === "/";
+    let requested = pathname === "/" && Boolean(root.getAttribute("data-rouse-intro"));
     let revealed = false;
     let generation = 0;
     let frameRequest = 0;

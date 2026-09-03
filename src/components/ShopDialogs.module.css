@@ -44,6 +44,7 @@
 .productDialog {
   width: min(720px, calc(100vw - 32px));
   max-width: 720px;
+  max-height: calc(100vh - 32px);
   max-height: calc(100dvh - 32px);
   overflow: auto;
 }
@@ -258,7 +259,9 @@
 .cartDialog {
   width: min(510px, calc(100vw - 24px));
   max-width: 510px;
+  height: calc(100vh - 24px);
   height: calc(100dvh - 24px);
+  max-height: calc(100vh - 24px);
   max-height: calc(100dvh - 24px);
   margin: 12px 12px 12px auto;
   border-radius: var(--radius-lg);
@@ -491,6 +494,7 @@
 @media (max-width: 640px) {
   .productDialog {
     width: 100vw;
+    max-height: 100vh;
     max-height: 100dvh;
   }
 

@@ -95,11 +95,35 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Scroll to top upon navigating to a new page
+  // Scroll to top upon navigating to a new page, with support for hash targets and forced immediate reset
   useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    if (hash) {
+      const target = document.querySelector(hash);
+      if (target) {
+        if (lenisRef.current) {
+          lenisRef.current.resize();
+          lenisRef.current.scrollTo(hash, { immediate: true, force: true });
+        } else {
+          target.scrollIntoView();
+        }
+        return;
+      }
     }
+    if (lenisRef.current) {
+      lenisRef.current.resize();
+      lenisRef.current.scrollTo(0, { immediate: true, force: true });
+    }
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+
+    const rafId = requestAnimationFrame(() => {
+      if (lenisRef.current) {
+        lenisRef.current.resize();
+      }
+    });
+    return () => cancelAnimationFrame(rafId);
   }, [pathname]);
 
   return (

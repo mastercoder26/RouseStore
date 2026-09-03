@@ -63,6 +63,10 @@ html[data-rouse-intro="playing"] .skip-link {
 html[data-rouse-intro] #rouse-intro {
   display: block !important;
   position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
@@ -80,6 +84,10 @@ html[data-rouse-intro="revealing"] #rouse-intro {
 }
 html[data-rouse-intro] #rouse-intro [data-intro-stage] {
   position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
   inset: 0 !important;
   background: #000 !important;
   -webkit-backface-visibility: hidden !important;
