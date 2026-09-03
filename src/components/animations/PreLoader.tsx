@@ -3,17 +3,17 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { INTRO_REVEAL_EVENT, INTRO_SESSION_KEY } from "@/lib/intro";
+import { INTRO_REVEAL_EVENT } from "@/lib/intro";
 import styles from "./PreLoader.module.css";
 
 // Hard cuts keep the handmade character of the reference. The paper mark gets
 // a longer hold before the single inversion and curtain reveal.
 const FRAMES = [
   { file: "01-chalk-outline", at: 0, scale: 1 },
-  { file: "05-bubble-doodle", at: 340, scale: 0.84 },
-  { file: "02-pencil-scribble", at: 580, scale: 0.96 },
-  { file: "04-halftone-print", at: 820, scale: 0.99 },
-  { file: "03-torn-paper", at: 1080, scale: 1 },
+  { file: "05-bubble-doodle", at: 360, scale: 0.84 },
+  { file: "02-pencil-scribble", at: 650, scale: 0.96 },
+  { file: "04-halftone-print", at: 940, scale: 0.99 },
+  { file: "03-torn-paper", at: 1230, scale: 1 },
 ] as const;
 const REVEAL_AT = 2160;
 const DURATION = 2920;
@@ -34,6 +34,7 @@ export default function PreLoader() {
     let active = false;
     let revealed = false;
     let generation = 0;
+    let frameRequest = 0;
 
     const reveal = (animate: boolean) => {
       if (revealed) return;
@@ -45,6 +46,7 @@ export default function PreLoader() {
       if (!active) return;
       active = false;
       generation += 1;
+      window.cancelAnimationFrame(frameRequest);
       timers.forEach(window.clearTimeout);
       timers = [];
       root.removeAttribute("data-rouse-intro");
@@ -64,20 +66,16 @@ export default function PreLoader() {
     };
 
     const start = async () => {
-      if (active || pathname !== "/" || motionPreference.matches || document.hidden) {
+      if (active || pathname !== "/" || motionPreference.matches) {
         if (!active) root.removeAttribute("data-rouse-intro");
         return;
       }
+      // A background tab must wait until its first visible visit to play.
+      if (document.hidden) return;
       active = true;
       revealed = false;
       const run = ++generation;
       root.setAttribute("data-rouse-intro", "pending");
-
-      try {
-        window.sessionStorage.setItem(INTRO_SESSION_KEY, "1");
-      } catch {
-        // Storage is optional; the current page still plays and exits normally.
-      }
 
       try {
         dialog.showModal();
@@ -88,20 +86,25 @@ export default function PreLoader() {
         if (!active || run !== generation) return;
         root.setAttribute("data-rouse-intro", "playing");
 
-        dialog.querySelectorAll("[data-intro-frame]").forEach((frame, index) => {
-          const startOffset = FRAMES[index].at / DURATION;
-          const endOffset = (FRAMES[index + 1]?.at ?? DURATION) / DURATION;
-          animate(frame, [
-            { opacity: index === 0 ? 1 : 0, offset: 0 },
-            { opacity: 0, offset: startOffset },
-            { opacity: 1, offset: startOffset },
-            { opacity: 1, offset: endOffset },
-            { opacity: index === FRAMES.length - 1 ? 1 : 0, offset: endOffset },
-            { opacity: index === FRAMES.length - 1 ? 1 : 0, offset: 1 },
-          // Repeated offsets make discrete cuts. A global steps easing would
-          // freeze the entire timeline on its first frame until the end.
-          ], { duration: DURATION, easing: "linear" });
-        });
+        const frames = Array.from(dialog.querySelectorAll<HTMLElement>("[data-intro-frame]"));
+        const startedAt = performance.now();
+        let visibleFrame = -1;
+        const flipFrame = (now: number) => {
+          if (!active || run !== generation) return;
+          const elapsed = now - startedAt;
+          let index = 0;
+          FRAMES.forEach((frame, candidate) => {
+            if (elapsed >= frame.at) index = candidate;
+          });
+          // Keep exactly one decoded logo visible, without overlapping opacity
+          // animations or a blank frame between the handmade styles.
+          if (index !== visibleFrame) {
+            frames.forEach((frame, candidate) => { frame.hidden = candidate !== index; });
+            visibleFrame = index;
+          }
+          if (index < FRAMES.length - 1) frameRequest = window.requestAnimationFrame(flipFrame);
+        };
+        flipFrame(startedAt);
 
         animate(dialog.querySelector("[data-intro-mark]"), [
           { transform: "scale(.96)" }, { transform: "scale(1)" },
@@ -138,7 +141,10 @@ export default function PreLoader() {
     };
 
     const preferenceChanged = () => { if (motionPreference.matches) finish(); };
-    const visibilityChanged = () => { if (document.hidden) finish(); };
+    const visibilityChanged = () => {
+      if (document.hidden) finish();
+      else if (root.hasAttribute("data-rouse-intro")) void start();
+    };
     const cancel = (event: Event) => { event.preventDefault(); finish(); };
     dialog.addEventListener("cancel", cancel);
     dialog.addEventListener("close", finish);
@@ -170,8 +176,8 @@ export default function PreLoader() {
         </div>
         <div className={styles.identity} aria-hidden="true">
           <div className={styles.mark} data-intro-mark>
-            {FRAMES.map(frame => (
-              <div key={frame.file} className={styles.frame} data-intro-frame style={{ "--mark-scale": frame.scale } as CSSProperties}>
+            {FRAMES.map((frame, index) => (
+              <div key={frame.file} className={styles.frame} data-intro-frame hidden={index !== 0} style={{ "--mark-scale": frame.scale } as CSSProperties}>
                 <Image src={`/images/intro/${frame.file}.webp`} width={640} height={640} alt="" loading="eager" unoptimized draggable={false} />
               </div>
             ))}

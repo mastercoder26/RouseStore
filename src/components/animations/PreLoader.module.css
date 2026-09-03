@@ -69,11 +69,10 @@
 .frame {
   position: absolute;
   inset: 0;
-  opacity: 0;
   transform: scale(var(--mark-scale, 1));
 }
 
-.frame:first-child { opacity: 1; }
+.frame[hidden] { display: none; }
 .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
 
 .wordmark { display: grid; gap: 10px; margin-top: 12px; opacity: 0; }
