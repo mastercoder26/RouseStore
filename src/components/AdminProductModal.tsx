@@ -147,7 +147,7 @@ function AdminProductForm({
   const [originalPrice, setOriginalPrice] = useState(product?.originalPrice ? product.originalPrice.toString() : "");
   const [tag, setTag] = useState(product?.tag ?? "New Drop");
   const [description, setDescription] = useState(
-    product?.description ?? "Official Rouse Raiders campus gear crafted for durability and school spirit.",
+    product?.description ?? "Rouse High School store product.",
   );
   const [image, setImage] = useState(product?.image ?? PRESET_IMAGES[0].src);
   const [customImage, setCustomImage] = useState(() => {

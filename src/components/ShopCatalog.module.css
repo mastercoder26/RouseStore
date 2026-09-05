@@ -12,6 +12,5 @@
 .resultsBar { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 25px 0; }
 .sort { display: inline-flex; align-items: center; gap: 12px; font: 10px var(--font-mono); color: var(--muted); }
 .sort select { border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 11px; padding: 8px 20px 8px 0; min-height: 40px; }
-.endnote { text-align: center; color: var(--muted); font: 10px var(--font-mono); margin-top: 50px; }
 @media (max-width: 1100px) { .controls { flex-direction: column; align-items: stretch; gap: 18px; } .controls :global(.search-field) { width: 100%; } }
 @media (max-width: 600px) { .catalog { padding-top: 32px; } .heading { padding-bottom: 30px; } .heading h1 { font-size: 54px; } .categories { gap: 6px; } .categories button { padding-inline: 12px; font-size: 10px; min-height: 40px; } .categories button span { display: none; } .resultsBar { gap: 8px; } .resultsBar :global(.results-count) { font-size: 9px; } .sort { gap: 6px; font-size: 9px; } .sort select { font-size: 10px; max-width: 125px; } }

@@ -247,7 +247,7 @@ export default function PreLoader() {
           </div>
           <div className={styles.wordmark} data-intro-wordmark>
             <span>Raider Station</span>
-            <span>For the school day.</span>
+            <span>Rouse High School Student Store</span>
           </div>
         </div>
         <div className={styles.bottomline}>

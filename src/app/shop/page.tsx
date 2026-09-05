@@ -4,9 +4,9 @@ import ShopCatalog from "@/components/ShopCatalog";
 
 export const metadata: Metadata = {
   title: "Shop | Raider Station",
-  description: "Need a pen, a snack, or a new hoodie? Shop school supplies, snacks, and Raider gear for your day at Rouse.",
+  description: "Shop school supplies, snacks, accessories, and Rouse High School spirit wear.",
 };
 
 export default function ShopPage() {
-  return <Suspense fallback={<p className="catalog-loading" role="status">Getting the good stuff ready…</p>}><ShopCatalog /></Suspense>;
+  return <Suspense fallback={<p className="catalog-loading" role="status">Loading products…</p>}><ShopCatalog /></Suspense>;
 }

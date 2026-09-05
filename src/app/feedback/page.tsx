@@ -127,11 +127,11 @@ export default function FeedbackPage() {
       <div className={styles.contentWrap}>
         <header className={styles.pageHeader}>
           <div className={styles.headerPill}>
-            <MessageSquareHeart size={14} /> Your say
+            <MessageSquareHeart size={14} /> Feedback
           </div>
-          <h1 className={styles.heading}>What’s on<br />your mind?</h1>
+          <h1 className={styles.heading}>Store<br />feedback</h1>
           <p className={styles.subheading}>
-            A size you’re missing? An idea for the store? We’re all ears. Share feedback or a grievance below.
+            Share a product request, suggestion, or issue with the student store.
           </p>
         </header>
 

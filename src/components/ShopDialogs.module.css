@@ -427,7 +427,6 @@
   margin-top: 24px;
 }
 
-.emptyMark { font-size: 76px; color: var(--maroon); }
 .emptyState p { margin-top: 15px; color: var(--muted); font-size: 13px; }
 .cartNote { font-size: 11px; line-height: 1.6; color: var(--muted); margin-top: 13px; text-align: center; }
 .cartDialog .primaryButton { min-height: 56px; box-shadow: 2px 3px 0 var(--ink); text-transform: none; font-weight: 500; letter-spacing: 0; font-size: 14px; }

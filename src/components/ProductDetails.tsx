@@ -229,7 +229,7 @@ export default function ProductDetails({ product }: { product: Product }) {
 
             <Accordion
               name="pickup"
-              title="Shopping with Rouse"
+              title="Store information"
               open={openAccordion === "pickup"}
               onToggle={() => setOpenAccordion(openAccordion === "pickup" ? null : "pickup")}
             >
@@ -248,7 +248,7 @@ export default function ProductDetails({ product }: { product: Product }) {
       {fallbackRelated.length > 0 && (
         <section className={styles.related} aria-labelledby="related-heading">
           <div className={styles.relatedHeading}>
-            <div><span className="eyebrow">Good together</span><h2 id="related-heading">A little more for your rotation.</h2></div>
+            <h2 id="related-heading">Related products</h2>
             <Link href="/shop" className="text-link">Shop all <ArrowUpRight size={17} /></Link>
           </div>
           <div className="product-grid">{fallbackRelated.slice(0, 3).map(item => <ProductCard key={item.id} product={item} />)}</div>

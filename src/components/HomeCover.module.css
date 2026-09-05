@@ -4,9 +4,8 @@
 .topline { display: flex; justify-content: space-between; font: 10px var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
 .brand { position: relative; width: fit-content; margin: 6px auto 0; color: var(--maroon); font-family: var(--font-brand), Georgia, serif; font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 1; font-size: clamp(100px, 24.6vw, 350px); line-height: 1.03; letter-spacing: -.08em; padding-right: .065em; }
 .brandStar { position: absolute; right: -.13em; top: .2em; font: .13em var(--font-sans); transform: rotate(14deg); }
-.heroBottom { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 10px 0 48px; }
-.heroBottom > p { text-align: center; font: clamp(28px, 3.3vw, 48px)/1.06 var(--font-display); letter-spacing: -.035em; }
-.schoolStamp { font: 11px/1.6 var(--font-mono); color: var(--muted); }
+.heroBottom { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 10px 0 48px; }
+.heroBottom > p { max-width: 560px; font: clamp(28px, 3.3vw, 48px)/1.06 var(--font-display); letter-spacing: -.035em; }
 .explore { justify-self: end; display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid var(--ink); border-radius: 50%; transition: background 180ms; }
 .explore:hover { background: var(--accent); color: var(--accent-ink); }
 .featured { padding-bottom: 88px; scroll-margin-top: 120px; }
@@ -21,14 +20,12 @@
 .campaignCopy { padding: clamp(30px, 5vw, 80px); display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .oval { display: inline-flex; border: 1px solid currentColor; padding: 7px 17px; border-radius: 50%; font: 10px var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
 .campaignCopy h2 { font: clamp(38px, 4.5vw, 68px)/1 var(--font-display); letter-spacing: -.035em; margin: 25px 0; }
-.campaignCopy p { max-width: 330px; font-size: 14px; line-height: 1.7; color: var(--footer-muted); }
-.collectionLink { display: inline-flex; align-items: center; gap: 22px; min-height: 44px; margin-top: 28px; padding-block: 10px; color: var(--footer-text); border-bottom: 1px solid currentColor; font-size: 14px; text-underline-offset: 5px; }
+.collectionLink { display: inline-flex; align-items: center; gap: 22px; min-height: 44px; padding-block: 10px; color: var(--footer-text); border-bottom: 1px solid currentColor; font-size: 14px; text-underline-offset: 5px; }
 .collectionLink:hover { text-decoration: underline; }
 .collectionLink:focus-visible { outline-color: var(--footer-text); }
-.campaignNote { margin-top: 28px; font: 10px/1.5 var(--font-mono); color: var(--footer-muted); }
 .categories { padding-block: 90px; }
 .categoryHeading { text-align: center; margin-bottom: 40px; }
-.categoryHeading h2 { font: clamp(38px, 5vw, 68px)/1.1 var(--font-display); letter-spacing: -.035em; margin-top: 14px; }
+.categoryHeading h2 { font: clamp(38px, 5vw, 68px)/1.1 var(--font-display); letter-spacing: -.035em; }
 .categoryGrid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; }
 .categoryCard { border: 1px solid var(--line); border-radius: 24px; overflow: hidden; background: var(--bg-card); }
 .categoryImage { position: relative; aspect-ratio: 1.25; overflow: hidden; }
@@ -36,10 +33,10 @@
 .categoryCard:hover img { transform: scale(1.03); }
 .categoryCaption { padding: 25px 28px; display: flex; justify-content: space-between; align-items: center; }
 .categoryCaption span, .snackCard > span { font: 10px var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
-.categoryCaption h3 { font: 39px var(--font-display); margin-top: 5px; }
+.categoryCaption h3 { font: 39px var(--font-display); }
 .categoryAside { display: grid; grid-template-rows: 1fr auto; gap: 24px; }
 .accessoriesCard { position: relative; padding: 30px; background: var(--accent); color: var(--accent-ink); border: 1px solid var(--ink); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; min-height: 310px; }
-.accessoriesCard h3 { position: relative; z-index: 1; font: clamp(32px, 3.7vw, 53px)/1.05 var(--font-display); letter-spacing: -.025em; margin-top: 22px; }
+.accessoriesCard h3 { position: relative; z-index: 1; font: clamp(32px, 3.7vw, 53px)/1.05 var(--font-display); letter-spacing: -.025em; }
 .categoryAction { display: flex; width: 100%; align-items: center; justify-content: space-between; border-top: 1px solid #591f2d55; margin-top: auto; padding-top: 15px; font-size: 12px; position: relative; z-index: 1; }
 .largeR { position: absolute; font: 900 215px/.9 var(--font-brand), Georgia, serif; right: 26px; top: 35px; opacity: .14; transform: rotate(12deg); }
 .largeR span { position: absolute; top: 0; right: -12px; font-size: 70px; }
@@ -47,7 +44,6 @@
 .snackCard h3 { font: 38px var(--font-display); margin-top: 4px; }
 .snackCard > svg { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); }
 .community { border-top: 1px solid var(--line); text-align: center; padding: 55px var(--gutter) 72px; }
-.communityMark { color: var(--maroon); display: block; font-size: 58px; line-height: 1; margin-bottom: 25px; }
 .community h2 { font: clamp(37px, 5vw, 65px)/1.05 var(--font-display); letter-spacing: -.03em; }
 .community p { color: var(--muted); margin: 22px auto 18px; font-size: 13px; line-height: 1.6; }
 @media (min-width: 1500px) { .campaign { max-width: 1320px; margin-inline: auto; } }
@@ -57,9 +53,8 @@
   .topline { font-size: 8px; letter-spacing: 0; }
   .topline > span:last-child { display: none; }
   .brand { font-size: 24vw; margin-top: 14px; }
-  .heroBottom { grid-template-columns: 1fr auto; gap: 10px; padding: 15px 0 35px; }
-  .heroBottom > p { text-align: left; font-size: clamp(30px, 6vw, 42px); grid-column: 1; grid-row: 1; }
-  .schoolStamp { display: none; }
+  .heroBottom { gap: 10px; padding: 15px 0 35px; }
+  .heroBottom > p { font-size: clamp(30px, 6vw, 42px); }
   .explore { width: 44px; height: 44px; }
   .sectionTop h2, .sectionTop > span { font-size: 9px; }
   .featured { padding-bottom: 48px; }

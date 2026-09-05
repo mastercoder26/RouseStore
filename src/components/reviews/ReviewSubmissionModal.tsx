@@ -375,7 +375,7 @@ export default function ReviewSubmissionModal({
               name="title"
               type="text"
               className={`${styles.formInput} ${errors.title ? styles.formInputError : ""}`}
-              placeholder="e.g. Unreal fleece quality & warm for playoff games!"
+              placeholder="Summarize your review"
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
@@ -406,7 +406,7 @@ export default function ReviewSubmissionModal({
               id="review-comment"
               name="comment"
               className={`${styles.formTextarea} ${errors.comment ? styles.formInputError : ""}`}
-              placeholder="Tell other students about sizing fit, fabric comfort, durability, or matchday feel..."
+              placeholder="Describe the fit, comfort, quality, or durability."
               rows={4}
               value={comment}
               onChange={(e) => {
@@ -436,7 +436,7 @@ export default function ReviewSubmissionModal({
           {/* Recommendation Toggle */}
           <div className={styles.formField}>
             <label className={styles.formFieldLabel}>
-              Would you recommend this gear to other Raiders?
+              Would you recommend this product?
             </label>
             <div className={styles.radioGroup} role="radiogroup" aria-label="Recommend gear">
               <label

@@ -177,18 +177,18 @@ export function CartDrawer({
       onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className={styles.drawerContent}>
         <div className={styles.drawerHeader}>
-          <div><span className={styles.eyebrow}>A few good choices</span><h2 id="cart-dialog-title" className={styles.drawerTitle}>{checkoutStep === "summary" ? "The roundup." : "Your bag."} <span>({itemCount})</span></h2></div>
+          <div><span className={styles.eyebrow}>Shopping bag</span><h2 id="cart-dialog-title" className={styles.drawerTitle}>{checkoutStep === "summary" ? "Review bag" : "Your bag"} <span>({itemCount})</span></h2></div>
           <DialogCloseButton onClose={close} label="Close bag" autoFocus />
         </div>
         {cart.length === 0 ? (
-          <div className={styles.emptyState}><span className={styles.emptyMark} aria-hidden="true">✳</span><h3>Room for something good.</h3><p>Your bag is empty. Let’s change that.</p><button type="button" className={styles.secondaryButton} onClick={close}>Keep exploring <span aria-hidden="true">↗</span></button></div>
+          <div className={styles.emptyState}><h3>Your bag is empty</h3><button type="button" className={styles.secondaryButton} onClick={close}>Continue shopping <span aria-hidden="true">↗</span></button></div>
         ) : checkoutStep === "summary" ? (
           <>
             <button type="button" className={styles.backButton} onClick={() => setCheckoutStep("cart")} data-dialog-autofocus><ArrowLeft size={16} /> Back to bag</button>
             <p className={styles.summaryNotice}>Online checkout is not available yet. No order has been placed.</p>
             <div className={styles.summaryItems} role="list" aria-label="Bag summary">{cart.map(item => <div className={styles.summaryItem} role="listitem" key={`${item.id}-${item.selectedSize ?? ""}`}><span>{item.name}{item.selectedSize ? ` · ${item.selectedSize}` : ""}</span><span>{item.quantity} × {formatPrice(item.price)}</span></div>)}</div>
             <div className={styles.totals}><div className={styles.totalLine}><strong>Bag total</strong><strong>{formatPrice(subtotal)}</strong></div></div>
-            <button type="button" className={styles.primaryButton} onClick={close}>Keep exploring <span aria-hidden="true">↗</span></button>
+            <button type="button" className={styles.primaryButton} onClick={close}>Continue shopping <span aria-hidden="true">↗</span></button>
           </>
         ) : (
           <>
@@ -205,7 +205,7 @@ export function CartDrawer({
                 </div>
               </div>
             ))}</div>
-            <div className={styles.totals}><div className={styles.totalLine}><strong>Subtotal</strong><strong>{formatPrice(subtotal)}</strong></div><p className={styles.cartNote}>Just browsing? Your bag is saved on this device.</p></div>
+            <div className={styles.totals}><div className={styles.totalLine}><strong>Subtotal</strong><strong>{formatPrice(subtotal)}</strong></div><p className={styles.cartNote}>Bag contents are saved on this device.</p></div>
             <button type="button" className={styles.primaryButton} onClick={() => setCheckoutStep("summary")}>Review bag <span aria-hidden="true">↗</span></button>
             <p className={styles.cartNote}>Demo store. No payment or order will be placed.</p>
           </>

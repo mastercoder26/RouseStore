@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Plus, Search, MessageSquare, Sparkles } from "lucide-react";
+import { Plus, Search, MessageSquare } from "lucide-react";
 import type { Product } from "@/types/product";
 import { useReviews } from "@/components/StoreProvider";
 import RatingBreakdownBars from "./RatingBreakdownBars";
@@ -96,7 +96,7 @@ export default function ProductReviewsSection({
       <div className={styles.reviewsHeader}>
         <div>
           <div className={styles.reviewsEyebrow}>
-            <Sparkles size={12} /> Raider Community Feedback
+            Customer reviews
           </div>
           <h2 id="reviews-section-heading" className={styles.reviewsTitle}>
             Ratings & Reviews
@@ -169,12 +169,12 @@ export default function ProductReviewsSection({
               <div className={styles.emptyReviewsTitle}>
                 {selectedRating !== null || searchQuery
                   ? "No matching reviews found"
-                  : "No reviews yet for this gear"}
+                  : "No reviews yet"}
               </div>
               <p className={styles.emptyReviewsText}>
                 {selectedRating !== null || searchQuery
                   ? "Try searching for a different keyword or resetting your star filter."
-                  : "Be the first Raider student to share your thoughts, sizing feedback, and gear impressions!"}
+                  : "Write the first review for this product."}
               </p>
 
               {selectedRating !== null || searchQuery ? (

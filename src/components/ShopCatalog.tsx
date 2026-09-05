@@ -35,23 +35,21 @@ export default function ShopCatalog() {
   return (
     <section className={styles.catalog} id="catalog-section" aria-labelledby="catalog-heading">
       <div className={styles.heading}>
-        <span className="eyebrow">The Rouse collection</span>
-        <h1 id="catalog-heading">Your daily <em>rotation.</em></h1>
-        <p>A little gear. A few essentials. All Rouse.</p>
+        <h1 id="catalog-heading">Shop</h1>
+        <p>School supplies, snacks, accessories, and spirit wear.</p>
       </div>
       <div className={styles.controls}>
         <div className={styles.categories} role="group" aria-label="Product categories">
           {categories.map(item => <button key={item} type="button" aria-pressed={category === item} onClick={() => selectCategory(item)}>{item === "All items" ? "Shop all" : item}<span>{item === "All items" ? products.length : products.filter(product => product.category === item).length}</span></button>)}
         </div>
-        <label className="search-field"><Search size={17} aria-hidden="true" /><input type="search" placeholder="Find your thing" aria-label="Search products" value={query} onChange={event => setQuery(event.target.value)} /></label>
+        <label className="search-field"><Search size={17} aria-hidden="true" /><input type="search" placeholder="Search products" aria-label="Search products" value={query} onChange={event => setQuery(event.target.value)} /></label>
       </div>
       <div className={styles.resultsBar}>
-        <p className="results-count" role="status" aria-live="polite">{filteredProducts.length} {filteredProducts.length === 1 ? "good thing" : "good things"}{category !== "All items" ? ` in ${category}` : " to make your day"}</p>
+        <p className="results-count" role="status" aria-live="polite">{filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}{category !== "All items" ? ` in ${category}` : ""}</p>
         <label className={styles.sort}>Sort by<select value={sort} onChange={event => setSort(event.target.value)} aria-label="Sort products"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select></label>
       </div>
       <div className="product-grid" id="products-grid">{filteredProducts.map(product => <ProductCard key={product.id} product={product} />)}</div>
-      {!filteredProducts.length && <div className="empty-results"><h2>Nothing here. Yet.</h2><p>Try another search or take a look at everything.</p><button type="button" className="pill-link" onClick={() => { setQuery(""); selectCategory("All items"); }}>Clear filters <X size={16} /></button></div>}
-      <p className={styles.endnote}>You made it to the bottom. Good taste.</p>
+      {!filteredProducts.length && <div className="empty-results"><h2>No products found</h2><p>Try another search or clear the current filters.</p><button type="button" className="pill-link" onClick={() => { setQuery(""); selectCategory("All items"); }}>Clear filters <X size={16} /></button></div>}
     </section>
   );
 }

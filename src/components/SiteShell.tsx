@@ -27,7 +27,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     <div className={styles.shell}>
       <PreLoader />
       <a className="skip-link" href="#main-content" data-intro-content>Skip to content</a>
-      <div className={styles.announcement} role="region" aria-label="Store announcement" data-intro-content><span>For the school day. And everything after.</span><span aria-hidden="true">Go Raiders ✳</span></div>
+      <div className={styles.announcement} role="region" aria-label="Store announcement" data-intro-content>Rouse High School Student Store</div>
       <header className={styles.header} data-intro-content>
         <Link className={styles.wordmark} href="/" onClick={replayHomeIntro} aria-label="Rouse Station home">
           <span className={styles.wordmarkName}>ROUSE</span>
@@ -35,19 +35,18 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         </Link>
         <nav className={styles.navigation} aria-label="Main customer navigation">
           <Link href="/shop" aria-current={pathname.startsWith("/shop") ? "page" : undefined}>Shop</Link>
-          <Link href="/feedback" aria-current={pathname === "/feedback" ? "page" : undefined}>Your say</Link>
+          <Link href="/feedback" aria-current={pathname === "/feedback" ? "page" : undefined}>Feedback</Link>
         </nav>
         <button type="button" className={styles.bagButton} onClick={openBag} aria-label={`Open shopping bag, ${displayedItems} ${displayedItems === 1 ? "item" : "items"}`}><ShoppingBag size={17} strokeWidth={1.5} /><span>Bag</span><span className={styles.bagCount}>{displayedItems}</span></button>
       </header>
       <main id="main-content" className={styles.main} tabIndex={-1} data-intro-content>{children}</main>
       <footer className={styles.footer} data-intro-content>
         <div className={styles.footerTop}>
-          <div><span className={styles.footerEyebrow}>Your Rouse. Your station.</span><p>See you around,<br /><em>Raider.</em></p></div>
-          <div className={styles.footerLinks}><span>Take a look</span><Link href="/shop">Shop everything <ArrowUpRight size={15} /></Link><Link href="/feedback">Feedback & grievances <ArrowUpRight size={15} /></Link><a href="https://rhs.leanderisd.org/" target="_blank" rel="noopener noreferrer">Rouse High School <ArrowUpRight size={15} /></a></div>
-          <div className={styles.footerAside}><span>Make yourself at home.</span><ThemeSelector /><Link href="/admin">Staff admin <ArrowUpRight size={13} /></Link></div>
+          <div><span className={styles.footerEyebrow}>Rouse High School</span><p>Raider<br /><em>Station</em></p></div>
+          <div className={styles.footerLinks}><span>Links</span><Link href="/shop">Shop <ArrowUpRight size={15} /></Link><Link href="/feedback">Feedback <ArrowUpRight size={15} /></Link><a href="https://rhs.leanderisd.org/" target="_blank" rel="noopener noreferrer">Rouse High School <ArrowUpRight size={15} /></a></div>
+          <div className={styles.footerAside}><span>Theme</span><ThemeSelector /><Link href="/admin">Staff admin <ArrowUpRight size={13} /></Link></div>
         </div>
-        <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Rouse Station</span><span>Maroon & gold, through and through.</span><span>Demo store · No online checkout</span></div>
-        <div className={styles.signature}><p>RAIDERS</p></div>
+        <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Rouse Station</span><span>Demo store · No online checkout</span></div>
       </footer>
     </div>
   );

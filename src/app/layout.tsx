@@ -14,9 +14,8 @@ const brand = Fraunces({ subsets: ["latin"], variable: "--font-brand", display: 
 
 export const metadata: Metadata = {
   icons: { icon: "/images/rouse-school-mark.png", apple: "/images/rouse-school-mark.png" },
-  title: "Raider Station | Your Rouse Student Store",
-  description:
-    "Your school-day essentials, Rouse. Browse school supplies, snacks, and Raider gear at Raider Station, your student store.",
+  title: "Raider Station | Rouse High School Student Store",
+  description: "Shop school supplies, snacks, accessories, and Rouse High School spirit wear.",
   keywords: [
     "Raider Station",
     "Rouse High School",
@@ -28,8 +27,8 @@ export const metadata: Metadata = {
     "School Supplies",
   ],
   openGraph: {
-    title: "Raider Station | Your Rouse Student Store",
-    description: "For the school day. School supplies, snacks, and Raider gear for Rouse students.",
+    title: "Raider Station | Rouse High School Student Store",
+    description: "Shop school supplies, snacks, accessories, and Rouse High School spirit wear.",
     url: "https://rouse-store-seven.vercel.app",
     siteName: "Raider Station",
     type: "website",
