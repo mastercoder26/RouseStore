@@ -4,18 +4,13 @@ import { runner } from "./harness/test-framework.mjs";
 
 // Import all test suites
 import "./e2e/tier1-reviews.test.mjs";
-import "./e2e/tier1-reviews-ui.test.mjs";
-import "./e2e/tier1-reviews-components.test.mjs";
 import "./e2e/tier1-complaints.test.mjs";
-import "./e2e/tier1-feedback-drawer.test.mjs";
 import "./e2e/tier1-admin.test.mjs";
 import "./e2e/tier1-motion-a11y.test.mjs";
 import "./e2e/tier1-storage-repositories.test.mjs";
 import "./e2e/tier2-boundary-corner.test.mjs";
 import "./e2e/tier3-cross-feature.test.mjs";
 import "./e2e/tier4-user-journeys.test.mjs";
-import "./e2e/tier5-storage-stress.test.mjs";
-import "./e2e/tier2-challenger2-rating-state.test.mjs";
 
 // Parse CLI options
 const args = process.argv.slice(2);

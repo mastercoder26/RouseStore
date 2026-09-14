@@ -134,7 +134,7 @@ export function AdminComplaintsTab() {
   const handleReset = () => {
     if (
       window.confirm(
-        "Reset complaints inbox to authentic seed dataset? All newly submitted student grievances will be restored."
+        "Reset feedback inbox to initial demo data? All newly submitted feedback will be restored."
       )
     ) {
       resetComplaints();
@@ -162,9 +162,9 @@ export function AdminComplaintsTab() {
       {/* Action Bar */}
       <div className={styles.actionBar}>
         <div className={styles.actionHeading}>
-          <h2 className={styles.tabTitle}>Complaints & Support Inbox</h2>
+          <h2 className={styles.tabTitle}>Feedback Inbox</h2>
           <p className={styles.tabSubtitle}>
-            Triage student grievances, track item exchanges, coordinate kiosk resolution, and maintain internal staff notes.
+            Review customer feedback, item requests, and staff notes.
           </p>
         </div>
 
@@ -172,7 +172,7 @@ export function AdminComplaintsTab() {
           type="button"
           className={styles.secondaryBtn}
           onClick={handleReset}
-          title="Restore authentic seed complaints"
+          title="Restore authentic seed feedback"
         >
           <RotateCcw size={14} />
           <span>Reset Inbox</span>
@@ -250,7 +250,7 @@ export function AdminComplaintsTab() {
             className={styles.selectDropdown}
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            aria-label="Filter by grievance category"
+            aria-label="Filter by feedback category"
           >
             <option value="all">All Categories</option>
             {CATEGORY_OPTIONS.map((cat) => (
@@ -276,10 +276,10 @@ export function AdminComplaintsTab() {
             <Search size={14} />
             <input
               type="search"
-              placeholder="Search grievances..."
+              placeholder="Search feedback..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Search complaints"
+              aria-label="Search feedback"
             />
           </label>
         </div>

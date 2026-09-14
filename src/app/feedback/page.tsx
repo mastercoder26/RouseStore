@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
-  MessageSquareHeart,
+  MessageSquare,
   Package,
-  Sparkles,
+  Tag,
   AlertTriangle,
   HelpCircle,
   CheckCircle2,
@@ -33,7 +33,7 @@ const CATEGORIES: { id: ComplaintCategory; label: string; icon: typeof Package; 
   {
     id: "Sizing / Stock Request",
     label: "Sizing & Stock",
-    icon: Sparkles,
+    icon: Tag,
     desc: "Request out-of-stock sizes or new gear restocks",
   },
   {
@@ -127,7 +127,7 @@ export default function FeedbackPage() {
       <div className={styles.contentWrap}>
         <header className={styles.pageHeader}>
           <div className={styles.headerPill}>
-            <MessageSquareHeart size={14} /> Feedback
+            <MessageSquare size={14} /> Feedback
           </div>
           <h1 className={styles.heading}>Store<br />feedback</h1>
           <p className={styles.subheading}>
@@ -148,7 +148,7 @@ export default function FeedbackPage() {
               <div className={styles.successIconWrap}>
                 <CheckCircle2 size={42} className={styles.successCheck} />
               </div>
-              <h2>Feedback Received!</h2>
+              <h2>Feedback submitted</h2>
               <p>
                 Reference ticket: <strong>#{submittedId}</strong>
               </p>
@@ -157,10 +157,10 @@ export default function FeedbackPage() {
               </p>
               <div className={styles.successActions}>
                 <button type="button" onClick={handleReset} className={styles.submitAnotherBtn}>
-                  Submit Another Note
+                  Submit another note
                 </button>
                 <Link href="/shop" className={styles.shopReturnBtn}>
-                  Return to Raider Shop <ArrowRight size={16} />
+                  Return to shop <ArrowRight size={16} />
                 </Link>
               </div>
             </motion.div>

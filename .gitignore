@@ -10,10 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# testing & output
 /coverage
-/output/storefront-qa/
-/output/redesign-home-*.png
+/output/
 
 # next.js
 /.next/

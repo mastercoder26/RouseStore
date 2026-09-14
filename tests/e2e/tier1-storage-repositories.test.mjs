@@ -6,6 +6,7 @@ import {
   ComplaintRepository,
   SEED_PRODUCTS,
 } from "../harness/domain-adapters.mjs";
+import { getProductImage } from "../../src/lib/product-image.ts";
 
 describe("Tier 1: Feature R5 - Storage Drivers & Typed Repositories", () => {
   let storage;
@@ -143,5 +144,26 @@ describe("Tier 1: Feature R5 - Storage Drivers & Typed Repositories", () => {
     for (const key of expectedContextShape) {
       expect(mockStoreContext[key]).toBeDefined();
     }
+  });
+
+  it("R5.8: Upgrades legacy demo image paths via getProductImage without mutating saved state", () => {
+    expect(getProductImage({ id: "rs-blanket-07", image: "/images/hero.jpg" })).toBe(
+      "/images/campaign/rouse-blanket.webp"
+    );
+    expect(getProductImage({ id: "rs-pen-08", image: "/images/raider_notebook.jpg" })).toBe(
+      "/images/campaign/rouse-pens.webp"
+    );
+    expect(getProductImage({ id: "rs-coldbrew-09", image: "/images/raider_bottle.jpg" })).toBe(
+      "/images/campaign/rouse-coldbrew.webp"
+    );
+    expect(getProductImage({ id: "rs-protein-10", image: "/images/raider_bottle.jpg" })).toBe(
+      "/images/campaign/rouse-chocolate.webp"
+    );
+    expect(getProductImage({ id: "rs-bottle-05", image: "/images/raider_bottle.jpg" })).toBe(
+      "/images/raider_bottle.jpg"
+    );
+    expect(getProductImage({ id: "custom-id", image: "/images/hero.jpg" })).toBe(
+      "/images/hero.jpg"
+    );
   });
 });

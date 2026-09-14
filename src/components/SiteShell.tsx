@@ -47,6 +47,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <div className={styles.footerAside}><span>Theme</span><ThemeSelector /><Link href="/admin">Staff admin <ArrowUpRight size={13} /></Link></div>
         </div>
         <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Rouse Station</span><span>Demo store · No online checkout</span></div>
+        <div className={styles.signature} aria-hidden="true"><p>RAIDERS</p></div>
       </footer>
     </div>
   );

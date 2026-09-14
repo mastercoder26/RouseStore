@@ -222,7 +222,7 @@ export function AdminCatalogTab() {
         <div className={styles.buttonGroup}>
           <button type="button" className={styles.primaryBtn} onClick={handleOpenAdd}>
             <Plus size={15} strokeWidth={2.5} />
-            <span>Add Listing</span>
+            <span>Add product</span>
           </button>
           <button
             type="button"

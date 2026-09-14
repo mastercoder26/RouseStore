@@ -141,7 +141,7 @@ export function ProductDialog({
             onClick={handleAdd}
             disabled={Boolean(product.sizes?.length) && !selectedSize}
           >
-            Add to bag <span aria-hidden="true">↗</span>
+            Add to bag
           </button>
         </div>
       </div>
@@ -181,14 +181,14 @@ export function CartDrawer({
           <DialogCloseButton onClose={close} label="Close bag" autoFocus />
         </div>
         {cart.length === 0 ? (
-          <div className={styles.emptyState}><h3>Your bag is empty</h3><button type="button" className={styles.secondaryButton} onClick={close}>Continue shopping <span aria-hidden="true">↗</span></button></div>
+          <div className={styles.emptyState}><h3>Your bag is empty</h3><button type="button" className={styles.secondaryButton} onClick={close}>Continue shopping</button></div>
         ) : checkoutStep === "summary" ? (
           <>
             <button type="button" className={styles.backButton} onClick={() => setCheckoutStep("cart")} data-dialog-autofocus><ArrowLeft size={16} /> Back to bag</button>
             <p className={styles.summaryNotice}>Online checkout is not available yet. No order has been placed.</p>
             <div className={styles.summaryItems} role="list" aria-label="Bag summary">{cart.map(item => <div className={styles.summaryItem} role="listitem" key={`${item.id}-${item.selectedSize ?? ""}`}><span>{item.name}{item.selectedSize ? ` · ${item.selectedSize}` : ""}</span><span>{item.quantity} × {formatPrice(item.price)}</span></div>)}</div>
             <div className={styles.totals}><div className={styles.totalLine}><strong>Bag total</strong><strong>{formatPrice(subtotal)}</strong></div></div>
-            <button type="button" className={styles.primaryButton} onClick={close}>Continue shopping <span aria-hidden="true">↗</span></button>
+            <button type="button" className={styles.primaryButton} onClick={close}>Continue shopping</button>
           </>
         ) : (
           <>
@@ -206,7 +206,7 @@ export function CartDrawer({
               </div>
             ))}</div>
             <div className={styles.totals}><div className={styles.totalLine}><strong>Subtotal</strong><strong>{formatPrice(subtotal)}</strong></div><p className={styles.cartNote}>Bag contents are saved on this device.</p></div>
-            <button type="button" className={styles.primaryButton} onClick={() => setCheckoutStep("summary")}>Review bag <span aria-hidden="true">↗</span></button>
+            <button type="button" className={styles.primaryButton} onClick={() => setCheckoutStep("summary")}>Review bag</button>
             <p className={styles.cartNote}>Demo store. No payment or order will be placed.</p>
           </>
         )}

@@ -191,6 +191,11 @@ img { max-width: 100%; }
 .card-size-picker button:hover { background: var(--accent); color: var(--accent-ink); }
 .pill-link { display: inline-flex; justify-content: center; align-items: center; gap: 20px; padding: 13px 25px; min-height: 48px; border: 1px solid var(--ink); border-radius: 999px; font-size: 12px; background: var(--accent); color: var(--accent-ink); }
 .text-link { display: inline-flex; align-items: center; gap: 16px; font-size: 12px; border-bottom: 1px solid currentColor; padding: 8px 0; min-height: 44px; color: var(--maroon); }
+.text-link svg { transition: transform 200ms cubic-bezier(.16, 1, .3, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .text-link:hover svg { transform: rotate(45deg); }
+}
+.text-link:focus-visible svg { transform: rotate(45deg); }
 .search-field { display: flex; align-items: center; gap: 10px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--bg-card); }
 .search-field:focus-within { outline: 2px solid var(--line-focus); outline-offset: 2px; }
 .search-field input { width: 100%; min-width: 0; min-height: 46px; background: none; color: var(--ink); border: 0; padding: 12px 0; outline: none; font-size: 12px; }
@@ -207,6 +212,7 @@ img { max-width: 100%; }
 @media (hover: hover) and (pointer: fine) {
   .product-image-button:hover .product-photo { transform: scale(1.025); }
   .product-image-button:hover .product-view, .product-image-button:focus-visible .product-view { opacity: 1; transform: none; }
+  .product-image-button:hover .product-view svg, .product-image-button:focus-visible .product-view svg { transform: rotate(45deg); }
   .quick-add:not(:disabled):hover { background: var(--accent); color: var(--accent-ink); }
   .product-name:hover { text-decoration: underline; text-underline-offset: 4px; }
 }

@@ -206,7 +206,7 @@ export default function ProductDetails({ product }: { product: Product }) {
             style={isSoldOut ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
           >
             <span>{isSoldOut ? "Sold Out" : added ? "Added to Bag" : "Add to bag"}</span>
-            {added ? <Check size={18} strokeWidth={2.5} /> : <ArrowUpRight size={18} strokeWidth={1.4} aria-hidden="true" />}
+            {added && <Check size={18} strokeWidth={2.5} />}
           </button>
 
           <div className={styles.highlights}>

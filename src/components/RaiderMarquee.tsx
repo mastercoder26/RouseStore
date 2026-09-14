@@ -56,7 +56,7 @@ export default function RaiderMarquee({ items = DEFAULT_ITEMS }: RaiderMarqueePr
             }}
           >
             <span>{text}</span>
-            <span style={{ opacity: 0.35, color: "var(--gold)", fontSize: "14px" }}>✦</span>
+            <span style={{ opacity: 0.35, color: "var(--gold)", fontSize: "14px" }}>•</span>
           </div>
         ))}
       </div>
